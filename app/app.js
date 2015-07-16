@@ -1,73 +1,43 @@
 (function() {
-    var app = angular.module('homepage', [ 
-        'ui.bootstrap',
-        'ngRoute'
+    var app = angular.module('homepage', [
+        'ui.router'
     ])
     .run(function($rootScope) {
         $rootScope.test = "0";
     });
     
-    app.config(['$routeProvider', function($routeProvider) {
-        $routeProvider.
-                when('/', 
-                {
-                    templateUrl: 'templates/intro.html'
-                }).
-                otherwise({
-                    redirectTo: "/"
-                });
-    }]);
-    
-    app.controller(
-        'HomepageController', 
-        [
-            '$http', 
-            '$log', 
-            '$scope', 
-            '$modal', 
-            '$rootScope', 
-            function($http, $log, $scope, $modal, $rootScope)
-            {
-                $rootScope.tab = 0;
-                $rootScope.isCharlie = false;
-                $log.log('tab is '+this.tab);
-                this.category = 0;
-        
-                this.setTab = function(newValue){
-                    $rootScope.tab = newValue;
-                    $rootScope.test = newValue;
-                    this.category = 0;
-                    $log.log(this.tab);
-                };
-        
-                this.setCategory = function(newValue){
-                    $rootScope.isCharlie = false;
-                    this.category = newValue;
-                    $rootScope.category = newValue;
-                    $log.log(this.category);
-                };
-        
-                this.isSet = function(tabName){
-                    return $rootScope.tab === tabName;
-                };
+    app.config(function($stateProvider, $urlRouterProvider){
+ 
+        $urlRouterProvider.otherwise('/');
+
+        $stateProvider
+        .state('home',{
+            url: '/',
+            views: {
+                'menu': {
+                    templateUrl: '/templates/menu.html'
+                },
+                'content': {
+                    templateUrl: '/templates/content.html' 
+                },
+                'footer': {
+                    templateUrl: '/templates/footer.html'
+                }
             }
-        ]
-    );
-    
-    app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items, $rootScope) {
-        $scope.items = items[0];
-        $scope.size = items[1];
-        $scope.category = $rootScope.category;
-        $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
-        };
-    });
-    
-    
-    app.directive('footerTab', function() {
-        return {
-            restrict: 'E',
-            templateUrl: 'templates/footer.html'
-        }
-    });
+        })
+
+        /*.state('dashboard', {
+            url: '/dashboard',
+            views: {
+                'header': {
+                    templateUrl: '/templates/partials/header.html'
+                },
+                'content': {
+                    templateUrl: 'templates/dashboard.html',
+                    controller: 'DashboardController'
+                }
+            }
+
+        })*/
+    });    
 })();
