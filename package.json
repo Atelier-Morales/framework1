@@ -1,0 +1,34 @@
+{
+  "name": "Framework_project",
+  "description": "Projet framework pour 42",
+  "version": "0.0.1",
+  "author": {
+    "name": "fmorales",
+    "email": "fmorales@student.42.fr"
+  },
+  "devDependencies": {
+    "load-grunt-tasks"      : "*",
+    "grunt-browser-sync"    : "*",
+    "grunt-contrib-watch"   : "*",
+    "grunt-contrib-cssmin"  : "*",
+
+    "grunt-sass"            : "*",
+    "grunt-contrib-sass"    : "*",
+
+    "grunt-autoprefixer"    : "*",
+    "grunt-contrib-connect" : "*",
+    "grunt-template-html"   : "*",
+    "grunt-contrib-concat"  : "*",
+    "underscore"            : "*",
+    "grunt-contrib-uglify"  : "*",
+    "grunt-notify"          : "*",
+    "ejs"                   : "*",
+    "grunt-concurrent"      : "*",
+    "karma-ng-scenario"     : "*",
+    "grunt-karma"           : "*",
+    "karma-chrome-launcher" : "*",
+    "karma-jasmine"         : "*",
+    "karma"                 : "*"
+  },
+  "keywords": []
+}

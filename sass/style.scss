@@ -1,0 +1,254 @@
+@charset "UTF-8";
+
+.row {
+  max-width: 100%; 
+}
+
+.menu {
+  background-color: #292c2f;
+  padding: 1.5rem 3rem;
+  height: auto;
+}
+
+@media only screen and (min-width: 40.063em) {
+    .menu {
+        height: 5rem;
+        .inline-list {
+            float: left;
+            margin: 0 0 0 1.5rem; 
+        }
+        a:hover {
+            border-bottom: 2px solid #87d37c; 
+        } 
+    } 
+}
+
+.name {
+    text-align: center;
+    font-size: 1.5rem;
+    line-height: 1;
+    margin: 0 0 1rem 0;
+    color: #fff;
+    i {
+        color: #87d37c;
+        margin-right: 0.5rem; 
+    }
+}
+
+.logo {
+    max-width: 50px;
+    float: left;
+    margin: 0 20px 0 -20px;
+}
+
+@media only screen and (min-width: 40.063em) 
+{
+    .name {
+      float: left; 
+    } 
+}
+
+.hero {
+    background: url("http://images7.alphacoders.com/330/330811.jpg") no-repeat center center;
+    background-size: cover;
+    height: 50vh;
+    overflow: hidden; 
+}
+
+.row {
+    max-width: 1200px; 
+}
+
+.footer {
+    background-color: #292c2f;
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 1rem;
+    margin-top: -10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    .social a {
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        background-color: #33383b;
+        border-radius: 2px;
+        font-size: 1.5rem;
+        color: #fff;
+        text-align: center;
+        line-height: 2rem;
+        margin: 0 3px 0 0; 
+    }
+    .copywrite {
+        color: #8f9296;
+        font-size: 0.875rem;
+        margin: 1rem 0 1rem 0;
+    }
+    .footer-form textarea, .footer-form input {
+        border-radius: 3px;
+        background-color: #1f2022;
+        box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.1);
+        border: none;
+        resize: none;
+        font: inherit;
+        font-size: 0.875rem;
+        font-weight: normal;
+        color: #d1d2d2;
+        padding: 1.3rem; 
+    }
+    .footer-form label {
+        color: #fff;
+        font-size: 1.2rem;
+        margin: 0 0 1rem 0;
+        font-weight: bold; 
+    }
+    .footer-form .submit {
+        border-radius: 3px;
+        background-color: #33383b;
+        color: #ffffff;
+        border: 0;
+        padding: 1rem 3.5rem;
+        font-weight: bold;
+        float: right;
+        margin: 0 1rem 2rem 0; 
+    }
+    .footer-links a {
+        list-style: none;
+        font-weight: normal;
+        color: #fff;
+        padding: 3rem 0 2rem;
+        margin: 0;
+        font-size: 0.875rem; 
+    }
+    .footer-links a::after {
+        content: "•";
+        padding: 0 0.2rem 0 0.4rem; 
+    }
+    .footer-links a:last-child::after {
+        content: "";
+        padding: 0 0.4rem 0 0.8rem; 
+    }
+}
+
+@media only screen and (min-width: 40.063em) {
+    .footer {
+        padding: 2rem 4rem 0rem 4rem; 
+    }
+    .footer p {
+        text-align: left; 
+    }
+    .footer .social {
+        text-align: left;
+        margin: 0; 
+    }
+    .footer .footer-form .contact {
+        position: absolute;
+        left: -45%;
+        top: 10%; 
+    } 
+}
+
+.logo {
+    color: #fff;
+    font-size: 1.5rem;
+    i {
+        margin-right: 0.5rem; 
+    }
+}
+
+body {
+	font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif !important;
+	font-weight: 200;
+	font-size: 20px;
+}
+
+.parallax-background {
+	background-color: #0078A0;
+	height: 620px;
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+	background-size: cover;
+	position: fixed;
+	width: 100%;
+}
+
+.intro-text {
+	font-size: 50px;
+	color: #fff;
+	text-align: center;
+	margin-top: 15%;
+}
+
+.parallax-content {
+	max-width: 100%;
+	position: relative;
+	top: 500px;
+	padding: 50px;
+	font-size: 20px;
+	background-color: #fff;
+}
+
+.welcome-block {
+    position: absolute;
+    z-index: 10;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+    .inline-list {
+    text-align: center;
+    li {
+        float: none;
+        display: inline-block; 
+    }
+    a {
+        color: #fff;
+        padding-bottom: 0.5rem; 
+    }
+    a:hover {
+        color: #87d37c;
+        transition: all .3s ease-in-out; 
+    }
+    .active a {
+        color: #87d37c; 
+    }
+  }
+  .account {
+    position: absolute;
+    top: 3%;
+    right: 3%;
+    a, i {
+        color: #fff; 
+    }
+  }
+  .account-action {
+    float: right;
+    margin: -.75rem 0 0 0;
+    li {
+        margin-left: .2rem; 
+    }
+    a {
+        padding: 0.75rem 1rem; 
+    }
+    a.signup {
+        font-weight: bold;
+        background-color: #3d4146;
+        border-radius: 3px; 
+    }
+  }
+}
+
+@media only screen and (min-width: 40.063em) {
+    .welcome-block {
+        height: 5rem;
+        .inline-list {
+            float: left;
+            margin: 0 0 0 1.5rem; 
+        }
+        a:hover {
+            border-bottom: 2px solid #87d37c; 
+        } 
+    } 
+}
