@@ -1,6 +1,7 @@
 (function() {
     var app = angular.module('homepage', [
-        'ui.router'
+        'ui.router',
+        'adminCtrl'
     ])
     .run(function($rootScope) {
         $rootScope.test = "0";

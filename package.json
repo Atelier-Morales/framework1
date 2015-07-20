@@ -28,7 +28,9 @@
     "grunt-karma"           : "*",
     "karma-chrome-launcher" : "*",
     "karma-jasmine"         : "*",
-    "karma"                 : "*"
+    "karma"                 : "*",
+      
+    "mongoose"              : "*"
   },
   "keywords": []
 }

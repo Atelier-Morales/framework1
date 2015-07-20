@@ -191,9 +191,25 @@ body {
 	background-color: #fff;
 }
 
+.cover {
+  font-family: Agenda-Light, Agenda Light, Agenda, Arial Narrow, sans-serif;
+  font-weight:100; 
+  background: rgba(0,0,0,0.3);
+  color: white;
+  padding: 2rem;
+  width: 33%;
+  margin:2rem;
+  float: right;
+  font-size: 1.2rem;
+}
+
 .welcome-block {
-    position: absolute;
+    height: 5rem;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
     z-index: 10;
+    padding-top: 50px;
     margin-top: 10px;
     width: 100%;
     text-align: center;
@@ -216,7 +232,7 @@ body {
     }
   }
   .account {
-    position: absolute;
+    position: relative;
     top: 3%;
     right: 3%;
     a, i {
@@ -224,8 +240,9 @@ body {
     }
   }
   .account-action {
-    float: right;
-    margin: -.75rem 0 0 0;
+    
+    margin-left: auto;
+    margin-right: auto;
     li {
         margin-left: .2rem; 
     }
@@ -240,11 +257,35 @@ body {
   }
 }
 
+video { 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    transform: translateX(-50%) translateY(-50%);
+ background: url('//demosthenes.info/assets/images/polina.jpg') no-repeat;
+  background-size: cover;
+  transition: 1s opacity;
+}
+
+.backBlock {
+    position: static;
+    width: 700px;
+    height: 300px;
+    z-index: 10;
+    margin: 200px auto 0px auto;
+    background: gray;
+}
+
 @media only screen and (min-width: 40.063em) {
     .welcome-block {
         height: 5rem;
         .inline-list {
-            float: left;
+            float: none;
             margin: 0 0 0 1.5rem; 
         }
         a:hover {
