@@ -30,7 +30,11 @@
     "karma-jasmine"         : "*",
     "karma"                 : "*",
       
-    "mongoose"              : "*"
+    "mongoose"              : "*",
+    "bcrypt"                : "*",
+    "express"               : "*",
+    "morgan"                : "*",
+    "body-parser"           : "*"
   },
   "keywords": []
 }

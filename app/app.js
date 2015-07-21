@@ -1,44 +1,69 @@
 (function() {
+    
+    API_URL = "http://localhost:8001";
+    
     var app = angular.module('homepage', [
         'ui.router',
         'adminCtrl'
-    ])
-    .run(function($rootScope) {
-        $rootScope.test = "0";
-    });
+    ]);
     
     app.config(function($stateProvider, $urlRouterProvider){
  
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/home');
 
         $stateProvider
         .state('home',{
-            url: '/',
+            url: '/home',
             views: {
                 'menu': {
-                    templateUrl: '/templates/menu.html'
+                    templateUrl: '/templates/menu.html',
+                    controller: 'AdminUserCtrl'
                 },
                 'content': {
-                    templateUrl: '/templates/content.html' 
+                    templateUrl: '/templates/content.html',
+                    controller: 'AdminUserCtrl'
                 },
                 'footer': {
-                    templateUrl: '/templates/footer.html'
+                    templateUrl: '/templates/footer.html',
+                    controller: 'AdminUserCtrl',
                 }
             }
         })
-
-        /*.state('dashboard', {
+        .state('dashboard', {
             url: '/dashboard',
             views: {
-                'header': {
-                    templateUrl: '/templates/partials/header.html'
+                'menu': {
+                    templateUrl: '/templates/menu.html',
+                    controller: 'AdminUserCtrl'
                 },
                 'content': {
-                    templateUrl: 'templates/dashboard.html',
-                    controller: 'DashboardController'
+                    templateUrl: '/templates/adminView.html',
+                    controller: 'AdminUserCtrl'
+                },
+                'footer': {
+                    templateUrl: '/templates/footer.html',
+                    controller: 'AdminUserCtrl',
                 }
             }
 
-        })*/
+        })
+        .state('regError', {
+            url: '/404',
+            views: {
+                'menu': {
+                    templateUrl: '/templates/menu.html',
+                    controller: 'AdminUserCtrl'
+                },
+                'content': {
+                    templateUrl: '/templates/404.html',
+                    controller: 'AdminUserCtrl'
+                },
+                'footer': {
+                    templateUrl: '/templates/footer.html',
+                    controller: 'AdminUserCtrl',
+                }
+            }
+
+        })
     });    
 })();

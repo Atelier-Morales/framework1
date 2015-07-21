@@ -60,8 +60,7 @@
   text-align: center;
   font-size: 1.2rem;
   padding: 1rem;
-  margin-top: -10px;
-  position: relative;
+  position: absolute;
   bottom: 0;
   width: 100%;
 }
@@ -190,27 +189,20 @@ body {
 }
 
 .cover {
-  font-family: Agenda-Light, Agenda Light, Agenda, Arial Narrow, sans-serif;
-  font-weight: 100;
-  background: rgba(0, 0, 0, 0.3);
-  color: white;
-  padding: 2rem;
-  width: 33%;
-  margin: 2rem;
-  float: right;
-  font-size: 1.2rem;
+  background: rgba(0, 0, 0, 0.8);
+  margin-top: 5%;
+  border-radius: 20px;
 }
 
 .welcome-block {
-  height: 5rem;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-  z-index: 10;
-  padding-top: 50px;
-  margin-top: 10px;
-  width: 100%;
+  padding-top: 15px;
   text-align: center;
+}
+.welcome-block h1 {
+  font-family: Agenda-Light, Agenda Light, Agenda, Arial Narrow, sans-serif;
+  font-weight: 100;
+  font-size: 2.5rem;
+  color: white;
 }
 .welcome-block .inline-list {
   text-align: center;
@@ -280,7 +272,7 @@ video {
 
 @media only screen and (min-width: 40.063em) {
   .welcome-block {
-    height: 5rem;
+    height: 12rem;
   }
   .welcome-block .inline-list {
     float: none;
@@ -289,6 +281,45 @@ video {
   .welcome-block a:hover {
     border-bottom: 2px solid #87d37c;
   }
+}
+.center.row {
+  height: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%;
+  max-width: 500px;
+}
+
+.signup-panel {
+  padding: 15px;
+}
+.signup-panel i {
+  font-size: 30px;
+  line-height: 50px;
+  color: #999;
+}
+.signup-panel form input, .signup-panel form span {
+  height: 50px;
+}
+.signup-panel .welcome {
+  font-size: 26px;
+  text-align: center;
+  margin-left: 0;
+}
+.signup-panel .button {
+  margin-left: 35%;
+}
+
+section.active {
+  padding-top: 75px !important;
+}
+
+p.title {
+  border-bottom: 1px solid #cccccc !important;
+}
+
+.content {
+  height: 450px;
 }
 
 /*# sourceMappingURL=style.css.map */
