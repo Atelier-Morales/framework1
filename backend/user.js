@@ -1,8 +1,10 @@
 "use strict";
 
 var db = require('./db');
+var jwt = require('jsonwebtoken');
+var secret = require('./secret');
+var tokenManager = require('./token_manager');
 
-/*
 exports.login = function(req, res) {
 	var username = req.body.username || '';
 	var password = req.body.password || '';
@@ -26,8 +28,13 @@ exports.login = function(req, res) {
 				console.log("Attempt failed to login with " + user.username);
 				return res.send(401);
             }
-
-			return res.json({loggedIn:true});
+            
+            var token = jwt.sign(
+                { id: user._id }, 
+                secret.secretToken, 
+                { expiresInMinutes: tokenManager.TOKEN_EXPIRATION }
+            );
+			return res.json({ token: token });
 		});
 
 	});
@@ -41,7 +48,7 @@ exports.logout = function(req, res) {
 	else {
 		return res.send(401);
 	}
-}*/
+}
 
 exports.register = function(req, res) {
 	var username = req.body.username || '';
@@ -76,7 +83,6 @@ exports.register = function(req, res) {
 						console.log(err);
 						return res.sendStatus(500);
 					}
-
 					console.log('First user created as an Admin');
 					return res.sendStatus(200);
 				});

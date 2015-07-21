@@ -24,7 +24,7 @@
                 return $http.post(API_URL + '/user/login', 
                 { 
                     username: username, 
-                    password: pasword
+                    password: password
                 });
             },
             logOut : function() {

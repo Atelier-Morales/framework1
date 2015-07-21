@@ -25,14 +25,15 @@
                   <div class="row">
                     <div class="large-12 columns">
                       <div class="signup-panel">
-                        <p class="welcome">Welcome back!</p>
-                        <form>
+                        <p class="welcome" ng-show="!confirmAuth">Welcome back!</p>
+                        <p class="welcome" ng-show="confirmAuth">Please log in to confirm your registration</p> 
+                        <form name="loginForm" novalidate>
                           <div class="row collapse">
                             <div class="small-2 columns">
                               <span class="prefix"><i class="fi-mail"></i></span>
                             </div>
                             <div class="small-10  columns">
-                              <input type="text" ng-model="username" placeholder="Email">
+                              <input type="text" name="username" ng-model="username" placeholder="Email" required>
                             </div>
                           </div>
                           <div class="row collapse">
@@ -40,11 +41,15 @@
                               <span class="prefix"><i class="fi-lock"></i></span>
                             </div>
                             <div class="small-10 columns ">
-                              <input type="password" ng-model="password" placeholder="Password">
+                              <input type="password" name="password" ng-model="password" placeholder="Password" required>
                             </div>
                           </div>
                         </form>
-                        <a ng-click="logIn(username, password)" class="button ">Log in</a>
+                        <button ng-disabled="loginForm.username.$error.required || loginForm.password.$error.required" 
+                                ng-click="logIn(username, password)" class="button ">Log in</button>
+                          <span style="color:red" ng-show="authError">
+                            <span>Email/password are incorrect</span>
+                          </span>
                       </div>
                     </div>
                    </div></p>
@@ -129,6 +134,9 @@
                                 ng-click="register(username, email, password, confirm)" class="button">
                             Sign Up</button>
                     </form>
+                    <span style="color:red" ng-show="regError">
+                        Registration error!
+                    </span>
                   </div>
                 </div>
                </div></p>

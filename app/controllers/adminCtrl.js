@@ -17,27 +17,32 @@
         'authService',
         function AdminUserCtrl($scope, $location, $window, $state, $log, userService, authService) {
             //Admin User Controller (login, logout)
+            $scope.authError = false;
+            $scope.regError = false;
+            $scope.confirmAuth = false;
+            
             if (!authService.isLogged && $state.is('dashboard'))
                 $state.go('home');
             else if (authService.isLogged && $state.is('dashboard'))
                 $state.go('dashboard');
+            
             $scope.logIn = function logIn(username, password) {
-                $log.log(username);
-                $log.log(password);
-                /*if (username !== undefined && password !== undefined) {
+                if (username !== undefined && password !== undefined) {
                     userService.logIn(username, password).success(function(data) {
+                        $('#myModal').foundation('reveal', 'close');
+                        $log.log('User '+username+' successfully logged in');
+                        $scope.authError = false;
                         authService.isLogged = true;
                         $window.sessionStorage.token = data.token;
-                        $location.path("/admin");
+                        $state.go('dashboard');
                     }).error(function(status, data) {
                         console.log(status);
                         console.log(data);
+                        $scope.authError = true;
                     });
-                }*/
-            },
-            $scope.fuck = function(){
-                $log.log('fuck');
-            },
+                }
+            }
+                
             $scope.logOut = function logOut() {
                 if (authService.isLogged) {
                     authService.isLogged = false;
@@ -45,22 +50,24 @@
                     $state.go("home");
                 }
             }
+            
             $scope.register = function register(username, email, password, passwordConfirm) {
-                $('#myModal2').foundation('reveal', 'close');
                 if (authService.isLogged) {
+                    $('#myModal2').foundation('reveal', 'close');
                     $log.log('User already registered');
                     $state.go('dashboard');
                 }
                 else {
                     userService.register(username, email, password, passwordConfirm).success(function(data) {
                         $log.log('user successfully registered');
-                        authService.isLogged = true;
-                        $state.go('dashboard');
+                        $scope.confirmAuth = true;
+                        $('#myModal2').foundation('reveal', 'close');
+                        $('#myModal').foundation('reveal', 'open');
                     }).error(function(status, data) {
                         console.log(status);
                         console.log(data);
-                        $log.log('Regista');
-                        $state.go("regError");
+                        $log.log('Registration failed!');
+                        $scope.regError = true;
                     });
                 }
             }

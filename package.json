@@ -18,23 +18,16 @@
     "grunt-autoprefixer"    : "*",
     "grunt-contrib-connect" : "*",
     "grunt-template-html"   : "*",
-    "grunt-contrib-concat"  : "*",
     "underscore"            : "*",
     "grunt-contrib-uglify"  : "*",
-    "grunt-notify"          : "*",
     "ejs"                   : "*",
-    "grunt-concurrent"      : "*",
-    "karma-ng-scenario"     : "*",
-    "grunt-karma"           : "*",
-    "karma-chrome-launcher" : "*",
-    "karma-jasmine"         : "*",
-    "karma"                 : "*",
       
     "mongoose"              : "*",
     "bcrypt"                : "*",
     "express"               : "*",
     "morgan"                : "*",
-    "body-parser"           : "*"
+    "body-parser"           : "*",
+    "jsonwebtoken"          : "*"
   },
   "keywords": []
 }
