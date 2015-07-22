@@ -45,7 +45,7 @@
   }
 }
 .hero {
-  background: url("http://images7.alphacoders.com/330/330811.jpg") no-repeat center center;
+  background: url("https://images7.alphacoders.com/330/330811.jpg") no-repeat center center;
   background-size: cover;
   height: 50vh;
   overflow: hidden;
@@ -256,7 +256,6 @@ video {
   height: auto;
   z-index: -100;
   transform: translateX(-50%) translateY(-50%);
-  background: url("//demosthenes.info/assets/images/polina.jpg") no-repeat;
   background-size: cover;
   transition: 1s opacity;
 }

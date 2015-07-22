@@ -1,6 +1,14 @@
 (function() {
-    
-    API_URL = "http://localhost:8001";
+    if (window.location.protocol === "https:") {
+        API_URL = "https://localhost:8002";
+        console.log('URL IS '+API_URL);
+        console.log('protocol IS '+window.location.protocol);
+    }
+    else {
+        console.log('protocol IS '+window.location.protocol);
+        API_URL = "http://localhost:8001";
+        console.log('URL IS '+API_URL);
+    }
     
     var app = angular.module('homepage', [
         'ui.router',
@@ -8,7 +16,7 @@
         'userAuth'
     ]);
     
-    app.config(function($stateProvider, $urlRouterProvider){
+    app.config(function($stateProvider, $urlRouterProvider, $locationProvider){
  
         $urlRouterProvider.otherwise('/home');
 
@@ -34,7 +42,7 @@
             url: '/dashboard',
             views: {
                 'menu': {
-                    templateUrl: '/templates/menu.html',
+                    templateUrl: '/templates/menuLogged.html',
                     controller: 'AdminUserCtrl'
                 },
                 'content': {
@@ -60,26 +68,29 @@
                     controller: 'AdminUserCtrl',
                 }
             }
-
         })
+        
+        $locationProvider.html5Mode(true);
     });
     
     app.run(function($rootScope, $state, $window, authService) {
         $rootScope.$on("$stateChangeStart", function(e, toState, toParams, fromState, fromParams) {
-            
             if (toState.name.indexOf('dashboard') > -1 && !$window.sessionStorage.token) {
                 // If logged out and transitioning to a logged in page:
+                console.log('token is '+$window.sessionStorage.token);
                 e.preventDefault();
                 $state.go('home');
             }
             else if (toState.name.indexOf('home') > -1 && $window.sessionStorage.token) {
                 // If logged in and transitioning to a logged out page:
+                console.log('token is '+$window.sessionStorage.token);
                 authService.isLogged = true
                 e.preventDefault();
                 $state.go('dashboard');
             }
             if (toState.name.indexOf('dashboard') > -1 && $window.sessionStorage.token) {
                 // If logged in but somehow authService.isLogged is set to false:
+                console.log('token is '+$window.sessionStorage.token);
                 authService.isLogged = true
             }
         });

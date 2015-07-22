@@ -28,7 +28,8 @@
     "morgan"                : "*",
     "body-parser"           : "*",
     "jsonwebtoken"          : "*",
-    "redis"                 : "*"
+    "redis"                 : "*",
+    "https"                 : "*"
   },
   "keywords": []
 }
