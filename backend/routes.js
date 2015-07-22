@@ -27,6 +27,6 @@ app.post('/user/register', routes.users.register);
 
 app.post('/user/login', routes.users.login); 
 
-app.get('/user/logout', routes.users.logout);
+app.post('/user/logout', routes.users.logout);
 
 console.log('Intranet API is starting on port 8001');

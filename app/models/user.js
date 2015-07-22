@@ -1,5 +1,4 @@
 
-
 /* global angular */
 
 /**
@@ -27,8 +26,11 @@
                     password: password
                 });
             },
-            logOut : function() {
-                return $http.get(API_URL + '/user/logout');
+            logOut : function(token) {
+                return $http.post(API_URL + '/user/logout',
+                {
+                    token: token
+                });
             },
             register: function(username, email, password, passwordConfirmation) {
                 return $http.post(API_URL + '/user/register', {

@@ -27,7 +27,8 @@
     "express"               : "*",
     "morgan"                : "*",
     "body-parser"           : "*",
-    "jsonwebtoken"          : "*"
+    "jsonwebtoken"          : "*",
+    "redis"                 : "*"
   },
   "keywords": []
 }

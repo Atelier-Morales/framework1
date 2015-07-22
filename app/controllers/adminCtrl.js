@@ -21,11 +21,6 @@
             $scope.regError = false;
             $scope.confirmAuth = false;
             
-            if (!authService.isLogged && $state.is('dashboard'))
-                $state.go('home');
-            else if (authService.isLogged && $state.is('dashboard'))
-                $state.go('dashboard');
-            
             $scope.logIn = function logIn(username, password) {
                 if (username !== undefined && password !== undefined) {
                     userService.logIn(username, password).success(function(data) {
@@ -44,11 +39,19 @@
             }
                 
             $scope.logOut = function logOut() {
-                if (authService.isLogged) {
-                    authService.isLogged = false;
-                    delete $window.sessionStorage.token;
-                    $state.go("home");
+                if (authService.isLogged && $window.sessionStorage.token) {
+                    userService.logOut($window.sessionStorage.token).success(function(data) {
+                        authService.isLogged = false;
+                        delete $window.sessionStorage.token;
+                        $state.go('home');
+                    })
+                    .error(function(status, data) {
+                        $log.log(status);
+                        $log.log(data);
+                    });
                 }
+                else
+                    $state.go('home');
             }
             
             $scope.register = function register(username, email, password, passwordConfirm) {

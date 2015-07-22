@@ -4,7 +4,8 @@
     
     var app = angular.module('homepage', [
         'ui.router',
-        'adminCtrl'
+        'adminCtrl',
+        'userAuth'
     ]);
     
     app.config(function($stateProvider, $urlRouterProvider){
@@ -39,10 +40,6 @@
                 'content': {
                     templateUrl: '/templates/adminView.html',
                     controller: 'AdminUserCtrl'
-                },
-                'footer': {
-                    templateUrl: '/templates/footer.html',
-                    controller: 'AdminUserCtrl',
                 }
             }
 
@@ -65,5 +62,26 @@
             }
 
         })
-    });    
+    });
+    
+    app.run(function($rootScope, $state, $window, authService) {
+        $rootScope.$on("$stateChangeStart", function(e, toState, toParams, fromState, fromParams) {
+            
+            if (toState.name.indexOf('dashboard') > -1 && !$window.sessionStorage.token) {
+                // If logged out and transitioning to a logged in page:
+                e.preventDefault();
+                $state.go('home');
+            }
+            else if (toState.name.indexOf('home') > -1 && $window.sessionStorage.token) {
+                // If logged in and transitioning to a logged out page:
+                authService.isLogged = true
+                e.preventDefault();
+                $state.go('dashboard');
+            }
+            if (toState.name.indexOf('dashboard') > -1 && $window.sessionStorage.token) {
+                // If logged in but somehow authService.isLogged is set to false:
+                authService.isLogged = true
+            }
+        });
+    });
 })();
