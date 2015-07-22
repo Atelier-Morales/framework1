@@ -13,7 +13,8 @@
     var app = angular.module('homepage', [
         'ui.router',
         'adminCtrl',
-        'userAuth'
+        'userAuth',
+        'ngCookies'
     ]);
     
     app.config(function($stateProvider, $urlRouterProvider, $locationProvider){
@@ -73,24 +74,40 @@
         $locationProvider.html5Mode(true);
     });
     
-    app.run(function($rootScope, $state, $window, authService) {
+    app.run(function($rootScope, $state, $window, $cookies, authService) {
         $rootScope.$on("$stateChangeStart", function(e, toState, toParams, fromState, fromParams) {
+            var token = $cookies.get('token');
+            
+            if (toState.name.indexOf('home') > -1 && !$window.sessionStorage.token) {
+                if (token === undefined)
+                    console.log('Welcome to the intranet!');
+                else
+                {
+                    console.log('User already logged. Redirecting...');
+                    $state.go('dashboard');
+                }
+            }
             if (toState.name.indexOf('dashboard') > -1 && !$window.sessionStorage.token) {
                 // If logged out and transitioning to a logged in page:
-                console.log('token is '+$window.sessionStorage.token);
-                e.preventDefault();
-                $state.go('home');
+                if (token === undefined) {
+                    e.preventDefault();
+                    $state.go('home');
+                }
+                else {
+                    $window.sessionStorage.token = token;
+                    e.preventDefault();
+                    $state.go('dashboard');
+                }
+                
             }
-            else if (toState.name.indexOf('home') > -1 && $window.sessionStorage.token) {
+            if (toState.name.indexOf('home') > -1 && $window.sessionStorage.token) {
                 // If logged in and transitioning to a logged out page:
-                console.log('token is '+$window.sessionStorage.token);
                 authService.isLogged = true
                 e.preventDefault();
                 $state.go('dashboard');
             }
             if (toState.name.indexOf('dashboard') > -1 && $window.sessionStorage.token) {
                 // If logged in but somehow authService.isLogged is set to false:
-                console.log('token is '+$window.sessionStorage.token);
                 authService.isLogged = true
             }
         });

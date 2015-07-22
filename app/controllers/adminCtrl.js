@@ -5,7 +5,10 @@
  */
 
 (function() {
-    var adminCtrl = angular.module('adminCtrl', ['userAuth']);
+    var adminCtrl = angular.module('adminCtrl', [
+        'userAuth',
+        'ngCookies'
+    ]);
     
     adminCtrl.controller('AdminUserCtrl', [
         '$scope',
@@ -13,9 +16,10 @@
         '$window',
         '$state',
         '$log',
+        '$cookies',
         'userService', 
         'authService',
-        function AdminUserCtrl($scope, $location, $window, $state, $log, userService, authService) {
+        function AdminUserCtrl($scope, $location, $window, $state, $log, $cookies, userService, authService) {
             //Admin User Controller (login, logout)
             $scope.authError = false;
             $scope.regError = false;
@@ -29,6 +33,7 @@
                         $scope.authError = false;
                         authService.isLogged = true;
                         $window.sessionStorage.token = data.token;
+                        $cookies.put('token', data.token);
                         $state.go('dashboard');
                     }).error(function(status, data) {
                         console.log(status);
@@ -42,6 +47,7 @@
                 if (authService.isLogged && $window.sessionStorage.token) {
                     userService.logOut($window.sessionStorage.token).success(function(data) {
                         authService.isLogged = false;
+                        $cookies.remove('token');
                         delete $window.sessionStorage.token;
                         $state.go('home');
                     })
