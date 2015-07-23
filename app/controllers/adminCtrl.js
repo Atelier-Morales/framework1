@@ -25,9 +25,26 @@
             $scope.regError = false;
             $scope.confirmAuth = false;
             
+            //sidenav resize
+            function sideNav() {
+              if ($(window).width() < 769) {
+                $('.off-canvas-wrap').removeClass('move-right');
+                $('.left-off-canvas-toggle').show();
+              } else {
+                $('.off-canvas-wrap').addClass('move-right');
+                $('.left-off-canvas-toggle').hide();
+              }  
+            }
+
+            $(window).resize(function() {
+                sideNav();
+            });
+
+            
             $scope.logIn = function logIn(username, password) {
                 if (username !== undefined && password !== undefined) {
                     userService.logIn(username, password).success(function(data) {
+                        console.log(data);
                         $('#myModal').foundation('reveal', 'close');
                         $log.log('User '+username+' successfully logged in');
                         $scope.authError = false;

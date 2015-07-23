@@ -25,6 +25,35 @@ var expireToken = function(token) {
 	}
 };
 
+//verify if user is logged function
+
+exports.verifyToken = function(req, res) {
+	var token = req.body.token || '';
+	
+	if (token == '')
+        return res.send(401);
+    
+    jwt.verify(token, 'shhhhh', function(err, decoded) {
+        if (err)
+            return res.send(401);
+        else {
+            db.userModel.findOne({ _id: decoded.id }, function (err, user) {
+                if (err) {
+                    console.log(err);
+                    return res.send(401);
+                }
+                return res.json({ 
+                    username: user.username,
+                    email   : user.email,
+                    is_admin: user.is_admin,
+                    created : user.created
+                });
+            });
+        }       
+    });
+}
+
+
 //Login function
 
 exports.login = function(req, res) {
@@ -53,17 +82,13 @@ exports.login = function(req, res) {
                 'shhhhh', 
                 { expiresInMinutes: TOKEN_EXPIRATION }
             );
+            
 			return res.json({ 
-                token: token,
-                username: user.username,
-                email: user.email,
-                admin: user.is_admin,
-                created: user.created,
-                id: user._id
+                token: token
             });
 		});
 	});
-};
+}
 
 //Logout function
 

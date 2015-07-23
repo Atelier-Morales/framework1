@@ -1,14 +1,8 @@
 (function() {
-    if (window.location.protocol === "https:") {
+    if (window.location.protocol === "https:")
         API_URL = "https://localhost:8002";
-        console.log('URL IS '+API_URL);
-        console.log('protocol IS '+window.location.protocol);
-    }
-    else {
-        console.log('protocol IS '+window.location.protocol);
+    else
         API_URL = "http://localhost:8001";
-        console.log('URL IS '+API_URL);
-    }
     
     var app = angular.module('homepage', [
         'ui.router',
@@ -74,17 +68,25 @@
         $locationProvider.html5Mode(true);
     });
     
-    app.run(function($rootScope, $state, $window, $cookies, authService) {
+    app.run(function($rootScope, $state, $window, $cookies, authService, userService) {
         $rootScope.$on("$stateChangeStart", function(e, toState, toParams, fromState, fromParams) {
             var token = $cookies.get('token');
             
             if (toState.name.indexOf('home') > -1 && !$window.sessionStorage.token) {
                 if (token === undefined)
                     console.log('Welcome to the intranet!');
-                else
-                {
-                    console.log('User already logged. Redirecting...');
-                    $state.go('dashboard');
+                else {
+                    userService.verifyToken(token)
+                    .success(function(data) {
+                        authService.isLogged = true;
+                        console.log('User already logged in. Redirecting...');
+                        $window.sessionStorage.token = token;
+                        $state.go('dashboard');
+                    })
+                    .error(function(status, data) {
+                        console.log(status);
+                        console.log(data);
+                    });
                 }
             }
             if (toState.name.indexOf('dashboard') > -1 && !$window.sessionStorage.token) {
@@ -94,9 +96,17 @@
                     $state.go('home');
                 }
                 else {
-                    $window.sessionStorage.token = token;
-                    e.preventDefault();
-                    $state.go('dashboard');
+                    userService.verifyToken(token)
+                    .success(function(data) {
+                        authService.isLogged = true;
+                        console.log('User already logged in...');
+                        $window.sessionStorage.token = token;
+                    })
+                    .error(function(status, data) {
+                        console.log(status);
+                        console.log(data);
+                        $state.go('home');
+                    });
                 }
                 
             }
