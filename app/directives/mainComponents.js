@@ -7,11 +7,19 @@
  */
 
 (function() {
-    app.directive('sidebar', function() {
-            
-            return {
-                restrict: 'E',
-                templateUrl: 'templates/footer.html'
-            }
+    var app = angular.module('sidebarDirective', []);
+    
+    app.directive('sidebarUser', function() {
+        return {
+            restrict: 'E',
+            templateUrl: 'templates/sidebarUser.html'
+        }
+    });
+    
+    app.directive('sidebarAdmin', function() {
+        return {
+            restrict: 'E',
+            templateUrl: 'templates/sidebarAdmin.html'
+        }
     });
 })();

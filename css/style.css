@@ -1,8 +1,4 @@
 @charset "UTF-8";
-.row {
-  max-width: 100%;
-}
-
 .menu {
   background-color: #292c2f;
   padding: 1.5rem 3rem;
@@ -46,13 +42,6 @@
     float: left;
   }
 }
-.hero {
-  background: url("https://images7.alphacoders.com/330/330811.jpg") no-repeat center center;
-  background-size: cover;
-  height: 50vh;
-  overflow: hidden;
-}
-
 .row {
   max-width: 1200px;
 }
@@ -156,10 +145,170 @@
   margin-right: 0.5rem;
 }
 
+.inner-wrap {
+  width: auto;
+  height: 100%;
+}
+
+.move-right .inner-wrap {
+  -ms-transform: none;
+  -webkit-transform: none;
+  -moz-transform: none;
+  -ms-transform: none;
+  -o-transform: none;
+  transform: none;
+  margin-left: 114px;
+}
+
+.left-off-canvas-menu {
+  -ms-transform: none;
+  -webkit-transform: none;
+  -moz-transform: none;
+  -ms-transform: none;
+  -o-transform: none;
+  transform: none;
+  position: fixed;
+  width: 0;
+  height: 100%;
+  padding-top: 80px;
+  z-index: 1;
+}
+
+.move-right .left-off-canvas-menu {
+  width: 114px;
+}
+
+.move-right .exit-off-canvas {
+  display: none;
+}
+
+.left-off-canvas-toggle {
+  display: none;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  font-size: 3rem;
+  color: #333;
+  transition: all .25s ease-in-out;
+}
+.left-off-canvas-toggle:focus {
+  color: #333;
+}
+.left-off-canvas-toggle:hover {
+  color: #8c8c8c;
+  transition: all .25s ease-in-out;
+}
+
+.current {
+  background-color: darkolivegreen;
+}
+
+.item {
+  width: 76% !important;
+}
+
+.ad-block {
+  margin-bottom: 2rem;
+}
+
+.callout-card {
+  background: #fff;
+  border: 1px solid #333;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  margin: 1rem 0;
+  overflow: hidden;
+}
+.callout-card .card-label {
+  border-color: transparent #333 transparent transparent;
+  border-color: rgba(255, 255, 255, 0) #333 rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+}
+.callout-card.primary {
+  border-color: #446CB3;
+}
+.callout-card.primary .card-label {
+  border-color: transparent #446CB3 transparent transparent;
+  border-color: rgba(255, 255, 255, 0) #446CB3 rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+}
+.callout-card.secondary {
+  border-color: #ADB2BD;
+}
+.callout-card.secondary .card-label {
+  border-color: transparent #ADB2BD transparent transparent;
+  border-color: rgba(255, 255, 255, 0) #ADB2BD rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+}
+.callout-card.info {
+  border-color: #89c4f4;
+}
+.callout-card.info .card-label {
+  border-color: transparent #89c4f4 transparent transparent;
+  border-color: rgba(255, 255, 255, 0) #89c4f4 rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+}
+.callout-card.alert {
+  border-color: #F22613;
+}
+.callout-card.alert .card-label {
+  border-color: transparent #F22613 transparent transparent;
+  border-color: rgba(255, 255, 255, 0) #F22613 rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+}
+.callout-card.success {
+  border-color: #87D37C;
+}
+.callout-card.success .card-label {
+  border-color: transparent #87D37C transparent transparent;
+  border-color: rgba(255, 255, 255, 0) #87D37C rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+}
+.callout-card.warning {
+  border-color: #F89406;
+}
+.callout-card.warning .card-label {
+  border-color: transparent #F89406 transparent transparent;
+  border-color: rgba(255, 255, 255, 0) #F89406 rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+}
+.callout-card .card-label {
+  border-style: solid;
+  border-width: 0 70px 40px 0;
+  float: right;
+  height: 0px;
+  width: 0px;
+  transform: rotate(360deg);
+}
+.callout-card .callout-card-content {
+  padding: 0.5rem 1.5rem 0.875rem;
+}
+.callout-card.radius {
+  border-radius: 0.6rem;
+}
+.callout-card .label-text {
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  position: relative;
+  right: -40px;
+  top: 2px;
+  white-space: nowrap;
+  transform: rotate(30deg);
+}
+
+.back-card {
+  background: #f2f2f2 !important;
+}
+
+.hero {
+  background: url("https://images7.alphacoders.com/330/330811.jpg") no-repeat center center;
+  background-size: cover;
+  height: 50vh;
+  overflow: hidden;
+}
+
+.row {
+  max-width: 1600px;
+}
+
 body {
   font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif !important;
   font-weight: 200;
   font-size: 20px;
+  min-height: 670px;
+  background: #000000 url("http://localhost:3000/assets/img/Night-Stars.jpg");
 }
 
 .parallax-background {
@@ -194,6 +343,16 @@ body {
   background: rgba(0, 0, 0, 0.8);
   margin-top: 5%;
   border-radius: 20px;
+}
+
+.text-center {
+  margin: 3% 0 3% 0;
+  font-size: 100px;
+  text-shadow: 5px 4px 5px #4F9913, 13px 14px 0px rgba(0, 0, 0, 0.15);
+  letter-spacing: -2px;
+  line-height: 1;
+  color: #ffffff;
+  font-weight: 500;
 }
 
 .welcome-block {
@@ -321,66 +480,6 @@ p.title {
 
 .content {
   height: 450px;
-}
-
-.inner-wrap {
-  width: auto;
-}
-
-.move-right .inner-wrap {
-  -ms-transform: none;
-  -webkit-transform: none;
-  -moz-transform: none;
-  -ms-transform: none;
-  -o-transform: none;
-  transform: none;
-  margin-left: 114px;
-}
-
-.left-off-canvas-menu {
-  -ms-transform: none;
-  -webkit-transform: none;
-  -moz-transform: none;
-  -ms-transform: none;
-  -o-transform: none;
-  transform: none;
-  position: fixed;
-  width: 0;
-  height: 100%;
-  padding-top: 80px;
-  z-index: 1;
-}
-
-.move-right .left-off-canvas-menu {
-  width: 114px;
-}
-
-.move-right .exit-off-canvas {
-  display: none;
-}
-
-.left-off-canvas-toggle {
-  display: none;
-  margin-top: 1rem;
-  margin-left: 1rem;
-  font-size: 3rem;
-  color: #333;
-  transition: all .25s ease-in-out;
-}
-.left-off-canvas-toggle:focus {
-  color: #333;
-}
-.left-off-canvas-toggle:hover {
-  color: #8c8c8c;
-  transition: all .25s ease-in-out;
-}
-
-.item {
-  width: 76% !important;
-}
-
-.ad-block {
-  margin-bottom: 2rem;
 }
 
 /*# sourceMappingURL=style.css.map */

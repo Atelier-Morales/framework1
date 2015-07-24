@@ -1,58 +1,140 @@
 <link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
 
 <div class="off-canvas-wrap move-right" data-offcanvas>
-  <div class="inner-wrap">
+    <div class="inner-wrap">
 
-    <a class="left-off-canvas-toggle" href="#"><i class="fi-list"></i></a>
-
-    <!-- Off Canvas Menu -->
-    <aside class="left-off-canvas-menu">
-      
-      <div class="icon-bar vertical five-up">
-      <a class="item">
-        <i class="fi-home"></i>
-        <label>Home</label>
-      </a>
-      <a class="item">
-       <i class="fi-results-demographics"></i>
-        <label>Users</label>
-      </a>
-      <a class="item">
-        <i class="fi-thumbnails"></i>
-        <label>Projects</label>
-      </a>
-      <a class="item">
-        <i class="fi-comments"></i>
-        <label>Forum</label>
-      </a>
-      <a class="item">
-        <i class="fi-alert"></i>
-        <label>Tickets</label>
-      </a>
-    </div>
-      
-    </aside>
+    <a class="left-off-canvas-toggle" href="#"><i class="fi-list"></i></a> 
+    <sidebar-admin ng-if="userInfo.is_admin"></sidebar-admin>
+    <sidebar-user ng-if="!userInfo.is_admin"></sidebar-user>
 
     <!-- main content goes here -->
     <header class="row">
       <div class="small-12 columns">
-        <h1 class="text-center">{{ userInfo }}</h1>
+        <h1 class="text-center">Welcome {{ userInfo.username }}</h1>
       </div>
     </header>
     
     <div class="row">
-      
-      <div class="medium-6 medium-push-6 columns">
-        <img src="https://ununsplash.imgix.net/photo-1429277005502-eed8e872fe52?fit=crop&fm=jpg&h=700&q=75&w=1050" alt="" />
-      </div>
-      
-      <div class="medium-6 medium-pull-6 columns">
+      <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
+        <br>
+        <h2>Your Projects</h2>
+        <br>
         
-        <p>Set in the year 0 F.E. ("Foundation Era"), The Psychohistorians opens on Trantor, the capital of the 12,000-year-old Galactic Empire. Though the empire appears stable and powerful, it is slowly decaying in ways that parallel the decline of the Western Roman Empire. Hari Seldon, a mathematician and psychologist, has developed psychohistory, a new field of science and psychology that equates all possibilities in large societies to mathematics, allowing for the prediction of future events.</p>
-        <button>Read On</button>
-        <button>Buy Me</button>
+        <div class="medium-4 large-4 small-4 columns">
+            
+            <h3>In Progress</h3>
+            
+            <div class="callout-card warning radius">
+              <div class="card-label">
+                <div class="label-text">
+                  ...
+                </div>
+              </div>
+              <div class="callout-card-content">
+                <h3 class="lead">Libft</h3>
+                <p>Ongoing</p>
+                <p>No grade yet</p>
+                <p>Deadline : 12/01/2014</p>
+              </div>
+            </div>
+            
+            <div class="callout-card warning radius">
+              <div class="card-label">
+                <div class="label-text">
+                  ...
+                </div>
+              </div>
+              <div class="callout-card-content">
+                <h3 class="lead">Getnextline</h3>
+                <p>Ongoing</p>
+                <p>No grade yet</p>
+                <p>Deadline : 20/02/2014</p>
+              </div>
+            </div>
+        </div>
+          
+        <div class="medium-4 large-4 small-4 columns">
+            
+            <h3>Successful</h3>
+            
+            <div class="callout-card success radius">
+              <div class="card-label">
+                <div class="label-text">
+                  done
+                </div>
+              </div>
+              <div class="callout-card-content">
+                <h3 class="lead">Corewar</h3>
+                <p>Project done</p>
+                <p>Grade : 80% (pass)</p>
+                <p>Submitted on : 12/01/2014</p>
+              </div>
+            </div>
+            
+            <div class="callout-card success radius">
+              <div class="card-label">
+                <div class="label-text">
+                  done
+                </div>
+              </div>
+              <div class="callout-card-content">
+                <h3 class="lead">Libft</h3>
+                <p>Project done</p>
+                <p>Grade : 80% (pass)</p>
+                <p>Submitted on : 12/01/2014</p>
+              </div>
+            </div>
+            
+            <div class="callout-card success radius">
+              <div class="card-label">
+                <div class="label-text">
+                  done
+                </div>
+              </div>
+              <div class="callout-card-content">
+                <h3 class="lead">Lemin</h3>
+                <p>Project done</p>
+                <p>Grade : 84% (pass)</p>
+                <p>Submitted on : 22/05/2014</p>
+              </div>
+            </div>
+        </div>
+          
+        <div class="medium-4 large-4 small-4 columns">
+            
+            <h3>Failed</h3>
+            
+            <div class="callout-card alert radius">
+              <div class="card-label">
+                <div class="label-text">
+                  done
+                </div>
+              </div>
+              <div class="callout-card-content">
+                <h3 class="lead">Wolf3d</h3>
+                <p>Project done</p>
+                <p>Grade : 50% (failed)</p>
+                <p>Submitted on : 14/01/2014</p>
+              </div>
+            </div>
+            
+            <div class="callout-card alert radius">
+              <div class="card-label">
+                <div class="label-text">
+                  done
+                </div>
+              </div>
+              <div class="callout-card-content">
+                <h3 class="lead">PushSwap</h3>
+                <p>Project done</p>
+                <p>Grade : 0% (pass)</p>
+                <p>Submitted on : 12/01/2014</p>
+              </div>
+            </div>
+            
+        </div>
+
       </div>
-      
     </div>
     
     <div class="row">

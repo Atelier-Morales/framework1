@@ -7,7 +7,8 @@
 (function() {
     var adminCtrl = angular.module('adminCtrl', [
         'userAuth',
-        'ngCookies'
+        'ngCookies',
+        'sidebarDirective'
     ]);
     
     adminCtrl.controller('AdminUserCtrl', [
@@ -18,27 +19,15 @@
         '$state',
         '$log',
         '$cookies',
+        '$timeout',
         'userService', 
         'authService',
-        function AdminUserCtrl($rootScope, $scope, $location, $window, $state, $log, $cookies, userService, authService) {
+        function AdminUserCtrl($rootScope, $scope, $location, $window, $state, $log, $cookies, $timeout, userService, authService) {
             //Admin User Controller (login, logout)
             
             $scope.authError = false;
             $scope.regError = false;
             $scope.confirmAuth = false;
-            
-            /*$rootScope.$on('logged_in', function(ev, user) {
-                
-                authService.isLogged = true;
-                $scope.$apply(function () {
-                    $scope.userInfo = user;
-                });
-                authService.userInfo = user;
-                console.log('BITCH');
-                console.log($scope.userInfo);
-            });
-            
-            $scope.userInfo = {};*/
             
             //sidenav resize
             function sideNav() {
@@ -54,7 +43,6 @@
             $(window).resize(function() {
                 sideNav();
             });
-
             
             $scope.logIn = function logIn(username, password) {
                 if (username !== undefined && password !== undefined) {

@@ -1,0 +1,45 @@
+.menu {
+    background-color: #292c2f;
+    padding: 1.5rem 3rem;
+    height: auto;
+    position: relative;
+    z-index: 10;
+}
+
+@media only screen and (min-width: 40.063em) {
+    .menu {
+        height: 5rem;
+        .inline-list {
+            float: left;
+            margin: 0 0 0 1.5rem; 
+        }
+        a:hover {
+            border-bottom: 2px solid #87d37c; 
+        } 
+    } 
+}
+
+.name {
+    text-align: center;
+    font-size: 1.5rem;
+    line-height: 1;
+    margin: 0 0 1rem 0;
+    color: #fff;
+    i {
+        color: #87d37c;
+        margin-right: 0.5rem; 
+    }
+}
+
+.logo {
+    max-width: 50px;
+    float: left;
+    margin: 0 20px 0 -20px;
+}
+
+@media only screen and (min-width: 40.063em) 
+{
+    .name {
+      float: left; 
+    } 
+}
