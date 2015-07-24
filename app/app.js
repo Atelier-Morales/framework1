@@ -72,15 +72,16 @@
         $rootScope.$on("$stateChangeStart", function(e, toState, toParams, fromState, fromParams) {
             var token = $cookies.get('token');
             
-            if (toState.name.indexOf('home') > -1 && !$window.sessionStorage.token) {
+            if (toState.name.indexOf('home') > -1 && !$window.sessionStorage.token && fromState.name === "") {
                 if (token === undefined)
                     console.log('Welcome to the intranet!');
                 else {
                     userService.verifyToken(token)
                     .success(function(data) {
-                        authService.isLogged = true;
-                        console.log('User already logged in. Redirecting...');
+                        $rootScope.$broadcast('logged_in', data);
+                        console.log('1: User already logged in. Redirecting...');
                         $window.sessionStorage.token = token;
+                        e.preventDefault();
                         $state.go('dashboard');
                     })
                     .error(function(status, data) {
@@ -89,7 +90,7 @@
                     });
                 }
             }
-            if (toState.name.indexOf('dashboard') > -1 && !$window.sessionStorage.token) {
+            if (toState.name.indexOf('dashboard') > -1 && !$window.sessionStorage.token && fromState.name === "") {
                 // If logged out and transitioning to a logged in page:
                 if (token === undefined) {
                     e.preventDefault();
@@ -98,27 +99,53 @@
                 else {
                     userService.verifyToken(token)
                     .success(function(data) {
-                        authService.isLogged = true;
-                        console.log('User already logged in...');
+                        $rootScope.$broadcast('logged_in', data);
+                        console.log('2: User already logged in...');
                         $window.sessionStorage.token = token;
                     })
                     .error(function(status, data) {
                         console.log(status);
                         console.log(data);
+                        e.preventDefault();
                         $state.go('home');
                     });
-                }
-                
+                } 
             }
             if (toState.name.indexOf('home') > -1 && $window.sessionStorage.token) {
                 // If logged in and transitioning to a logged out page:
-                authService.isLogged = true
+                if ($rootScope.userInfo === undefined) {
+                    userService.verifyToken(token)
+                    .success(function(data) {
+                        $rootScope.userInfo = data;
+                    })
+                    .error(function(status, data) {
+                        console.log(status);
+                        console.log(data);
+                        e.preventDefault();
+                        $state.go('home');
+                    });
+                }
+                authService.isLogged = true;
+                console.log('3: User already logged in...');
                 e.preventDefault();
                 $state.go('dashboard');
-            }
+            }  
             if (toState.name.indexOf('dashboard') > -1 && $window.sessionStorage.token) {
-                // If logged in but somehow authService.isLogged is set to false:
-                authService.isLogged = true
+                // If logged in and no user info:
+                if ($rootScope.userInfo === undefined) {
+                    userService.verifyToken(token)
+                    .success(function(data) {
+                        $rootScope.userInfo = data;
+                    })
+                    .error(function(status, data) {
+                        console.log(status);
+                        console.log(data);
+                        e.preventDefault();
+                        $state.go('home');
+                    });
+                }
+                authService.isLogged = true;
+                console.log('4: User already logged in...');
             }
         });
     });
