@@ -47,6 +47,9 @@
                 {
                     token: token
                 });
+            },
+            fetchUserInfos: function() {
+                return $http.get(API_URL + '/user/fetchUsers');
             }
         }
     });

@@ -7,6 +7,7 @@
     var app = angular.module('homepage', [
         'ui.router',
         'adminCtrl',
+        'userMgmtCtrl',
         'userAuth',
         'ngCookies'
     ]);
@@ -56,7 +57,7 @@
                 },
                 'content': {
                     templateUrl: '/templates/usersView.html',
-                    controller: 'AdminUserCtrl'
+                    controller: 'userMgmtCtrl'
                 }
             }
         })

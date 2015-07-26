@@ -29,6 +29,7 @@
             $scope.regError = false;
             $scope.confirmAuth = false;
             
+            
             //sidenav resize
             function sideNav() {
               if ($(window).width() < 769) {
@@ -37,7 +38,8 @@
               } else {
                 $('.off-canvas-wrap').addClass('move-right');
                 $('.left-off-canvas-toggle').hide();
-              }  
+              }
+              $(document).foundation();
             }
 
             $(window).resize(function() {

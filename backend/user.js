@@ -146,3 +146,18 @@ exports.register = function(req, res) {
 		});
 	});
 }
+
+// Fetch Users info function
+
+exports.fetchUsers = function(req, res) {
+    console.log(req);
+    db.userModel.find({}, function(err, users) {
+        if (err) {
+			console.log(err);
+			return res.send(401);
+		}
+		if (users == undefined)
+            return res.send(401);
+        return res.send(users);        
+    });
+}

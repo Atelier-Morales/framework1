@@ -10,6 +10,7 @@
         <link href="css/style.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link type="text/css" media="screen" rel="stylesheet" href="lib/responsive-tables/responsive-tables.css" />
     </head>
     <body ng-app="homepage">
         <div ui-view="menu"></div>
@@ -18,7 +19,9 @@
         
         <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
         <script type="text/javascript" src="bower_components/foundation/js/foundation.js"></script>
+        <script type="text/ecmascript" src="bower_components/foundation/js/foundation/foundation.offcanvas.js"></script>
         <script type="text/javascript" src="bower_components/foundation/js/foundation/foundation.reveal.js"></script>
+        <script type="text/javascript" src="lib/responsive-tables/responsive-tables.js"></script>
         <script type="text/javascript"> 
             $(document).foundation();
         </script>
@@ -28,6 +31,7 @@
         <script src="app/app.js"></script>
         <script src="app/directives/mainComponents.js"></script>
         <script src="app/controllers/adminCtrl.js"></script>
+        <script src="app/controllers/userMgmtCtrl.js"></script>
         <script src="app/models/user.js"></script>
     </body>
 </html>
