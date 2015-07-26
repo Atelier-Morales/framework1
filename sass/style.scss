@@ -2,6 +2,7 @@
 @import "_footer";
 @import "_sidebar";
 @import "_home";
+@import "_users";
 
 @charset "UTF-8";
 
@@ -21,7 +22,8 @@ body {
 	font-weight: 200;
 	font-size: 20px;
     min-height: 670px;
-    background: #000000 url('http://localhost:3000/assets/img/Night-Stars.jpg');
+    background: #000000 url('http://localhost:3000/assets/img/warp.jpg');
+    background-size: 100% 100%;
 }
 
 .parallax-background {
@@ -64,6 +66,15 @@ body {
     text-shadow: 5px 4px 5px #4F9913, 13px 14px 0px rgba(0, 0, 0, 0.15);
     letter-spacing: -2px;
     line-height: 1;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.h2-center {
+    margin: 3% 0 3% 0;
+    text-shadow: 5px 4px 5px #4F9913, 13px 14px 0px rgba(0, 0, 0, 0.15);
+    letter-spacing: -2px;
+    line-height: 2;
     color: #ffffff;
     font-weight: 500;
 }
