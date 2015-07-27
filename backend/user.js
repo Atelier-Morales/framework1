@@ -150,7 +150,6 @@ exports.register = function(req, res) {
 // Fetch Users info function
 
 exports.fetchUsers = function(req, res) {
-    console.log(req);
     db.userModel.find({}, function(err, users) {
         if (err) {
 			console.log(err);
@@ -160,4 +159,11 @@ exports.fetchUsers = function(req, res) {
             return res.send(401);
         return res.send(users);        
     });
+}
+
+exports.updateUser = function(req, res) {
+    
+    console.log(req.body);
+    
+    return res.sendStatus(200);
 }

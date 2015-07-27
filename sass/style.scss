@@ -22,8 +22,7 @@ body {
 	font-weight: 200;
 	font-size: 20px;
     min-height: 670px;
-    background: #000000 url('http://localhost:3000/assets/img/warp.jpg');
-    background-size: 100% 100%;
+    background: #000000 url('http://localhost:3000/assets/img/background-images/background-imager/Elegant_Background-7.jpg');
 }
 
 .parallax-background {
@@ -63,7 +62,7 @@ body {
 .text-center {
     margin: 3% 0 3% 0;
     font-size: 100px;
-    text-shadow: 5px 4px 5px #4F9913, 13px 14px 0px rgba(0, 0, 0, 0.15);
+    text-shadow: 2px 4px 1px #111D07, 0px 0px 0px rgba(0, 0, 0, 0.50);;
     letter-spacing: -2px;
     line-height: 1;
     color: #ffffff;
@@ -72,7 +71,7 @@ body {
 
 .h2-center {
     margin: 3% 0 3% 0;
-    text-shadow: 5px 4px 5px #4F9913, 13px 14px 0px rgba(0, 0, 0, 0.15);
+    text-shadow: 2px 4px 1px #111D07, 0px 0px 0px rgba(0, 0, 0, 0.50);;
     letter-spacing: -2px;
     line-height: 2;
     color: #ffffff;

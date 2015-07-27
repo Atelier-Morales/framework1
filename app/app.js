@@ -61,6 +61,19 @@
                 }
             }
         })
+        .state('forbidden', {
+            url: '/403',
+            views: {
+                'menu': {
+                    templateUrl: '/templates/menuLogged.html',
+                    controller: 'AdminUserCtrl'
+                },
+                'content': {
+                    templateUrl: '/templates/403.html',
+                    controller: 'AdminUserCtrl'
+                }
+            }
+        })
         
         $locationProvider.html5Mode(true);
     });
@@ -141,7 +154,6 @@
                  toState.name.indexOf('users') > -1)
                 && $window.sessionStorage.token) {
                 // If logged in and no user info:
-                var luck = null
                 if ($rootScope.userInfo === undefined) {
                     userService.verifyToken(token)
                     .success(function(data) {
@@ -158,6 +170,35 @@
                         e.preventDefault();
                         $state.go('home');
                     });
+                }
+            }
+            
+            if (toState.name.indexOf('users') > -1
+                && $window.sessionStorage.token) {
+                if ($rootScope.userInfo === undefined) {
+                    userService.verifyToken(token)
+                    .success(function(data) {
+                        $timeout(function() {
+                            $rootScope.userInfo = data;
+                        });
+                        console.log(data);
+                        authService.isLogged = true;
+                        if (data.is_admin === false) {
+                            console.log('You are not allowed to access this page');
+                            e.preventDefault();
+                            $state.go('forbidden');
+                        }
+                    })
+                    .error(function(status, data) {
+                        console.log(status);
+                        console.log(data);
+                        e.preventDefault();
+                        $state.go('home');
+                    });
+                }
+                else {
+                    console.log($rootScope.userInfo.is_admin);
+                    console.log('bitch');
                 }
             }
         });

@@ -1,0 +1,16 @@
+<link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
+
+<div class="off-canvas-wrap move-right" data-offcanvas>
+    <div class="inner-wrap">
+
+        <sidebar-admin ng-if="userInfo.is_admin"></sidebar-admin>
+        <sidebar-user ng-if="!userInfo.is_admin"></sidebar-user>
+
+        <!-- main content goes here -->
+        <header class="row">
+          <div class="small-12 columns">
+            <h2 class="h2-center">Sorry {{ userInfo.username }}, it's forbidden!</h2>
+          </div>
+        </header>
+        
+</div>

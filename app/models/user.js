@@ -50,6 +50,13 @@
             },
             fetchUserInfos: function() {
                 return $http.get(API_URL + '/user/fetchUsers');
+            },
+            updateUser: function(username, email, role) {
+                return $http.post(API_URL + '/user/updateUser', {
+                    username: username,
+                    email: email,
+                    role: role
+                });
             }
         }
     });
