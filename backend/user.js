@@ -161,9 +161,29 @@ exports.fetchUsers = function(req, res) {
     });
 }
 
-exports.updateUser = function(req, res) {
+exports.updateUser = function(req, res) {  
+    var username = req.body.username;
+    var oldUsername = req.body.oldUsername;
+    var email = req.body.email;
+    var role = req.body.role = "true" ? true : false;
     
-    console.log(req.body);
-    
-    return res.sendStatus(200);
+    db.userModel.findOne({ username: req.body.oldUsername }, function (err, doc) {
+        if (err) {
+            console.log(err);
+			return res.send(401);
+        }
+        console.log('FUCK');
+        if (doc.username != username)
+            doc.username = username;
+        if (doc.email != email)
+            doc.email = email;
+        if (doc.role != role)
+            doc.role = role;
+        
+        doc.save();
+        
+        console.log(doc);
+        
+        return res.send(doc);
+    });
 }

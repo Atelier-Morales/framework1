@@ -65,7 +65,7 @@
                           <span class="prefix"><i class="fi-torso"></i></span>
                         </div>
                         <div class="small-10  columns">     
-                          <input type="text" name="username" ng-model="usersCopy[index].username">   
+                          <input type="text" name="username" ng-model="usersCopy[index].username" required>   
                         </div>
                       </div>
                       <div class="row collapse">
@@ -73,7 +73,7 @@
                           <span class="prefix"><i class="fi-mail"></i></span>
                         </div>
                         <div class="small-10  columns">
-                          <input type="email" name="email" ng-model="usersCopy[index].email">
+                          <input type="email" name="email" ng-model="usersCopy[index].email" required>
                         </div>
                       </div>
                       <div class="row collapse">
@@ -93,8 +93,14 @@
                             <label for="false">User</label>
                         </div>
                       </div><br><br>
-                        <button ng-disabled="updateForm.isAdmin.$error.required"
-                                ng-click="updateUser(usersCopy[index].username, usersCopy[index].email, isAdmin)" class="button">
+                        <button ng-disabled="updateForm.isAdmin.$error.required ||
+                                             updateForm.email.$error.required ||
+                                             updateForm.username.$error.required"
+                                ng-click="updateUser(
+                                          usersCopy[index].username,
+                                          users[index].username,
+                                          usersCopy[index].email, 
+                                          isAdmin)" class="button">
                             Update</button>
                     </form>
                     <span style="color:red" ng-show="regError">

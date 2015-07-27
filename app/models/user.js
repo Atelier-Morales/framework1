@@ -51,9 +51,10 @@
             fetchUserInfos: function() {
                 return $http.get(API_URL + '/user/fetchUsers');
             },
-            updateUser: function(username, email, role) {
+            updateUser: function(username, oldUsername, email, role) {
                 return $http.post(API_URL + '/user/updateUser', {
                     username: username,
+                    oldUsername: oldUsername,
                     email: email,
                     role: role
                 });
