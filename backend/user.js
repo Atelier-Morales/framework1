@@ -172,7 +172,6 @@ exports.updateUser = function(req, res) {
             console.log(err);
 			return res.send(401);
         }
-        console.log('FUCK');
         if (doc.username != username)
             doc.username = username;
         if (doc.email != email)
@@ -185,5 +184,17 @@ exports.updateUser = function(req, res) {
         console.log(doc);
         
         return res.send(doc);
+    });
+}
+
+exports.removeUser = function(req, res) {
+    console.log(req.body.username);
+    db.userModel.findOneAndRemove({ username: req.body.username }, function (err, doc) {
+        if (err) {
+            console.log(err);
+			return res.sendStatus(401);
+        }
+        console.log(doc+" deleted from db");
+        res.sendStatus(200);
     });
 }

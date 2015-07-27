@@ -58,6 +58,11 @@
                     email: email,
                     role: role
                 });
+            },
+            removeUser: function(username) {
+                return $http.post(API_URL + '/user/removeUser', {
+                    username: username
+                });
             }
         }
     });

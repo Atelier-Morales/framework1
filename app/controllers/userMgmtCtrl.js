@@ -72,6 +72,31 @@
                     $('#updateModal').foundation('reveal', 'close');
                 }
             }
+            
+            $scope.removeUser = function removeUser(username, is_admin) {
+                if (is_admin === true)
+                    window.alert('You cannot delete an admin!');
+                else {
+                    var confirm = window.confirm("Are you sure you want to delete the user "+username+"?");
+                    if (confirm ) {
+                        console.log('yes');
+                        userService.removeUser(username)
+                        .success(function(data) {
+                            fetchUserInfos();
+                            console.log('User '+username+' deleted');
+                            window.alert('User '+username+' deleted');
+                        })
+                        .error(function(status, data) {
+                            $log.log(status);
+                            $log.log(data);
+                            window.alert('Failed at deleting user '+username);
+                        });         
+                    }
+                    else
+                        console.log('nope');
+                }
+                    
+            }
         }
     ]);
 })();

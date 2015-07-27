@@ -41,6 +41,8 @@ app.get('/user/fetchUsers', routes.users.fetchUsers);
 
 app.post('/user/updateUser', routes.users.updateUser);
 
+app.post('/user/removeUser', routes.users.removeUser);
+
 app.post('/user/register', routes.users.register);
 
 app.post('/user/login', routes.users.login); 

@@ -40,7 +40,7 @@
                   </td>
                   <td>{{ user.email }}</td>
                   <td>{{ user.created | date:'yyyy-MM-dd | HH:mm:ss ' }}</td>
-                  <td><button href="#" ng-click="setIndex($index)" data-reveal-id="updateModal">Update</button><a  ng-if="!user.is_admin" class="button alert">Remove</a></td>   
+                  <td><button href="#" ng-click="setIndex($index)" data-reveal-id="updateModal">Update</button><a  ng-if="!user.is_admin" ng-click="removeUser(user.username, user.is_admin)" class="button alert">Remove</a></td>   
                 </tr>
               </tbody>
             </table>
