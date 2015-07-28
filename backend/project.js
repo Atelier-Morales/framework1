@@ -40,3 +40,14 @@ exports.createProject = function(req, res) {
 		});
 	});
 }
+
+exports.deleteProject = function(req, res) {
+    db.projectModel.findOneAndRemove({ name: req.body.name }, function (err, doc) {
+        if (err) {
+            console.log(err);
+			return res.sendStatus(401);
+        }
+        console.log(doc+" deleted from db");
+        res.sendStatus(200);
+    });
+}

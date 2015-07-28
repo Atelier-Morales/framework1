@@ -9,30 +9,28 @@
     <!-- main content goes here -->
     <header class="row">
       <div class="small-12 columns">
-        <h1 class="text-center">Welcome {{ userInfo.username }}</h1>
+        <h2 class="h2-center">Project section {{ userInfo.username }}</h2>
       </div>
     </header>
     
     <div class="row">
       <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
         <br>
-        <h2 style="padding-left:15px;">Available Projects</h2> <button ng-if="userInfo.is_admin" ng-click="createProject('bondjour','2015-10-22','hello')" href="#" data-reveal-id="projectModal">Create a Project</button>
+        <h2 style="padding-left:15px;">Available Projects</h2> 
+          <button ng-if="userInfo.is_admin" href="#" data-reveal-id="projectModal">Create a Project</button>
         <br>
         
-
-        <div class="medium-4 large-4 small-12 columns" ng-repeat="project in projects">
-            <div class="callout-card warning radius">
-              <div class="card-label">
-                <div class="label-text">
-                  ...
-                </div>
-              </div>
+        <div class="large-12 medium-12 small-12 columns">
+            <div class="panel callout radius large-4 medium-6 small-12 columns end" ng-repeat="project in projects">
               <div class="callout-card-content">
                 <h3 class="lead">{{ project.name }}</h3>
                 <p>Deadline : {{ project.deadline }}</p>
                 <p>Description : {{ project.description }}</p>
               </div>
-            </div>
+                <button ng-if="userInfo.is_admin" ng-click="setIndex($index)" href="#" data-reveal-id="updateProjectModal">Update</button>
+                <a ng-if="userInfo.is_admin" ng-click="deleteProject(project.name)" class="button alert">Remove</a>
+                <a href="#" class="button success">Register</a>
+            </div> 
         </div>
       </div>
     </div> 
@@ -42,3 +40,147 @@
 
   </div>
 </div>
+
+<div id="projectModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
+    <div class="section-container tabs" data-section="tabs">
+        <section class="active">
+          <div class="content" data-section-content>
+            <p>
+              <div class="row">
+                <div class="large-12 columns">
+                  <div class="signup-panel">
+                    <p class="welcome">Create project</p>
+                    <form name="projectForm" novalidate>
+                      
+                      <div class="row collapse">
+                        <p>Name</p>
+                        <div class="small-10  columns">     
+                          <input type="text" name="name" ng-model="name" required>   
+                        </div>
+                      </div>
+                        
+                      <div class="row collapse">
+                        <p>Description</p>
+                        <div class="small-10  columns">
+                          <input type="text" name="description" ng-model="description" required>
+                        </div>
+                      </div>
+                        
+                      <div class="row">
+                          <p>Set deadline</p>
+                          <div class="large-4 columns">
+                            <label>
+                                <select ng-model="deadline.year">
+                                <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
+                                </select>
+                            </label>
+                          </div>
+                          
+                          <div class="large-4 columns">
+                            <label>
+                            <select ng-model="deadline.month">
+                                <option ng-repeat="month in months" value="{{month}}">{{month}}</option>
+                            </select>
+                            </label>
+                          </div>
+                          
+                          <div class="large-4 columns">
+                            <label>
+                                <select  ng-model="deadline.day">
+                                    <option ng-repeat="day in days" value="{{day}}">{{day}}</option>
+                                </select>
+                            </label>
+                          </div>
+                      </div>
+                      <span style="color:red" ng-show="
+                        date_is_invalid(deadline.year, deadline.month, deadline.day) === false">
+                        Bad Date! Choose another one.</span>
+                      </span>
+                        <br><br>
+                        <button ng-disabled="projectForm.name.$error.required ||
+                                             projectForm.description.$error.required ||
+                                             date_is_invalid(deadline.year, deadline.month, deadline.day) === false"
+                                ng-click="createProject(name, deadline, description)" class="button">
+                            Create</button>
+                    </form>
+                    <span style="color:red" ng-show="regError">
+                        Project creation error!
+                    </span>
+                  </div>
+                </div>
+               </div></p>
+          </div>
+        </section>
+    </div>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
+
+
+<div id="updateProjectModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
+    <div class="section-container tabs" data-section="tabs">
+        <section class="active">
+          <div class="content" data-section-content>
+            <p>
+              <div class="row">
+                <div class="large-12 columns">
+                  <div class="signup-panel">
+                    <p class="welcome">Update project {{ usersCopy[index].username }}</p>
+                    <form name="updateForm" novalidate>
+                      <div class="row collapse">
+                        <div class="small-2  columns">
+                          <span class="prefix"><i class="fi-torso"></i></span>
+                        </div>
+                        <div class="small-10  columns">     
+                          <input type="text" name="username" ng-model="usersCopy[index].username" required>   
+                        </div>
+                      </div>
+                      <div class="row collapse">
+                        <div class="small-2 columns">
+                          <span class="prefix"><i class="fi-mail"></i></span>
+                        </div>
+                        <div class="small-10  columns">
+                          <input type="email" name="email" ng-model="usersCopy[index].email" required>
+                        </div>
+                      </div>
+                      <div class="row collapse">
+                        <div class="large-12 columns">
+                            <label>Choose Role</label>
+                            <input type="radio" 
+                                   name="isAdmin" 
+                                   ng-model="isAdmin" 
+                                   value="true" 
+                                   id="true" required>
+                            <label for="true">Admin</label>
+                            <input type="radio" 
+                                   name="isAdmin" 
+                                   ng-model="isAdmin" 
+                                   value="false" 
+                                   id="false" required>
+                            <label for="false">User</label>
+                        </div>
+                      </div><br><br>
+                        <button ng-disabled="updateForm.isAdmin.$error.required ||
+                                             updateForm.email.$error.required ||
+                                             updateForm.username.$error.required"
+                                ng-click="updateUser(
+                                          usersCopy[index].username,
+                                          users[index].username,
+                                          usersCopy[index].email, 
+                                          isAdmin)" class="button">
+                            Update</button>
+                    </form>
+                    <span style="color:red" ng-show="regError">
+                        Update error!
+                    </span>
+                  </div>
+                </div>
+               </div></p>
+          </div>
+        </section>
+    </div>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
+
+<script type="text/javascript"> 
+            $(document).foundation();
+</script>

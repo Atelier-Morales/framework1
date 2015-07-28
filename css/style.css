@@ -296,6 +296,12 @@
   background: #f2f2f2 !important;
 }
 
+.sb-date-select-select {
+  display: inline-block;
+  width: 100px;
+  margin-right: 5px;
+}
+
 .hero {
   background: url("https://images7.alphacoders.com/330/330811.jpg") no-repeat center center;
   background-size: cover;

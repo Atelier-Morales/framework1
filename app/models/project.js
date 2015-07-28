@@ -21,6 +21,11 @@
             },
             fetchProjects: function() {
                 return $http.get(API_URL + '/project/fetchProjects');
+            },
+            deleteProject: function(name) {
+                return $http.post(API_URL + '/project/deleteProject', {
+                    name: name
+                });
             }
         }
     });

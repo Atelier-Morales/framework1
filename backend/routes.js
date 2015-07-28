@@ -58,4 +58,6 @@ app.get('/project/fetchProjects', routes.projects.fetchProjects);
 
 app.post('/project/createProject', routes.projects.createProject);
 
+app.post('/project/deleteProject', routes.projects.deleteProject);
+
 console.log('Intranet API is starting on port 8001');
