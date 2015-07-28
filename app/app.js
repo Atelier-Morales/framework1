@@ -9,6 +9,8 @@
         'adminCtrl',
         'userMgmtCtrl',
         'userAuth',
+        'projectCtrl',
+        'projectModel',
         'ngCookies'
     ]);
     
@@ -61,6 +63,19 @@
                 }
             }
         })
+        .state('projects', {
+            url: '/projects',
+            views: {
+                'menu': {
+                    templateUrl: '/templates/menuLogged.html',
+                    controller: 'AdminUserCtrl'
+                },
+                'content': {
+                    templateUrl: '/templates/projects.html',
+                    controller: 'projectCtrl'
+                }
+            }
+        })
         .state('forbidden', {
             url: '/403',
             views: {
@@ -105,7 +120,9 @@
                 }
             }
             if ((toState.name.indexOf('dashboard') > -1 ||
-                 toState.name.indexOf('users') > -1)
+                 toState.name.indexOf('users') > -1     ||
+                 toState.name.indexOf('forbidden') > -1 ||
+                 toState.name.indexOf('projects') > -1)
                  && !$window.sessionStorage.token) {
                 // If logged out and transitioning to a logged in page:
                 if (token === undefined) {
@@ -151,7 +168,9 @@
                 }
             }
             if ((toState.name.indexOf('dashboard') > -1 ||
-                 toState.name.indexOf('users') > -1)
+                 toState.name.indexOf('users') > -1     ||
+                 toState.name.indexOf('forbidden') > -1 ||
+                 toState.name.indexOf('projects') > -1)
                 && $window.sessionStorage.token) {
                 // If logged in and no user info:
                 if ($rootScope.userInfo === undefined) {
@@ -173,8 +192,7 @@
                 }
             }
             
-            if (toState.name.indexOf('users') > -1
-                && $window.sessionStorage.token) {
+            if (toState.name.indexOf('users') > -1) {
                 if ($rootScope.userInfo === undefined) {
                     userService.verifyToken(token)
                     .success(function(data) {

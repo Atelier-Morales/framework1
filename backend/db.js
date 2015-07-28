@@ -23,7 +23,19 @@ var User = new Schema({
     password: { type: String, required: true },
     email:    { type: String, required: true },
     is_admin: { type: Boolean, default: false },
-    created: { type: Date, default: Date.now }
+    created: { type: Date, default: Date.now },
+    projects: [
+        {
+            name: String,
+            status: { type: String, default: "ongoing" }
+        }
+    ]
+});
+
+var Projects = new Schema({
+    name: { type: String, required: true, unique: true },
+    deadline: { type: Date, required: true },
+    description: { type: String, required: true, unique: true }
 });
 
 // Bcrypt middleware on UserSchema
@@ -57,6 +69,8 @@ User.methods.comparePassword = function(password, cb) {
 
 //Define Models
 var userModel = mongoose.model('User', User);
+var projectModel = mongoose.model('Projects', Projects);
 
 // Export Models
 exports.userModel = userModel;
+exports.projectModel = projectModel;

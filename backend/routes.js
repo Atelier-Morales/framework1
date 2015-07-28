@@ -21,6 +21,7 @@ app.use(morgan());
 //Routes
 var routes = {};
 routes.users = require('./user');
+routes.projects = require('./project');
 
 app.all('*', function(req, res, next) {
     if (req.protocol === "https")
@@ -35,6 +36,8 @@ app.all('*', function(req, res, next) {
     next();
 });
 
+// User functions
+
 app.post('/user/verifyToken', routes.users.verifyToken);
 
 app.get('/user/fetchUsers', routes.users.fetchUsers);
@@ -48,5 +51,11 @@ app.post('/user/register', routes.users.register);
 app.post('/user/login', routes.users.login); 
 
 app.post('/user/logout', routes.users.logout);
+
+// Project functions
+
+app.get('/project/fetchProjects', routes.projects.fetchProjects);
+
+app.post('/project/createProject', routes.projects.createProject);
 
 console.log('Intranet API is starting on port 8001');
