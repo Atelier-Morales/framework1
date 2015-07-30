@@ -95,9 +95,8 @@
     
     app.run(function($rootScope, $state, $window, $cookies, $timeout, authService, userService) {
         $rootScope.$on("$stateChangeStart", function(e, toState, toParams, fromState, fromParams) {
-            var token = $cookies.get('token');
-            
             console.log($window.sessionStorage.token);
+            var token = $cookies.get('token');
             
             if (toState.name.indexOf('home') > -1 && !$window.sessionStorage.token && fromState.name === "") {
                 if (token === undefined)
@@ -149,31 +148,31 @@
             }
             if (toState.name.indexOf('home') > -1 && $window.sessionStorage.token) {
                 // If logged in and transitioning to a logged out page:
-                if ($rootScope.userInfo === undefined) {
-                    userService.verifyToken(token)
-                    .success(function(data) {
-                        $timeout(function() {
-                            $rootScope.userInfo = data;
-                        });
-                        authService.isLogged = true;
-                        console.log('3: User already logged in...');
-                        e.preventDefault();
-                        $state.go('dashboard');
-                    })
-                    .error(function(status, data) {
-                        console.log(status);
-                        console.log(data);
-                        delete $window.sessionStorage.token;
+                userService.verifyToken(token)
+                .success(function(data) {
+                    $timeout(function() {
+                        $rootScope.userInfo = data;
                     });
-                }
+                    authService.isLogged = true;
+                    console.log('3: User already logged in...');
+                    e.preventDefault();
+                    $state.go('dashboard');
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    delete $window.sessionStorage.token;
+                });
             }
-            if ((toState.name.indexOf('dashboard') > -1 ||
-                 toState.name.indexOf('users') > -1     ||
-                 toState.name.indexOf('forbidden') > -1 ||
-                 toState.name.indexOf('projects') > -1)
-                && $window.sessionStorage.token) {
-                // If logged in and no user info:
-                if ($rootScope.userInfo === undefined) {
+        
+            
+            if ((toState.name.indexOf('dashboard') > -1  && $window.sessionStorage.token) ||
+                 (toState.name.indexOf('users') > -1     && $window.sessionStorage.token) ||
+                 (toState.name.indexOf('forbidden') > -1 && $window.sessionStorage.token) ||
+                 (toState.name.indexOf('projects') > -1  && $window.sessionStorage.token)) {
+                    // If logged in and no user info:
+                    console.log('lol');
+                    console.log($rootScope.userInfo);
                     userService.verifyToken(token)
                     .success(function(data) {
                         $timeout(function() {
@@ -189,7 +188,6 @@
                         e.preventDefault();
                         $state.go('home');
                     });
-                }
             }
             
             if (toState.name.indexOf('users') > -1) {

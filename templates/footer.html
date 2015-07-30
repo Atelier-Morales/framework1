@@ -4,24 +4,25 @@
   <div class="row">
     <div class="small-12 medium-6 medium-push-6 columns">
       <p class="logo show-for-small-only"><i class="fi-target"></i> Intranet Ecole 42</p> 
-      <form class="footer-form">
+      <form class="footer-form" name="emailForm" novalidate>
         <div class="row">
           <div class="medium-9 medium-push-3 columns">
             <label>
               <label for="email" class="contact">Contact Us</label>
-              <input type="email" id="email" placeholder="Email Address" />
+              <input type="email" name="sender" ng-model="sender" id="email" placeholder="Email Address" required/>
             </label>
           </div>
         </div>
         <div class="row">
           <div class="medium-9 medium-push-3 columns">
             <label>
-              <textarea rows="5" id="message" placeholder="Message"></textarea>
+              <textarea rows="5" name="text" ng-model="text" id="message" placeholder="Message" required></textarea>
             </label>
           </div>
           <div class="row">
             <div class="medium-9 medium-push-3 columns">
-              <button class="submit" type="submit" value="Submit">Send</button>
+              <button ng-disabled="emailForm.sender.$error.required || emailForm.text.$error.required"
+                      ng-click="sendEmail(sender, 'new contact', text)" value="Submit">Send</button>
             </div>
           </div>
         </div>
@@ -31,20 +32,6 @@
         <h1 class="name">Intranet Ecole 42</h1> 
     </div>
     <div class="small-12 medium-6 medium-pull-6 columns">
-      <p class="footer-links">
-        <a href="#">Home</a>
-        <a href="#">Blog</a>
-        <a href="#">Pricing</a>
-        <a href="#">About</a>
-        <a href="#">Faq</a>
-        <a href="#">Contact</a>
-      </p>
-      <ul class="inline-list social">
-        <a href="#"><i class="fi-social-facebook"></i></a>
-        <a href="#"><i class="fi-social-twitter"></i></a>
-        <a href="#"><i class="fi-social-linkedin"></i></a>
-        <a href="#"><i class="fi-social-github"></i></a>
-      </ul>
       <p class="copywrite">Copywrite not copywrite © 2015</p>
     </div>
   </div>

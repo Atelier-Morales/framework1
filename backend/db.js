@@ -26,8 +26,10 @@ var User = new Schema({
     created: { type: Date, default: Date.now },
     projects: [
         {
-            name: String,
-            status: { type: String, default: "ongoing" }
+            name: { type: String, required: true },
+            status: { type: String, default: "ongoing" },
+            grade: { type: Number, default: 0},
+            deadline: { type: Date, required: true }
         }
     ]
 });

@@ -29,7 +29,7 @@ var expireToken = function(token) {
 
 exports.verifyToken = function(req, res) {
 	var token = req.body.token || '';
-	
+	console.log(token);
 	if (token == '')
         return res.send(401);
     
@@ -46,7 +46,8 @@ exports.verifyToken = function(req, res) {
                     username: user.username,
                     email   : user.email,
                     is_admin: user.is_admin,
-                    created : user.created
+                    created : user.created,
+                    projects: user.projects
                 });
             });
         }       
@@ -188,13 +189,58 @@ exports.updateUser = function(req, res) {
 }
 
 exports.removeUser = function(req, res) {
-    console.log(req.body.username);
     db.userModel.findOneAndRemove({ username: req.body.username }, function (err, doc) {
         if (err) {
             console.log(err);
 			return res.sendStatus(401);
         }
         console.log(doc+" deleted from db");
-        res.sendStatus(200);
+        return res.sendStatus(200);
+    });
+}
+
+exports.registerProject = function(req, res) {
+    var name        = req.body.name        || '';
+    var username    = req.body.username    || '';
+    var deadline    = req.body.deadline    || '';
+
+	if (name == '' || username == '' || deadline == '')
+        return res.sendStatus(400);
+    db.userModel.findOne({ username: username }, function (err, doc) {
+        if (err) {
+            console.log(err);
+			return res.sendStatus(401);
+        }
+        var project = {
+            name: name,
+            deadline: deadline
+        }
+        doc.projects.push(project);
+        doc.save();
+        console.log("registered to project "+name);
+        return res.sendStatus(200);
+    });
+}
+
+exports.completeProject = function(req, res) {
+    var name        = req.body.name        || '';
+    var username    = req.body.username    || '';
+    var grade       = req.body.grade       || '';
+
+	if (name == '' || username == '' || grade == '')
+        return res.sendStatus(400);
+    db.userModel.findOne({ username: username }, function(err, user) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(401);
+        }
+        for (var i = 0; i < user.projects.length; ++i) {
+            if (name === user.projects[i].name) {
+                user.projects[i].status = "finished";
+                user.projects[i].grade = grade;
+                user.save();
+                return res.sendStatus(200);
+            }
+        }
     });
 }

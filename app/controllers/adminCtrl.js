@@ -30,6 +30,20 @@
             $scope.confirmAuth = false;
             
             
+            $scope.setIndex = function(index) {
+                $scope.project = index;
+            }
+            
+            $scope.isFailed = function(grade) {
+                if (grade > 50)
+                    return false;
+                return true;
+            }
+            
+            function isNumeric(num){
+                return !isNaN(num)
+            }
+            
             //sidenav resize
             function sideNav() {
               if ($(window).width() < 769) {
@@ -45,6 +59,13 @@
             $(window).resize(function() {
                 sideNav();
             });
+            
+            $scope.grade_is_valid = function(grade){
+                if (grade != undefined && isNumeric(grade) && grade <= 100 && grade >= 0) {
+                    return true;
+                }
+                return false;
+            }
             
             $scope.logIn = function logIn(username, password) {
                 if (username !== undefined && password !== undefined) {
@@ -77,7 +98,8 @@
                 
             $scope.logOut = function logOut() {
                 if (authService.isLogged && $window.sessionStorage.token) {
-                    userService.logOut($window.sessionStorage.token).success(function(data) {
+                    userService.logOut($window.sessionStorage.token)
+                    .success(function(data) {
                         authService.isLogged = false;
                         $cookies.remove('token');
                         delete $window.sessionStorage.token;
@@ -114,6 +136,50 @@
                         $scope.regError = true;
                     });
                 }
+            }
+            
+            $scope.setAsFinished = function setAsFinished(name, username, grade) {
+                var confirm = window.confirm("Are you sure you've finished the project "+name+"?");
+                if (confirm) {
+                    console.log('yes');
+                    userService.completeProject(name, username, grade)
+                    .success(function(data) {
+                        $log.log(data);
+                        $('#finishProjectModal').foundation('reveal', 'close');
+                        window.alert('Project Finished!');
+                        console.log($window.sessionStorage.token);
+                        userService.verifyToken($cookies.get('token'))
+                        .success(function(data) {
+                            $timeout(function() {
+                                $rootScope.userInfo = data;
+                            });
+                        })
+                        .error(function(status, data) {
+                            console.log(status);
+                            console.log(data);
+                        });
+                    })
+                    .error(function(status, data) {
+                        $log.log(status);
+                        $log.log(data);
+                        window.alert('Error: Could not set project as finished'); 
+                        $('#finishProjectModal').foundation('reveal', 'close');
+                    });
+                }
+                else
+                    console.log('nope');
+            }
+            
+            $scope.sendEmail = function sendEmail(sender, subject, text) {
+                userService.sendEmail(sender, subject, text)
+                .success(function(data) {
+                    console.log('email sent');
+                    window.alert('Thanks for contact us');
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                });
             }
         }
     ]);

@@ -9,7 +9,7 @@
     <!-- main content goes here -->
     <header class="row">
       <div class="small-12 columns">
-        <h2 class="h2-center">Project section {{ userInfo.username }}</h2>
+        <h2 class="h2-center">Project section{{ setUsername(userInfo.username) }}</h2>
       </div>
     </header>
     
@@ -29,7 +29,7 @@
               </div>
                 <button ng-if="userInfo.is_admin" ng-click="setIndex($index)" href="#" data-reveal-id="updateProjectModal">Update</button>
                 <a ng-if="userInfo.is_admin" ng-click="deleteProject(project.name)" class="button alert">Remove</a>
-                <a href="#" class="button success">Register</a>
+                <a href="#" ng-click="registerProject(project.name, username, project.deadline)" class="button success">Register</a>
             </div> 
         </div>
       </div>
@@ -124,14 +124,14 @@
               <div class="row">
                 <div class="large-12 columns">
                   <div class="signup-panel">
-                    <p class="welcome">Update project {{ usersCopy[index].username }}</p>
+                    <p class="welcome">Update project {{ projects[index].name }}</p>
                     <form name="updateForm" novalidate>
                       <div class="row collapse">
                         <div class="small-2  columns">
                           <span class="prefix"><i class="fi-torso"></i></span>
                         </div>
                         <div class="small-10  columns">     
-                          <input type="text" name="username" ng-model="usersCopy[index].username" required>   
+                          <input type="text" name="name" ng-model="projectsCopy[index].name" value="projectsCopy[index].name" required>   
                         </div>
                       </div>
                       <div class="row collapse">
@@ -139,34 +139,46 @@
                           <span class="prefix"><i class="fi-mail"></i></span>
                         </div>
                         <div class="small-10  columns">
-                          <input type="email" name="email" ng-model="usersCopy[index].email" required>
+                          <input type="text" name="description" ng-model="projectsCopy[index].description" value="projectsCopy[index].description" required>
                         </div>
                       </div>
-                      <div class="row collapse">
-                        <div class="large-12 columns">
-                            <label>Choose Role</label>
-                            <input type="radio" 
-                                   name="isAdmin" 
-                                   ng-model="isAdmin" 
-                                   value="true" 
-                                   id="true" required>
-                            <label for="true">Admin</label>
-                            <input type="radio" 
-                                   name="isAdmin" 
-                                   ng-model="isAdmin" 
-                                   value="false" 
-                                   id="false" required>
-                            <label for="false">User</label>
-                        </div>
-                      </div><br><br>
-                        <button ng-disabled="updateForm.isAdmin.$error.required ||
-                                             updateForm.email.$error.required ||
-                                             updateForm.username.$error.required"
-                                ng-click="updateUser(
-                                          usersCopy[index].username,
-                                          users[index].username,
-                                          usersCopy[index].email, 
-                                          isAdmin)" class="button">
+                      
+                      <div class="row">
+                          <p>Set deadline</p>
+                          <div class="large-4 columns">
+                            <label>
+                                <select ng-model="deadline.year">
+                                <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
+                                </select>
+                            </label>
+                          </div>
+                          
+                          <div class="large-4 columns">
+                            <label>
+                            <select ng-model="deadline.month">
+                                <option ng-repeat="month in months" value="{{month}}">{{month}}</option>
+                            </select>
+                            </label>
+                          </div>
+                          
+                          <div class="large-4 columns">
+                            <label>
+                                <select  ng-model="deadline.day">
+                                    <option ng-repeat="day in days" value="{{day}}">{{day}}</option>
+                                </select>
+                            </label>
+                          </div>
+                      </div>
+                      <span style="color:red" ng-show="
+                        date_is_invalid(deadline.year, deadline.month, deadline.day) === false">
+                        Bad Date! Choose another one.</span>
+                      </span>
+                        <br><br>
+                        <button ng-disabled="updateForm.name.$error.required ||
+                                             updateForm.description.$error.required ||
+                                             deadline.year === undefined || deadline.month === undefined || deadline.day === undefined ||
+                                             date_is_invalid(deadline.year, deadline.month, deadline.day) === false"
+                                ng-click="updateProject(projectsCopy[index].name, projects[index].name, deadline, projectsCopy[index].description)" class="button">
                             Update</button>
                     </form>
                     <span style="color:red" ng-show="regError">

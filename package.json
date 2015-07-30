@@ -29,7 +29,8 @@
     "body-parser"           : "*",
     "jsonwebtoken"          : "*",
     "redis"                 : "*",
-    "https"                 : "*"
+    "https"                 : "*",
+    "nodemailer"            : "*"
   },
   "keywords": []
 }

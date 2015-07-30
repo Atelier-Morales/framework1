@@ -63,6 +63,20 @@
                 return $http.post(API_URL + '/user/removeUser', {
                     username: username
                 });
+            },
+            completeProject: function(name, username, grade) {
+                return $http.post(API_URL + '/user/completeProject', {
+                    name: name,
+                    username: username,
+                    grade: grade
+                });
+            },
+            sendEmail: function(sender, subject, text) {
+                return $http.post(API_URL + '/emailSend', {
+                    sender: sender,
+                    subject: subject,
+                    text: text
+                });
             }
         }
     });

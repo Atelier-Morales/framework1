@@ -8,8 +8,8 @@ var fs = require('fs');
 var http = require('http');
 var https = require('https');
 
-var privateKey  = fs.readFileSync('/etc/nginx/ssl/nginx.key', 'utf8');
-var certificate = fs.readFileSync('/etc/nginx/ssl/nginx.crt', 'utf8');
+var privateKey  = fs.readFileSync('../nginx/ssl/nginx.key', 'utf8');
+var certificate = fs.readFileSync('../nginx/ssl/nginx.crt', 'utf8');
 var credentials = {key: privateKey, cert: certificate};
 
 var httpServer = http.createServer(app).listen(8001);
@@ -22,10 +22,11 @@ app.use(morgan());
 var routes = {};
 routes.users = require('./user');
 routes.projects = require('./project');
+routes.mailer = require('./mailer');
 
 app.all('*', function(req, res, next) {
     if (req.protocol === "https")
-        res.set('Access-Control-Allow-Origin', 'https://localhost');
+        res.set('Access-Control-Allow-Origin', 'https://localhost:4443');
     else
         res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.set('Access-Control-Allow-Credentials', true);
@@ -48,16 +49,26 @@ app.post('/user/removeUser', routes.users.removeUser);
 
 app.post('/user/register', routes.users.register);
 
+app.post('/user/registerProject', routes.users.registerProject);
+
+app.post('/user/completeProject', routes.users.completeProject);
+
 app.post('/user/login', routes.users.login); 
 
 app.post('/user/logout', routes.users.logout);
 
 // Project functions
 
-app.get('/project/fetchProjects', routes.projects.fetchProjects);
+app.post('/project/fetchProjects', routes.projects.fetchProjects);
 
 app.post('/project/createProject', routes.projects.createProject);
 
 app.post('/project/deleteProject', routes.projects.deleteProject);
+
+app.post('/project/updateProject', routes.projects.updateProject);
+
+//email 
+
+app.post('/emailSend', routes.mailer.sendEmail);
 
 console.log('Intranet API is starting on port 8001');

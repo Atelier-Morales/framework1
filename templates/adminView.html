@@ -1,4 +1,4 @@
-<link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
 
 <div class="off-canvas-wrap move-right" data-offcanvas>
     <div class="inner-wrap">
@@ -9,7 +9,7 @@
     <!-- main content goes here -->
     <header class="row">
       <div class="small-12 columns">
-        <h1 class="text-center">Welcome {{ userInfo.username }}</h1>
+        <h1 class="text-center">Welcome {{ userInfo.username }}{{ API_URL }}</h1>
       </div>
     </header>
     
@@ -19,115 +19,66 @@
         <h2 style="padding-left:15px;">Your Projects</h2>
         <br>
         
+        
         <div class="medium-4 large-4 small-12 columns">
             
             <h3>In Progress</h3>
             
-            <div class="callout-card warning radius">
+            <div class="callout-card warning radius" ng-repeat="project in userInfo.projects | filter: { status: 'ongoing' }">
+
               <div class="card-label">
                 <div class="label-text">
                   ...
                 </div>
               </div>
               <div class="callout-card-content">
-                <h3 class="lead">Rtv1</h3>
-                <p>Ongoing</p>
+                <h3 class="lead">{{ project.name }}</h3>
+                <p>{{ project.status }}</p>
                 <p>No grade yet</p>
-                <p>Deadline : 12/01/2014</p>
+                <p>Deadline : {{ project.deadline | date:'yyyy-MM-dd' }}</p>
+
+                <button ng-click="setIndex(project.name)" href="#" data-reveal-id="finishProjectModal" class="button success">Finish</button>
               </div>
             </div>
             
-            <div class="callout-card warning radius">
-              <div class="card-label">
-                <div class="label-text">
-                  ...
-                </div>
-              </div>
-              <div class="callout-card-content">
-                <h3 class="lead">Getnextline</h3>
-                <p>Ongoing</p>
-                <p>No grade yet</p>
-                <p>Deadline : 20/02/2014</p>
-              </div>
-            </div>
         </div>
           
         <div class="medium-4 large-4 small-12 columns">
             
             <h3>Successful</h3>
+             
             
-            <div class="callout-card success radius">
+            <div class="callout-card success radius" ng-repeat="project in userInfo.projects | filter: { status: 'finished' }" ng-if="!isFailed(project.grade)">
               <div class="card-label">
                 <div class="label-text">
                   done
                 </div>
               </div>
               <div class="callout-card-content">
-                <h3 class="lead">Corewar</h3>
+                <h3 class="lead">{{ project.name }}</h3>
                 <p>Project done</p>
-                <p>Grade : 80% (pass)</p>
-                <p>Submitted on : 12/01/2014</p>
-              </div>
-            </div>
-            
-            <div class="callout-card success radius">
-              <div class="card-label">
-                <div class="label-text">
-                  done
-                </div>
-              </div>
-              <div class="callout-card-content">
-                <h3 class="lead">Libft</h3>
-                <p>Project done</p>
-                <p>Grade : 80% (pass)</p>
-                <p>Submitted on : 12/01/2014</p>
-              </div>
-            </div>
-            
-            <div class="callout-card success radius">
-              <div class="card-label">
-                <div class="label-text">
-                  done
-                </div>
-              </div>
-              <div class="callout-card-content">
-                <h3 class="lead">Lemin</h3>
-                <p>Project done</p>
-                <p>Grade : 84% (pass)</p>
+                <p>Grade : {{ project.grade }}% (passed)</p>
                 <p>Submitted on : 22/05/2014</p>
               </div>
             </div>
+            
         </div>
           
         <div class="medium-4 large-4 small-12 columns">
             
             <h3>Failed</h3>
             
-            <div class="callout-card alert radius">
+            <div class="callout-card alert radius" ng-repeat="project in userInfo.projects | filter: { status: 'finished' }" ng-if="isFailed(project.grade)">
               <div class="card-label">
                 <div class="label-text">
                   done
                 </div>
               </div>
               <div class="callout-card-content">
-                <h3 class="lead">Wolf3d</h3>
+                <h3 class="lead">{{ project.name }}</h3>
                 <p>Project done</p>
-                <p>Grade : 50% (failed)</p>
+                <p>Grade : {{ project.grade }} (failed)</p>
                 <p>Submitted on : 14/01/2014</p>
-              </div>
-            </div>
-            
-            <div class="callout-card alert radius">
-              <div class="card-label">
-                <div class="label-text">
-                  done
-                </div>
-              </div>
-              <div class="callout-card-content">
-                <h3 class="lead">PushSwap</h3>
-                <p>Project done</p>
-                <p>Grade : 0% (pass)</p>
-                <p>Submitted on : 12/01/2014</p>
               </div>
             </div>
             
@@ -141,3 +92,45 @@
 
   </div>
 </div>
+
+<div id="finishProjectModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
+    <div class="section-container tabs" data-section="tabs">
+        <section class="active">
+          <div class="content" data-section-content>
+            <p>
+              <div class="row">
+                <div class="large-12 columns">
+                  <div class="signup-panel">
+                    <form name="gradeForm" novalidate>
+                      
+                      <div class="row collapse">
+                        <p>Please give a grade between 0 and 100 for the project {{ project }}</p>
+                        <div class="small-10  columns">     
+                          <input type="number" name="grade" ng-model="grade" required>   
+                        </div>
+                      </div>
+                        
+                      <span style="color:red" ng-show="grade_is_valid(grade) === false">
+                        Please choose a grade between 0 and 100</span>
+                      </span>
+                        <br><br>
+                        <button ng-disabled="gradeForm.description.$error.required ||
+                                             grade_is_valid(grade) === false"
+                                ng-click="setAsFinished(project, userInfo.username, grade)" class="button">
+                            Confirm</button>
+                    </form>
+                    <span style="color:red" ng-show="regError">
+                        Project creation error!
+                    </span>
+                  </div>
+                </div>
+               </div></p>
+          </div>
+        </section>
+    </div>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
+
+<script type="text/javascript"> 
+            $(document).foundation();
+</script>
