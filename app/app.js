@@ -5,12 +5,13 @@
         API_URL = "http://localhost:8001";
     
     var app = angular.module('homepage', [
-        'ui.router',
         'adminCtrl',
-        'userMgmtCtrl',
-        'userAuth',
         'projectCtrl',
+        'userMgmtCtrl',
+        'forumCtrl',
+        'userAuth',
         'projectModel',
+        'ui.router',
         'ngCookies'
     ]);
     
@@ -73,6 +74,19 @@
                 'content': {
                     templateUrl: '/templates/projects.html',
                     controller: 'projectCtrl'
+                }
+            }
+        })
+        .state('forum', {
+            url: '/forum',
+            views: {
+                'menu': {
+                    templateUrl: '/templates/menuLogged.html',
+                    controller: 'AdminUserCtrl'
+                },
+                'content': {
+                    templateUrl: '/templates/forum.html',
+                    controller: 'forumCtrl'
                 }
             }
         })

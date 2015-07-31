@@ -34,10 +34,74 @@ var User = new Schema({
     ]
 });
 
+// Project schema
 var Projects = new Schema({
     name: { type: String, required: true, unique: true },
     deadline: { type: Date, required: true },
     description: { type: String, required: true, unique: true }
+});
+
+//Forum schema
+/*
+
+localhost/forum/:id/threads
+>> list all threads from category id
+
+localhost/forum/thread/:id/messages
+>> list all messages from thread id
+
+localhost/forum/:id/:id/threads
+>> list all threads from subcategory id 
+
+*/
+
+var Forum = new Schema({
+    categories: [
+        {
+            name: { type: String, required: true, unique: true },
+            id: { type: Number, required: true, unique: true },
+            subCategories: [
+                {
+                    name : { type: String, required: true, unique: true },
+                    id: { type: Number, required: true, unique: true }
+                }
+            ]
+        }
+    ],
+    threads: [
+        {
+            title: { type: String, required: true, unique: true },
+            id: { type: Number,  required: true, unique: true },
+            created: { type: Date, default: Date.now },
+            creator: { type: String, required: true},
+            creatorId: { type: String, required: true },
+            category: [
+                { 
+                    name: { type: String, required: true, unique: true }
+                }
+            ],
+            tag: [
+                { name: { type: String, unique: true } }
+            ],
+            body: { type: String, required: true },
+            comments: [
+                {
+                    author: { type: String, required: true },
+                    authorId: { type: String, required: true},
+                    created: { type: Date, default: Date.now },
+                    commentBody: { type: String, required: true },
+                    replies: [
+                        {
+                            author : { type: String, required: true },
+                            authorId: { type: String, required: true },
+                            created: { type: Date, default: Date.now },
+                            replyBody: { type: String, required: true },
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 });
 
 // Bcrypt middleware on UserSchema
