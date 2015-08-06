@@ -30,7 +30,8 @@
     "jsonwebtoken"          : "*",
     "redis"                 : "*",
     "https"                 : "*",
-    "nodemailer"            : "*"
+    "nodemailer"            : "*",
+    "ldapjs-hotfix"         : "*"
   },
   "keywords": []
 }
