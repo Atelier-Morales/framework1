@@ -28,6 +28,13 @@
                     password: password
                 });
             },
+            logInLDAP : function(username, password) {
+                return $http.post(API_URL + '/user/loginLDAP', 
+                { 
+                    username: username, 
+                    password: password
+                });
+            },
             logOut : function(token) {
                 return $http.post(API_URL + '/user/logout',
                 {
@@ -43,8 +50,12 @@
                 });
             },
             verifyToken: function(token) {
-                return $http.post(API_URL + '/user/verifyToken',
-                {
+                return $http.post(API_URL + '/user/verifyToken', {
+                    token: token
+                });
+            },
+            verifyTokenLDAP: function(token) {
+                return $http.post(API_URL + '/user/verifyTokenLDAP', {
                     token: token
                 });
             },

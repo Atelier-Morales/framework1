@@ -21,7 +21,7 @@
         'projectService',
         'moment',
         function projectCtrl($rootScope, $scope, $location, $window, $state, $log, $timeout, userService, authService, projectService, moment) {
-            
+            console.log('fuck');
         }
     ]);
 })();

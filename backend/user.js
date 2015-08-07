@@ -1,6 +1,7 @@
 "use strict";
 
 var db = require('./db');
+var ldap = require('ldapjs-hotfix');
 var jwt = require('jsonwebtoken');
 var redis = require('redis');
 var redisClient = redis.createClient();
@@ -24,6 +25,32 @@ var expireToken = function(token) {
     	redisClient.expire(token, 1);
 	}
 };
+
+// Create LDAP client
+
+var client = ldap.createClient({
+    url: 'ldaps://ldap.42.fr'
+});
+
+//verify if user is logged via LDAP function
+
+exports.verifyTokenLDAP = function(req, res) {
+	var token = req.body.token || '';
+	console.log(token);
+	if (token == '')
+        return res.send(401);
+    
+    jwt.verify(token, 'shhhhh', function(err, decoded) {
+        if (err)
+            return res.send(401);
+        else {
+            console.log(decoded.id);
+            return res.json({ 
+                    username: decoded.id
+            });
+        }       
+    });
+}
 
 //verify if user is logged function
 
@@ -53,7 +80,6 @@ exports.verifyToken = function(req, res) {
         }       
     });
 }
-
 
 //Login function
 
@@ -89,6 +115,38 @@ exports.login = function(req, res) {
             });
 		});
 	});
+}
+
+// login LDAP 42
+
+exports.loginLDAP = function(req, res) {
+	var username = req.body.username || '';
+	var password = req.body.password || '';
+	
+	if (username == '' || password == '')
+        return res.send(401);
+    
+    var cn = 'uid='+username+',ou=july,ou=2013,ou=paris,ou=people,dc=42,dc=fr';
+    
+    console.log(cn);
+    console.log(password);
+    console.log(username);
+    client.bind(cn, password, function(err) {
+        if (err) {
+            console.log(err);
+            return res.send(401);
+        }
+        console.log('success');
+        var token = jwt.sign(
+            { id: username }, 
+            'shhhhh', 
+            { expiresInMinutes: TOKEN_EXPIRATION }
+        );
+            
+        return res.json({ 
+            token: token
+        });
+    });
 }
 
 //Logout function

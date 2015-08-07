@@ -127,8 +127,21 @@
                         $state.go('dashboard');
                     })
                     .error(function(status, data) {
-                        console.log(status);
-                        console.log(data);
+                        //Verify token with ldap
+                        userService.verifyTokenLDAP(token)
+                        .success(function(data) {
+                            $timeout(function() {
+                                $rootScope.userInfo = data;
+                            });
+                            console.log('1: User already logged in. Redirecting...');
+                            $window.sessionStorage.token = token;
+                            e.preventDefault();
+                            $state.go('dashboard');
+                        })
+                        .error(function(status, data) {
+                            console.log(status);
+                            console.log(data);
+                        });
                     });
                 }
             }
@@ -153,10 +166,22 @@
                         $window.sessionStorage.token = token;
                     })
                     .error(function(status, data) {
-                        console.log(status);
-                        console.log(data);
-                        e.preventDefault();
-                        $state.go('home');
+                        //Verify token with LDAP
+                        userService.verifyTokenLDAP(token)
+                        .success(function(data) {
+                            $timeout(function() {
+                                $rootScope.userInfo = data;
+                            });
+                            console.log($rootScope.userInfo);
+                            console.log('2: User already logged in...');
+                            $window.sessionStorage.token = token;
+                        })
+                        .error(function(status, data) {
+                            console.log(status);
+                            console.log(data);
+                            e.preventDefault();
+                            $state.go('home');
+                        });
                     });
                 } 
             }
@@ -173,19 +198,29 @@
                     $state.go('dashboard');
                 })
                 .error(function(status, data) {
-                    console.log(status);
-                    console.log(data);
-                    delete $window.sessionStorage.token;
+                    // Verify token with LDAP
+                    userService.verifyTokenLDAP(token)
+                    .success(function(data) {
+                        $timeout(function() {
+                            $rootScope.userInfo = data;
+                        });
+                        authService.isLogged = true;
+                        console.log('3: User already logged in...');
+                        e.preventDefault();
+                        $state.go('dashboard');
+                    })
+                    .error(function(status, data) {
+                        console.log(status);
+                        console.log(data);
+                        delete $window.sessionStorage.token;
+                    });
                 });
             }
-        
-            
             if ((toState.name.indexOf('dashboard') > -1  && $window.sessionStorage.token) ||
                  (toState.name.indexOf('users') > -1     && $window.sessionStorage.token) ||
                  (toState.name.indexOf('forbidden') > -1 && $window.sessionStorage.token) ||
                  (toState.name.indexOf('projects') > -1  && $window.sessionStorage.token)) {
                     // If logged in and no user info:
-                    console.log('lol');
                     console.log($rootScope.userInfo);
                     userService.verifyToken(token)
                     .success(function(data) {
@@ -197,10 +232,22 @@
                         console.log('4: User already logged in...');
                     })
                     .error(function(status, data) {
-                        console.log(status);
-                        console.log(data);
-                        e.preventDefault();
-                        $state.go('home');
+                        //Verify token with LDAP
+                        userService.verifyTokenLDAP(token)
+                        .success(function(data) {
+                            $timeout(function() {
+                                $rootScope.userInfo = data;
+                            });
+                            console.log($rootScope.userInfo);
+                            authService.isLogged = true;
+                            console.log('4: User already logged in...');
+                        })
+                        .error(function(status, data) {
+                            console.log(status);
+                            console.log(data);
+                            e.preventDefault();
+                            $state.go('home');
+                        });
                     });
             }
             
@@ -228,7 +275,7 @@
                 }
                 else {
                     console.log($rootScope.userInfo.is_admin);
-                    console.log('bitch');
+                    console.log('fail');
                 }
             }
         });

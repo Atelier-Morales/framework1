@@ -91,7 +91,31 @@
                     }).error(function(status, data) {
                         console.log(status);
                         console.log(data);
-                        $scope.authError = true;
+                        console.log("User not found. Trying with LDAP login...");
+                        userService.logInLDAP(username, password).success(function(data) {
+                            $('#myModal').foundation('reveal', 'close');
+                            $log.log('User '+username+' successfully logged in with LDAP');
+                            $scope.authError = false;
+                            authService.isLogged = true;
+                            userService.verifyTokenLDAP(data.token)
+                            .success(function(data) {
+                                console.log('Fetched user info');
+                                $rootScope.userInfo = data;
+                                console.log($rootScope.userInfo);
+                            })
+                            .error(function(status, data) {
+                                console.log(status);
+                                console.log(data);
+                                console.log('Could not fetch info');
+                            });
+                            $window.sessionStorage.token = data.token;
+                            $cookies.put('token', data.token);
+                            $state.go('dashboard');
+                        }).error(function(status, data) {
+                            console.log(status);
+                            console.log(data);
+                            $scope.authError = true;
+                        });
                     });
                 }
             }
