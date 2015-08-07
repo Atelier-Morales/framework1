@@ -1,2 +1,2 @@
 # framework1
-framework projet number 1 for 42
+framework project number 1 for 42
