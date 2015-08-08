@@ -127,21 +127,9 @@
                         $state.go('dashboard');
                     })
                     .error(function(status, data) {
-                        //Verify token with ldap
-                        userService.verifyTokenLDAP(token)
-                        .success(function(data) {
-                            $timeout(function() {
-                                $rootScope.userInfo = data;
-                            });
-                            console.log('1: User already logged in. Redirecting...');
-                            $window.sessionStorage.token = token;
-                            e.preventDefault();
-                            $state.go('dashboard');
-                        })
-                        .error(function(status, data) {
-                            console.log(status);
-                            console.log(data);
-                        });
+                        console.log(status);
+                        console.log(data);
+
                     });
                 }
             }
