@@ -128,8 +128,7 @@
                     })
                     .error(function(status, data) {
                         console.log(status);
-                        console.log(data);
-
+                         console.log(data);
                     });
                 }
             }
