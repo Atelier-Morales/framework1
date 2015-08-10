@@ -135,6 +135,7 @@
             if ((toState.name.indexOf('dashboard') > -1 ||
                  toState.name.indexOf('users') > -1     ||
                  toState.name.indexOf('forbidden') > -1 ||
+                 toState.name.indexOf('forum') > -1 ||
                  toState.name.indexOf('projects') > -1)
                  && !$window.sessionStorage.token) {
                 // If logged out and transitioning to a logged in page:
@@ -153,22 +154,10 @@
                         $window.sessionStorage.token = token;
                     })
                     .error(function(status, data) {
-                        //Verify token with LDAP
-                        userService.verifyTokenLDAP(token)
-                        .success(function(data) {
-                            $timeout(function() {
-                                $rootScope.userInfo = data;
-                            });
-                            console.log($rootScope.userInfo);
-                            console.log('2: User already logged in...');
-                            $window.sessionStorage.token = token;
-                        })
-                        .error(function(status, data) {
-                            console.log(status);
-                            console.log(data);
-                            e.preventDefault();
-                            $state.go('home');
-                        });
+                        console.log(status);
+                        console.log(data);
+                        e.preventDefault();
+                        $state.go('home');
                     });
                 } 
             }
@@ -185,27 +174,15 @@
                     $state.go('dashboard');
                 })
                 .error(function(status, data) {
-                    // Verify token with LDAP
-                    userService.verifyTokenLDAP(token)
-                    .success(function(data) {
-                        $timeout(function() {
-                            $rootScope.userInfo = data;
-                        });
-                        authService.isLogged = true;
-                        console.log('3: User already logged in...');
-                        e.preventDefault();
-                        $state.go('dashboard');
-                    })
-                    .error(function(status, data) {
-                        console.log(status);
-                        console.log(data);
-                        delete $window.sessionStorage.token;
-                    });
+                    console.log(status);
+                    console.log(data);
+                    delete $window.sessionStorage.token;
                 });
             }
             if ((toState.name.indexOf('dashboard') > -1  && $window.sessionStorage.token) ||
                  (toState.name.indexOf('users') > -1     && $window.sessionStorage.token) ||
                  (toState.name.indexOf('forbidden') > -1 && $window.sessionStorage.token) ||
+                 (toState.name.indexOf('forum') > -1 && $window.sessionStorage.token) ||
                  (toState.name.indexOf('projects') > -1  && $window.sessionStorage.token)) {
                     // If logged in and no user info:
                     console.log($rootScope.userInfo);
@@ -219,22 +196,10 @@
                         console.log('4: User already logged in...');
                     })
                     .error(function(status, data) {
-                        //Verify token with LDAP
-                        userService.verifyTokenLDAP(token)
-                        .success(function(data) {
-                            $timeout(function() {
-                                $rootScope.userInfo = data;
-                            });
-                            console.log($rootScope.userInfo);
-                            authService.isLogged = true;
-                            console.log('4: User already logged in...');
-                        })
-                        .error(function(status, data) {
-                            console.log(status);
-                            console.log(data);
-                            e.preventDefault();
-                            $state.go('home');
-                        });
+                        console.log(status);
+                        console.log(data);
+                        e.preventDefault();
+                        $state.go('home');
                     });
             }
             

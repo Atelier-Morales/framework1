@@ -129,19 +129,77 @@ exports.loginLDAP = function(req, res) {
     var cn = 'uid='+username+',ou=july,ou=2013,ou=paris,ou=people,dc=42,dc=fr';
     
     console.log(cn);
-    console.log(password);
     console.log(username);
     client.bind(cn, password, function(err) {
         if (err) {
             console.log(err);
             return res.send(401);
         }
-        console.log('success');
-        var token = jwt.sign(
-            { id: username }, 
-            'shhhhh', 
-            { expiresInMinutes: TOKEN_EXPIRATION }
-        );
+        db.userModel.findOne({ username: username }, function (err, user) {
+		if (err || user == undefined) {
+			console.log(err);
+			return res.send(401);
+		}
+		if ()
+            return res.send(401);
+		
+		user.comparePassword(password, function(isMatch) {
+			if (!isMatch) {
+				console.log("Attempt failed to login with " + user.username);
+				return res.send(401);
+            }
+            
+            var token = jwt.sign(
+                { id: user._id }, 
+                'shhhhh', 
+                { expiresInMinutes: TOKEN_EXPIRATION }
+            );
+            
+			return res.json({ 
+                token: token
+            });
+		});
+	});
+        var username = req.body.username || '';
+        var email    = req.body.username+"@student.42.fr" || '';
+        var password = req.body.password || '';
+
+        if (username == '' || password == '')
+            return res.sendStatus(400);
+
+        var user = new db.userModel();
+        user.username = username;
+        user.email    = email;
+        user.password = password;
+
+        user.save(function(err) {
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+
+            db.userModel.count(function(err, counter) {
+                if (err) {
+                    console.log(err);
+                    return res.sendStatus(500);
+                }
+
+                if (counter == 1) {
+                    db.userModel.update({username:user.username}, {is_admin:true}, function(err, nbRow) {
+                        if (err) {
+                            console.log(err);
+                            return res.sendStatus(500);
+                        }
+                        console.log('First user created as an Admin');
+                        return res.sendStatus(200);
+                    });
+                } 
+                else {
+                    console.log(user);
+                    return res.sendStatus(200);
+                }
+            });
+        });
             
         return res.json({ 
             token: token

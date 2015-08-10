@@ -1,13 +1,18 @@
-.accordion-navigation {
-  >a:after {
-    content: "↡";
-    padding-left: 5px;
-    float: right;
-    font-size: 20px;
-  }
-  &.active a:after {
-    content: "↟";
-  }
+.forum-column {
+    width: 300px;
+    margin-left: 15px;
+    height: 100%;
+    .accordion-navigation {
+        >a:after {
+            content: "↡";
+            padding-left: 5px;
+            float: right;
+            font-size: 20px;
+        }
+        &.active a:after {
+            content: "↟";
+        }
+    }
 }
 
 .subcategory {

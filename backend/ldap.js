@@ -5,11 +5,22 @@ var client = ldap.createClient({
     url: 'ldaps://ldap.42.fr'
 });
 
-client.bind('uid=fmorales,ou=july,ou=2013,ou=paris,ou=people,dc=42,dc=fr', function(err) {
-    if (err) {
-        console.log(err);
-        return;
+var months = ['july', 'august', 'september'];
+var years  = [2013, 2014, 2015];
+
+function testldap(req, res) {
+    for (var i = 0; i < years.length; ++i) {
+        for (var j = 0; j < months.length; ++j) {
+            client.bind('cn=Fernan MORALES', secret, function(err) {
+                if (!err) {
+                    console.log('SUCCESS : fmorales ');
+                }
+                else
+                    console.log(err);
+            });
+        }
     }
-    console.log('success');
-});
+}
+
+testldap('fmorales');
  

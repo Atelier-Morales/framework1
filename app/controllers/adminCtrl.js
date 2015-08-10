@@ -97,7 +97,7 @@
                             $log.log('User '+username+' successfully logged in with LDAP');
                             $scope.authError = false;
                             authService.isLogged = true;
-                            userService.verifyTokenLDAP(data.token)
+                            userService.verifyToken(data.token)
                             .success(function(data) {
                                 console.log('Fetched user info');
                                 $rootScope.userInfo = data;
