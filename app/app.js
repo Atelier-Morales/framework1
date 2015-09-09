@@ -11,6 +11,7 @@
         'forumCtrl',
         'userAuth',
         'projectModel',
+        'forumModel',
         'ui.router',
         'ngCookies'
     ]);

@@ -21,7 +21,7 @@
     <div class="row forum-column">
       <div>
         <br>
-        <h2 style="padding-left:15px;">Topics</h2>
+        <h2 style="padding-left:15px;">Topics {{ categories }}</h2>
         <button class="button small radius" href="#" data-reveal-id="projectModal">Create a category</button>
         <br>
         
@@ -37,19 +37,8 @@
                         <a href="#panel1a">sub 2</a>
                     </li>
                     </ul>
+                    <br>
                     <button class="button small radius subcategory" data-reveal-id="projectModal">Create a sub-category</button>
-                </div>
-            </li>
-            <li class="accordion-navigation">
-                <a href="#panel2a">Accordion 2</a>
-                <div id="panel2a" class="content">
-      Panel 2. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </div>
-            </li>
-            <li class="accordion-navigation">
-                <a href="#panel3a">Accordion 3</a>
-                <div id="panel3a" class="content">
-      Panel 3. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                 </div>
             </li>
         </ul>
@@ -74,8 +63,8 @@
               <div class="row">
                 <div class="large-12 columns">
                   <div class="signup-panel">
-                    <p class="welcome">Create project</p>
-                    <form name="projectForm" novalidate>
+                    <p class="welcome">Create category</p>
+                    <form name="categoryForm" novalidate>
                       
                       <div class="row collapse">
                         <p>Name</p>
@@ -83,53 +72,14 @@
                           <input type="text" name="name" ng-model="name" required>   
                         </div>
                       </div>
-                        
-                      <div class="row collapse">
-                        <p>Description</p>
-                        <div class="small-10  columns">
-                          <input type="text" name="description" ng-model="description" required>
-                        </div>
-                      </div>
-                        
-                      <div class="row">
-                          <p>Set deadline</p>
-                          <div class="large-4 columns">
-                            <label>
-                                <select ng-model="deadline.year">
-                                <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
-                                </select>
-                            </label>
-                          </div>
-                          
-                          <div class="large-4 columns">
-                            <label>
-                            <select ng-model="deadline.month">
-                                <option ng-repeat="month in months" value="{{month}}">{{month}}</option>
-                            </select>
-                            </label>
-                          </div>
-                          
-                          <div class="large-4 columns">
-                            <label>
-                                <select  ng-model="deadline.day">
-                                    <option ng-repeat="day in days" value="{{day}}">{{day}}</option>
-                                </select>
-                            </label>
-                          </div>
-                      </div>
-                      <span style="color:red" ng-show="
-                        date_is_invalid(deadline.year, deadline.month, deadline.day) === false">
-                        Bad Date! Choose another one.</span>
-                      </span>
-                        <br><br>
-                        <button ng-disabled="projectForm.name.$error.required ||
-                                             projectForm.description.$error.required ||
-                                             date_is_invalid(deadline.year, deadline.month, deadline.day) === false"
-                                ng-click="createProject(name, deadline, description)" class="button">
-                            Create</button>
+        
+                      <br><br>
+                      <button ng-disabled="categoryForm.name.$error.required" ng-click="createProject(name, deadline, description)" class="button">
+                            Create
+                      </button>
                     </form>
                     <span style="color:red" ng-show="regError">
-                        Project creation error!
+                        Category creation error!
                     </span>
                   </div>
                 </div>

@@ -136,7 +136,9 @@ User.methods.comparePassword = function(password, cb) {
 //Define Models
 var userModel = mongoose.model('User', User);
 var projectModel = mongoose.model('Projects', Projects);
+var forumModel = mongoose.model('Forum', Forum);
 
 // Export Models
 exports.userModel = userModel;
 exports.projectModel = projectModel;
+exports.forumModel = forumModel;

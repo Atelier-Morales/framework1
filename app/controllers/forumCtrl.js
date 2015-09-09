@@ -2,7 +2,7 @@
 
 (function() {
     var forumCtrl = angular.module('forumCtrl', [
-        'userAuth',
+        'forumModel',
         'ngCookies',
         'sidebarDirective',
         'angularMoment'
@@ -16,12 +16,39 @@
         '$state',
         '$log',
         '$timeout',
-        'userService', 
-        'authService',
-        'projectService',
+        'forumService',
         'moment',
-        function projectCtrl($rootScope, $scope, $location, $window, $state, $log, $timeout, userService, authService, projectService, moment) {
-            console.log('fuck');
+        function projectCtrl($rootScope, $scope, $location, $window, $state, $log, $timeout, forumService, moment) {
+            console.log('Forum section');
+            function fetchCategories() {
+                forumService.getTopics()
+                .success(function(data){
+                    console.log(data);
+                    $scope.categories = data;
+                    $scope.categoriesCopy = angular.copy($scope.categories);
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
+            }
+            
+            fetchCategories();
+            
+            $scope.createCategory = function createCategory(name) {
+                forumService.createTopic(name)
+                .success(function(data) {
+                    console.log(data);
+                    $('#projectModal').foundation('reveal', 'close');
+                    fetchCategories();
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
+            }
         }
     ]);
 })();

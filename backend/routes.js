@@ -22,6 +22,7 @@ app.use(morgan());
 var routes = {};
 routes.users = require('./user');
 routes.projects = require('./project');
+routes.forum = require('./forum');
 routes.mailer = require('./mailer');
 
 app.all('*', function(req, res, next) {
@@ -70,6 +71,12 @@ app.post('/project/createProject', routes.projects.createProject);
 app.post('/project/deleteProject', routes.projects.deleteProject);
 
 app.post('/project/updateProject', routes.projects.updateProject);
+
+//forum functions
+
+app.get('/forum/categories', routes.forum.fetchCategories);
+
+app.post('/forum/createCategory', routes.forum.createCategory);
 
 //email 
 

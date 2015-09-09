@@ -1,11 +1,24 @@
 "use strict";
+
+/* global angular */
+
+/**
+ * Angular services for forum management
+ * @author Fernan Morales <fmorales@student.42.fr>
+ */
+
 (function () {
     var forum = angular.module('forumModel', []);
     
-    forum.factory('forumModel', function($http) {
+    forum.factory('forumService', function($http) {
         return {
             getTopics: function() {
-                return $httg.get(API_URL + '/forum/topics');
+                return $http.get(API_URL + '/forum/categories');
+            },
+            createTopic: function() {
+                return $http.post(API_URL + '/forum/createCategory', {
+                    name: name
+                });
             }
         }
     });

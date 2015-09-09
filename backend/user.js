@@ -140,8 +140,6 @@ exports.loginLDAP = function(req, res) {
 			console.log(err);
 			return res.send(401);
 		}
-		if ()
-            return res.send(401);
 		
 		user.comparePassword(password, function(isMatch) {
 			if (!isMatch) {
