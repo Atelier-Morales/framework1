@@ -21,20 +21,38 @@
     <div class="row forum-column">
       <div>
         <br>
-        <h2 style="padding-left:15px;">Topics {{ categories }}</h2>
+        <h2 style="padding-left:15px;">Topics</h2>
         <button class="button small radius" href="#" data-reveal-id="forumModal">Create a category</button>
         <br>
         
-        <ul class="accordion" data-accordion>
+        <!--<ul class="accordion" data-accordion>
             <li class="accordion-navigation">
-                <a href="#panel1a">Accordion 1</a>
-                <div id="panel1a" class="content">
+                <a href="#panel1b">Accordion 1</a>
+                <div id="panel1b" class="content">
                     <ul>
                     <li class="accordion-navigation">
-                        <a href="#panel1a">sub 1</a>
+                        <a href="#panel1b">sub 1</a>
                     </li>
                     <li class="accordion-navigation">
-                        <a href="#panel1a">sub 2</a>
+                        <a href="#panel1b">sub 2</a>
+                    </li>
+                    </ul>
+                    <br>
+                    <button class="button small radius subcategory" data-reveal-id="projectModal">Create a sub-category</button>
+                </div>
+            </li>
+        </ul>-->
+          
+        <ul class="accordion" data-accordion ng-repeat="category in categoriesCopy">
+            <li class="accordion-navigation">
+                <a href="#panel1{{category.id}}">{{ category.name }}</a>
+                <div id="panel1{{category.id}}" class="content">
+                    <ul>
+                    <li class="accordion-navigation">
+                        <a href="#panel1{{category.id}}">sub 1</a>
+                    </li>
+                    <li class="accordion-navigation">
+                        <a href="#panel1{{category.id}}">sub 2</a>
                     </li>
                     </ul>
                     <br>
