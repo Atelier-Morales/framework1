@@ -8,8 +8,8 @@ exports.fetchCategories = function(req, res) {
 			console.log(err);
 			return res.send(401);
 		}
-        console.log(categories);
-        return res.send(categories);       
+        console.log(categories[0].categories);
+        return res.send(categories[0].categories);       
     });
 }
 
@@ -24,10 +24,41 @@ exports.createCategory = function(req, res) {
 			console.log(err);
 			return res.send(401);
 		}
-        category[0].categories.push({name: name, thread: []});
-        console.log(category);
-        console.log(name+" created!");
-        return res.send(category);       
+        if (category.length === 0) {
+            console.log('creating forum');
+            var forum = new db.forumModel();
+	        forum.categories = [];
+            forum.categories.push({name: name, id: 0, thread: []});
+            forum.save(function(err) {
+                if (err) {
+                    console.log(err);
+                    return res.sendStatus(500);
+                }
+                db.forumModel.find({}, function (err, forum) {
+                    if (err) {
+                        console.log(err);
+                        return res.sendStatus(500);
+                    }
+                    console.log("forum created!");
+                    return res.send(forum);
+                });
+            });
+        }
+        category[0].categories.push({name: name, id: category[0].categories.length, thread: []});
+        category[0].save(function(err) {
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+            db.forumModel.find({}, function (err, forum) {
+                if (err) {
+                    console.log(err);
+                    return res.sendStatus(500);
+                }
+                console.log(name+" created!");
+                return res.send(forum);
+            });
+        });     
     });
 }
 /*

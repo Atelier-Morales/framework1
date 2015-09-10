@@ -22,7 +22,7 @@
       <div>
         <br>
         <h2 style="padding-left:15px;">Topics {{ categories }}</h2>
-        <button class="button small radius" href="#" data-reveal-id="projectModal">Create a category</button>
+        <button class="button small radius" href="#" data-reveal-id="forumModal">Create a category</button>
         <br>
         
         <ul class="accordion" data-accordion>
@@ -55,7 +55,7 @@
   </div>
 </div>
 
-<div id="projectModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
+<div id="forumModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
     <div class="section-container tabs" data-section="tabs">
         <section class="active">
           <div class="content" data-section-content>
@@ -74,7 +74,7 @@
                       </div>
         
                       <br><br>
-                      <button ng-disabled="categoryForm.name.$error.required" ng-click="createProject(name, deadline, description)" class="button">
+                      <button ng-disabled="categoryForm.name.$error.required" ng-click="createCategory(name)" class="button">
                             Create
                       </button>
                     </form>

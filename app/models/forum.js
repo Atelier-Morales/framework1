@@ -15,7 +15,7 @@
             getTopics: function() {
                 return $http.get(API_URL + '/forum/categories');
             },
-            createTopic: function() {
+            createTopic: function(name) {
                 return $http.post(API_URL + '/forum/createCategory', {
                     name: name
                 });

@@ -40,7 +40,7 @@
                 forumService.createTopic(name)
                 .success(function(data) {
                     console.log(data);
-                    $('#projectModal').foundation('reveal', 'close');
+                    $('#forumModal').foundation('reveal', 'close');
                     fetchCategories();
                 })
                 .error(function(status, data) {
