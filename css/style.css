@@ -306,15 +306,16 @@
   width: 300px;
   margin-left: 15px;
   height: 100%;
+  z-index: 1;
+  position: relative;
+}
+.forum-column .accordion-navigation .content {
+  background: transparent !important;
 }
 .forum-column .accordion-navigation > a:after {
-  content: "↡";
   padding-left: 5px;
   float: right;
   font-size: 20px;
-}
-.forum-column .accordion-navigation.active a:after {
-  content: "↟";
 }
 
 .subcategory {

@@ -34,6 +34,10 @@
                 });
             }
             
+            $scope.setScope = function(name) {
+                $scope.scopeName = name;
+            }
+            
             fetchCategories();
             
             $scope.createCategory = function createCategory(name) {
@@ -41,6 +45,21 @@
                 .success(function(data) {
                     console.log(data);
                     $('#forumModal').foundation('reveal', 'close');
+                    fetchCategories();
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
+            }
+            
+            $scope.createSubCategory = function createSubCategory(name, category) {
+                console.log(category);
+                forumService.createSubTopic(name, category)
+                .success(function(data) {
+                    console.log(data);
+                    $('#categoryModal').foundation('reveal', 'close');
                     fetchCategories();
                 })
                 .error(function(status, data) {

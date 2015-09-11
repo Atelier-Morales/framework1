@@ -19,6 +19,12 @@
                 return $http.post(API_URL + '/forum/createCategory', {
                     name: name
                 });
+            },
+            createSubTopic: function(name, category) {
+                return $http.post(API_URL + '/forum/createSubCategory', {
+                    name: name,
+                    category: category
+                });
             }
         }
     });

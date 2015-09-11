@@ -20,50 +20,50 @@
     
     <div class="row forum-column">
       <div>
-        <br>
-        <h2 style="padding-left:15px;">Topics</h2>
         <button class="button small radius" href="#" data-reveal-id="forumModal">Create a category</button>
-        <br>
-        
-        <!--<ul class="accordion" data-accordion>
-            <li class="accordion-navigation">
-                <a href="#panel1b">Accordion 1</a>
-                <div id="panel1b" class="content">
-                    <ul>
-                    <li class="accordion-navigation">
-                        <a href="#panel1b">sub 1</a>
-                    </li>
-                    <li class="accordion-navigation">
-                        <a href="#panel1b">sub 2</a>
-                    </li>
-                    </ul>
-                    <br>
-                    <button class="button small radius subcategory" data-reveal-id="projectModal">Create a sub-category</button>
-                </div>
-            </li>
-        </ul>-->
-          
+        <br> 
         <ul class="accordion" data-accordion ng-repeat="category in categoriesCopy">
-            <li class="accordion-navigation">
+            <li class="accordion-navigation" id="top">
                 <a href="#panel1{{category.id}}">{{ category.name }}</a>
                 <div id="panel1{{category.id}}" class="content">
                     <ul>
-                    <li class="accordion-navigation">
-                        <a href="#panel1{{category.id}}">sub 1</a>
-                    </li>
-                    <li class="accordion-navigation">
-                        <a href="#panel1{{category.id}}">sub 2</a>
-                    </li>
+                        <li style="background:none;content:none" class="accordion-navigation" ng-repeat="subcategory in category.subCategories">
+                            <a href="#panel1{{subcategory.id}}">{{ subcategory.name }}</a>
+                        </li>
                     </ul>
                     <br>
-                    <button class="button small radius subcategory" data-reveal-id="projectModal">Create a sub-category</button>
+                    <button class="button small radius subcategory" 
+                            data-reveal-id="categoryModal" 
+                            ng-click="setScope(category.name)">Create a sub-category</button>
                 </div>
             </li>
         </ul>
+        <br>
+      </div>
+    </div>
         
+    <div class="row" style="padding-left: 341px;
+                            top: 130px;
+                            position: absolute;
+                            z-index: 0;">
+      <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
         <br>
+        <h2 style="padding-left:15px;">Available Projects</h2> 
+          <button ng-if="userInfo.is_admin" href="#" data-reveal-id="projectModal">Create a Project</button>
         <br>
-          
+        
+        <div class="large-12 medium-12 small-12 columns">
+            <div class="panel callout radius large-4 medium-6 small-12 columns end" ng-repeat="project in projects">
+              <div class="callout-card-content">
+                <h3 class="lead">{{ project.name }}</h3>
+                <p>Deadline : {{ project.deadline }}</p>
+                <p>Description : {{ project.description }}</p>
+              </div>
+                <button ng-if="userInfo.is_admin" ng-click="setIndex($index)" href="#" data-reveal-id="updateProjectModal">Update</button>
+                <a ng-if="userInfo.is_admin" ng-click="deleteProject(project.name)" class="button alert">Remove</a>
+                <a href="#" ng-click="registerProject(project.name, username, project.deadline)" class="button success">Register</a>
+            </div> 
+        </div>
       </div>
     </div> 
 
@@ -98,6 +98,41 @@
                     </form>
                     <span style="color:red" ng-show="regError">
                         Category creation error!
+                    </span>
+                  </div>
+                </div>
+               </div></p>
+          </div>
+        </section>
+    </div>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
+
+<div id="categoryModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
+    <div class="section-container tabs" data-section="tabs">
+        <section class="active">
+          <div class="content" data-section-content>
+            <p>
+              <div class="row">
+                <div class="large-12 columns">
+                  <div class="signup-panel">
+                    <p class="welcome">Create subcategory in {{ scopeName }}</p>
+                    <form name="subcategoryForm" novalidate>
+                      
+                      <div class="row collapse">
+                        <p>Name</p>
+                        <div class="small-10  columns">     
+                          <input type="text" name="name" ng-model="name" required>   
+                        </div>
+                      </div>
+        
+                      <br><br>
+                      <button ng-disabled="subcategoryForm.name.$error.required" ng-click="createSubCategory(name, scopeName)" class="button">
+                            Create
+                      </button>
+                    </form>
+                    <span style="color:red" ng-show="regError">
+                        Subcategory creation error!
                     </span>
                   </div>
                 </div>

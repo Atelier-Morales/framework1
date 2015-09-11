@@ -2,15 +2,18 @@
     width: 300px;
     margin-left: 15px;
     height: 100%;
+    z-index: 1;
+    position: relative;
     .accordion-navigation {
+        .content {
+            background: transparent !important;
+        }
         >a:after {
-            content: "↡";
             padding-left: 5px;
             float: right;
             font-size: 20px;
         }
         &.active a:after {
-            content: "↟";
         }
     }
 }

@@ -78,6 +78,8 @@ app.get('/forum/categories', routes.forum.fetchCategories);
 
 app.post('/forum/createCategory', routes.forum.createCategory);
 
+app.post('/forum/createSubCategory', routes.forum.createSubCategory);
+
 //email 
 
 app.post('/emailSend', routes.mailer.sendEmail);

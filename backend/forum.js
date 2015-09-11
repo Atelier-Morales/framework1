@@ -61,6 +61,44 @@ exports.createCategory = function(req, res) {
         });     
     });
 }
+
+exports.createSubCategory = function(req, res) {
+    var name = req.body.name || '';
+    var categoria = req.body.category || '';
+    
+	if (name == '' || categoria == '')
+        return res.sendStatus(400);
+    console.log(name+' '+categoria);
+    db.forumModel.find({}, function(err, category) {
+        if (err) {
+			console.log(err);
+			return res.send(401);
+		}
+        for (var i = 0; i < category[0].categories.length; ++i) {
+            if (category[0].categories[i].name === categoria) {
+                category[0].categories[i].subCategories.push({
+                        name: name, 
+                        id: category[0].categories[i].subCategories.length
+                    }
+                );
+                category[0].save(function(err) {
+                    if (err) {
+                        console.log(err);
+                        return res.sendStatus(500);
+                    }
+                    db.forumModel.find({}, function (err, forum) {
+                        if (err) {
+                            console.log(err);
+                            return res.sendStatus(500);
+                        }   
+                        console.log(name+" created!");
+                        return res.send(forum);
+                    });
+                });
+            }
+        }
+    });
+}
 /*
 exports.deleteCategory = function(req, res) {
     db.projectModel.findOneAndRemove({ name: req.body.name }, function (err, doc) {
