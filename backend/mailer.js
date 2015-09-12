@@ -13,7 +13,7 @@ exports.sendEmail = function(req, res) {
     var transporter = nodemailer.createTransport();
     transporter.sendMail({
         from: sender,
-        to: 'fernan@keymetrics.io',
+        to: 'fernan.moralesayuso@gmail.com',
         subject: subject,
         text: text
     }, function (err, info) {

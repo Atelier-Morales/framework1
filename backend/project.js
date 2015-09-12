@@ -23,7 +23,6 @@ exports.fetchProjects = function(req, res) {
                 if (!flag) 
                     proj.push(projects[i]);
             }
-            console.log(proj)
             return res.send(proj);
 		});        
     });
