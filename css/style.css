@@ -302,6 +302,79 @@
   margin-right: 5px;
 }
 
+.weather {
+  border: 1px solid #eee;
+  box-shadow: 0 2px 0 rgba(204, 204, 204, 0.15);
+  margin-bottom: 1rem;
+  border-radius: 0.25rem;
+  background: #fff;
+  position: relative;
+}
+.weather .header {
+  height: 6.2rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 6.2rem;
+  padding: 0 1.25rem;
+  overflow: hidden;
+  position: relative;
+}
+.weather .header h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: bold;
+  -webkit-margin-before: 0.83em;
+  -webkit-margin-after: 0.83em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+}
+.weather .weather-icon {
+  position: absolute;
+  right: 1.25rem;
+  top: 2.2rem;
+  font-size: 1.7rem;
+  line-height: 1em;
+}
+.weather .weather-icon-shadow {
+  position: absolute;
+  color: rgba(0, 0, 0, 0.05);
+  font-size: 8rem;
+  top: -1.25rem;
+  right: -1.25rem;
+  transform: rotate(-20deg);
+}
+.weather ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.weather .day {
+  padding: 1.25rem 1.9rem;
+  border-bottom: 1px solid #f2f2f2;
+  color: #888;
+}
+.weather .day:last-child {
+  border-bottom: none;
+}
+.weather .day .image {
+  display: block;
+  float: left;
+  margin-right: 0.75rem;
+}
+.weather .day .day-title {
+  text-transform: uppercase;
+  color: #666666;
+  font-weight: 600;
+}
+.weather .day .day-icon {
+  margin-top: -0.7rem;
+  color: #666666;
+  font-size: 1.25rem;
+  float: right;
+}
+
 .forum-column {
   width: 300px;
   margin-left: 15px;

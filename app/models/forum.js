@@ -25,6 +25,12 @@
                     name: name,
                     category: category
                 });
+            },
+            removeSubTopic: function(category, subcategory) {
+                return $http.post(API_URL + '/forum/removeSubCategory', {
+                    category: category,
+                    subcategory: subcategory
+                });
             }
         }
     });

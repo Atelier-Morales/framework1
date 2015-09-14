@@ -8,6 +8,8 @@ exports.fetchCategories = function(req, res) {
 			console.log(err);
 			return res.send(401);
 		}
+        if (categories[0] == undefined)
+            return res.sendStatus(401);
         return res.send(categories[0].categories);       
     });
 }
@@ -43,21 +45,23 @@ exports.createCategory = function(req, res) {
                 });
             });
         }
-        category[0].categories.push({name: name, id: category[0].categories.length, thread: []});
-        category[0].save(function(err) {
-            if (err) {
-                console.log(err);
-                return res.sendStatus(500);
-            }
-            db.forumModel.find({}, function (err, forum) {
+        else {
+            category[0].categories.push({name: name, id: category[0].categories.length, thread: []});
+            category[0].save(function(err) {
                 if (err) {
                     console.log(err);
                     return res.sendStatus(500);
                 }
-                console.log(name+" created!");
-                return res.send(forum);
+                db.forumModel.find({}, function (err, forum) {
+                    if (err) {
+                        console.log(err);
+                        return res.sendStatus(500);
+                    }
+                    console.log(name+" created!");
+                    return res.send(forum);
+                });
             });
-        });     
+        }
     });
 }
 
@@ -98,18 +102,43 @@ exports.createSubCategory = function(req, res) {
         }
     });
 }
-/*
-exports.deleteCategory = function(req, res) {
-    db.projectModel.findOneAndRemove({ name: req.body.name }, function (err, doc) {
-        if (err) {
-            console.log(err);
-			return res.sendStatus(401);
+
+exports.removeSubCategory = function(req, res) {
+    var categoria = req.body.category || '';
+    var subcategoria = req.body.subcategory || '';
+    
+    console.log(categoria+' '+subcategoria);
+    if (categoria == '' || subcategoria == '')
+        return res.sendStatus(400);
+    
+    db.forumModel.find({}, function(err, category) {
+        for (var i = 0; i < category[0].categories.length; ++i) {
+            if (category[0].categories[i].name === categoria) {
+                console.log('YES');
+                var index = category[0].categories[i].subCategories.indexOf(subcategoria);
+                if (index > -1) {
+                    console.log('YES2');
+                    category[0].categories[i].subCategories.splice(index, 1);
+                    category[0].save(function(err) {
+                        if (err) {
+                            console.log(err);
+                            return res.sendStatus(500);
+                        }
+                        db.forumModel.find({}, function (err, forum) {
+                            if (err) {
+                                console.log(err);
+                                return res.sendStatus(500);
+                            }
+                            console.log(subcategoria+" deleted");
+                            return res.send(forum);
+                        });
+                    });
+                }
+            }
         }
-        console.log(doc+" deleted from db");
-        return res.sendStatus(200);
     });
 }
-
+/*
 exports.updateProject = function(req, res) {
     console.log(req.body);
     db.projectModel.findOne({ name: req.body.oldname }, function(err, project) {

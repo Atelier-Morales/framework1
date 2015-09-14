@@ -7,11 +7,14 @@
     <sidebar-user ng-if="!userInfo.is_admin"></sidebar-user>
 
     <!-- main content goes here -->
-    <header class="row">
-      <div class="small-12 columns">
-        <h1 class="text-center">Welcome {{ userInfo.username }}{{ API_URL }}</h1>
-      </div>
-    </header>
+        
+    <div class="row">
+            <div class="large-12 columns">
+                <div class="panel">
+                    <h1>Welcome to the Intranet, {{ userInfo.username }}{{ API_URL }}</h1>
+                </div>
+            </div>
+    </div>
     
     <div class="row">
       <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">

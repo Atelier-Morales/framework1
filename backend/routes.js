@@ -80,6 +80,8 @@ app.post('/forum/createCategory', routes.forum.createCategory);
 
 app.post('/forum/createSubCategory', routes.forum.createSubCategory);
 
+app.post('/forum/removeSubCategory', routes.forum.removeSubCategory);
+
 //email 
 
 app.post('/emailSend', routes.mailer.sendEmail);

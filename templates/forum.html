@@ -1,6 +1,6 @@
 <link href='https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
 
-<div class="off-canvas-wrap move-right" data-offcanvas>
+<div class="off-canvas-wrap move-right" style="overflow: visible;" data-offcanvas>
     <div class="inner-wrap">
 
     <sidebar-admin ng-if="userInfo.is_admin"></sidebar-admin>
@@ -18,7 +18,7 @@
             <h1>Forum {{ setUsername(userInfo.username) }}</h1>
           </div>
         </div>
-      </div>
+    </div>
     
     <div class="row forum-column">
       <div>
@@ -30,7 +30,7 @@
                 <div id="panel1{{category.id}}" class="content">
                     <ul>
                         <li style="background:none;content:none" class="accordion-navigation" ng-repeat="subcategory in category.subCategories">
-                            <a href="#panel1{{subcategory.id}}">{{ subcategory.name }} <i class="fi-x"></i></a>
+                            <a href="#panel1{{subcategory.id}}">{{ subcategory.name }} <i ng-click="removeSubcategory(category.name, subcategory.name)" class="fi-x"></i></a>
                         </li>
                     </ul>
                     <br>
@@ -50,23 +50,41 @@
                             z-index: 0;">
       <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
         <br>
-        <h2 style="padding-left:15px;">Available Projects</h2> 
-          <button ng-if="userInfo.is_admin" href="#" data-reveal-id="projectModal">Create a Project</button>
+        <h2 style="padding-left:15px;">Latest posts</h2> 
         <br>
         
-        <div class="large-12 medium-12 small-12 columns">
-            <div class="panel callout radius large-4 medium-6 small-12 columns end" ng-repeat="project in projects">
-              <div class="callout-card-content">
-                <h3 class="lead">{{ project.name }}</h3>
-                <p>Deadline : {{ project.deadline }}</p>
-                <p>Description : {{ project.description }}</p>
+        <link href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/6035/icomoon-uikit-feb.css" rel="stylesheet">
+
+            <div class="row">
+              <div class="small-12 medium-12 small-centered columns" ng-repeat="categorias in categoriesCopy"> 
+                <div class="weather subcat">
+
+                  <header class="header head{{$index}}">
+                    <h2>{{ categorias.name }}</h2>
+                    <div class="weather-icon-shadow">
+                      <span class="fi-comments"></span>
+                    </div>
+                  </header>
+
+                  <article ng-repeat="subcategorias in categoriesCopy[$index].subCategories">
+                    <h3 style="padding-left:30px;">{{ subcategorias.name }}</h3>  
+                    <ul>  
+                      <li class="day">
+                        <span class="image">
+                          <img src="http://placehold.it/50x50/f2f2f2" />
+                        </span>                
+                        <span class="day-title">test</span><br />
+                        <span class="temp">82&#176;</span>
+                      </li>
+                    </ul>
+
+                  </article>
+
+                </div>
               </div>
-                <button ng-if="userInfo.is_admin" ng-click="setIndex($index)" href="#" data-reveal-id="updateProjectModal">Update</button>
-                <a ng-if="userInfo.is_admin" ng-click="deleteProject(project.name)" class="button alert">Remove</a>
-                <a href="#" ng-click="registerProject(project.name, username, project.deadline)" class="button success">Register</a>
-            </div> 
+            </div>
+          
         </div>
-      </div>
     </div> 
 
     <!-- close the off-canvas menu -->
