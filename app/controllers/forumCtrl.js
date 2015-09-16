@@ -25,11 +25,13 @@
             console.log($stateParams);
             var colors = ['turquoise', 'crimson', 'blanchedalmond', 'darkorange', 'dodgerblue', 'rebeccapurple', 'thistle', 'wheat', 'teal', 'darksalmon'];
             
+            $scope.isBodyCommentOpen = false;
+            
             function fetchThreads() {
                 forumService.getThreads()
                 .success(function(data) {
-                    $scope.threads = data;
-                    $scope.threadsCopy = angular.copy($scope.threads);
+                    $rootScope.threads = data;
+                    $rootScope.threadsCopy = angular.copy($rootScope.threads);
                 })
                 .error(function(status, data) {
                     console.log(status);
@@ -41,14 +43,15 @@
             function fetchCategories() {
                 forumService.getTopics()
                 .success(function(data){
-                    $scope.categories = data;
-                    $scope.categoriesCopy = angular.copy($scope.categories);
+                    $rootScope.categories = data;
+                    $rootScope.categoriesCopy = angular.copy($rootScope.categories);
                     $timeout(function() {
-                        for (var i = 0; i < $scope.categoriesCopy.length; i++) {
+                        for (var i = 0; i < $rootScope.categoriesCopy.length; i++) {
                             var random_color = colors[Math.floor(Math.random() * colors.length)];
                             var classy = '.head'+i; 
                             $(classy).css('background', random_color);
                         }
+                        
                     });
                 })
                 .error(function(status, data) {
@@ -58,10 +61,15 @@
                 });
             }
             
+            $scope.openBodyCommentBox = function() {
+                if ($scope.isBodyCommentOpen === true)
+                    $scope.isBodyCommentOpen = false;
+                else
+                    $scope.isBodyCommentOpen = true;
+            }
+            
             $scope.moveTop = function() {
-                setTimeout(function(){
-                    $('html, body').scrollTop(0);
-                }, 14);
+                $('html, body').animate({scrollTop:0});
             }
             
             $scope.fetchPost = function() {
@@ -92,6 +100,21 @@
             fetchCategories();
             fetchThreads();
             
+            $scope.postComment = function(author, comment, id) {
+                console.log(author+' '+comment+' '+id);
+                forumService.postCommentBody(author, comment, id)
+                .success(function(data) {
+                    $scope.isBodyCommentOpen = false;
+                    fetchThreads();
+                })
+                .error(function(status, data) {
+                    $scope.isBodyCommentOpen = false;
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
+            }
+            
             $scope.createCategory = function createCategory(name) {
                 forumService.createTopic(name)
                 .success(function(data) {
@@ -109,6 +132,7 @@
                 forumService.createSubTopic(name, category)
                 .success(function(data) {
                     $('#categoryModal').foundation('reveal', 'close');
+                    console.log('category created');
                     fetchCategories();
                 })
                 .error(function(status, data) {
@@ -121,6 +145,7 @@
             $scope.removeSubcategory = function removeSubcategory(category, subcategory) {
                 forumService.removeSubTopic(category, subcategory)
                 .success(function(data) {
+                    console.log('category removed');
                     fetchCategories();
                 })
                 .error(function(status, data) {

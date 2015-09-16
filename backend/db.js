@@ -80,6 +80,13 @@ var Forum = new Schema({
                 }
             ],
             body: { type: String, required: true },
+            bodyComments: [
+                {
+                    author : { type: String, required: true },
+                    created: { type: Date, default: Date.now },
+                    replyBody: { type: String, required: true },
+                }
+            ],
             comments: [
                 {
                     author: { type: String, required: true },
@@ -89,7 +96,6 @@ var Forum = new Schema({
                     replies: [
                         {
                             author : { type: String, required: true },
-                            authorId: { type: String, required: true },
                             created: { type: Date, default: Date.now },
                             replyBody: { type: String, required: true },
                         }

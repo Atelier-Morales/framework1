@@ -30,7 +30,7 @@
                 <div id="panel1{{category.id}}" class="content">
                     <ul>
                         <li style="background:none;content:none" class="accordion-navigation" ng-repeat="subcategory in category.subCategories">
-                            <a href="#panel1{{subcategory.id}}">{{ subcategory.name }} <i ng-click="removeSubcategory(category.name, subcategory.name)" class="fi-x"></i></a>
+                            <a>{{ subcategory.name }} <i ng-click="removeSubcategory(category.name, subcategory.name)" class="fi-x"></i></a>
                         </li>
                     </ul>
                     <br>

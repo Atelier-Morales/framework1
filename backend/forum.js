@@ -120,7 +120,10 @@ exports.removeSubCategory = function(req, res) {
                         index = 1;
                 }
                 if (index > 0) {
-                    category[0].categories[i].subCategories.splice(index, 1);
+                    if (category[0].categories[i].subCategories.length === 1)
+                        category[0].categories[i].subCategories.shift();
+                    else
+                        category[0].categories[i].subCategories.splice(index, 1);
                     category[0].save(function(err) {
                         if (err) {
                             console.log(err);
@@ -192,5 +195,41 @@ exports.fetchThreads = function(req, res) {
         if (categories[0] == undefined)
             return res.sendStatus(401);
         return res.send(categories[0].threads);       
+    });
+}
+
+exports.postCommentBody = function(req, res) {
+    var author = req.body.author || '';
+    var comment = req.body.comment || '';
+    var id = req.body.id || '';
+    console.log(author+' '+comment+' '+id);
+    db.forumModel.find({}, function(err, result) {
+        if (err) {
+			console.log(err);
+			return res.send(401);
+		}
+        if (result[0] == undefined)
+            return res.sendStatus(401);
+        result[0].threads[id].bodyComments.push(
+            {
+                author : author,
+                replyBody: comment
+            }
+        );
+        result[0].save(function(err) {
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+            db.forumModel.find({}, function (err, forum) {
+                if (err) {
+                    console.log(err);
+                    return res.sendStatus(500);
+                }
+                console.log("Comment posted");
+                console.log(result[0].threads[id]);
+                return res.sendStatus(200);
+            });
+        });
     });
 }

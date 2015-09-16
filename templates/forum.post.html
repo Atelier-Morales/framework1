@@ -15,21 +15,39 @@
       <div class="row">
         <div class="large-2 columns small-3"><img src="http://placehold.it/80x80&text=[img]" /></div>
         <div class="large-10 columns">
-          <p><strong>{{ threads[postId].creator }}:</strong> {{ threads[postId].body }}</p>
+          <p><strong>{{ threads[postId].creator }}:</strong> {{ threads[postId].body }}<br>
           <cite style="font-size:small;">Posted on {{ threads[postId].created | date:'medium'}}</cite>
+          </p>
+          <a class="replyButton" ng-click="openBodyCommentBox()">Comment</a>
           <br>
-          <a class="replyButton" href="">Reply</a>
- 
- 
-          <h6>2 Comments</h6>
-          <div class="row">
+          <h6><ng-pluralize count="threads[postId].bodyComments.length"
+                 when="{'0': 'No comment yet.',
+                     '1': '1 comment.',
+                     'other': '{} comments.'}">
+</ng-pluralize></h6>
+            
+          <div class="row" ng-repeat="comment in threads[postId].bodyComments">
             <div class="large-2 columns small-3"><img src="http://placehold.it/50x50&text=[img]" /></div>
-            <div class="large-10 columns"><p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit</p></div>
+            <div class="large-10 columns">
+                <p><strong>{{ comment.author }}:</strong> {{ comment.replyBody }}<br>
+                <cite style="font-size:small;">Posted on {{ comment.created | date:'medium'}}</cite></p></div><br><br>
+              
           </div>
-          <div class="row">
-            <div class="large-2 columns small-3"><img src="http://placehold.it/50x50&text=[img]" /></div>
-            <div class="large-10 columns"><p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit</p></div>
-          </div>
+            
+          <form ng-show="isBodyCommentOpen === true" name="bodycommentForm" novalidate>           
+              <div class="row">
+                <label>write your comment Here
+                </label>
+                <div class="row collapse">
+                    <div class="small-11 columns">
+                      <textarea name="bodyComment" ng-model="bodyComment" placeholder="Type a few words..." required></textarea>
+                    </div>
+                    <div class="small-1 columns">
+                      <a ng-disabled="bodycommentForm.bodyComment.$error.required" ng-click="postComment( userInfo.username, bodyComment, postId)" class="button postfix">go</a>
+                    </div>
+                </div>
+          </form>
+              
         </div>
         <hr />
         <div class="large-12 columns small-3">
@@ -42,7 +60,7 @@
                       <textarea name="body" ng-model="body" placeholder="Type a few words..." required></textarea>
                     </div>
                     <div class="small-1 columns">
-                      <a href="#" class="button postfix">Go</a>
+                      <a href="#" class="button postfix">go</a>
                     </div>
                 </div>
             </form>

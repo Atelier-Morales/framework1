@@ -43,6 +43,13 @@
             },
             getThreads: function() {
                 return $http.get(API_URL + '/forum/threads');
+            },
+            postCommentBody: function(author, comment, id) {
+                return $http.post(API_URL + '/forum/postCommentBody', {
+                    author: author,
+                    comment: comment,
+                    id: id
+                });
             }
         }
     });
