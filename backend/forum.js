@@ -114,10 +114,14 @@ exports.removeSubCategory = function(req, res) {
     db.forumModel.find({}, function(err, category) {
         for (var i = 0; i < category[0].categories.length; ++i) {
             if (category[0].categories[i].name === categoria) {
-                console.log('YES');
-                var index = category[0].categories[i].subCategories.indexOf(subcategoria);
-                if (index > -1) {
-                    console.log('YES2');
+                var index = 0;
+                var pos = i;
+                console.log(category[0].categories[pos].subCategories);
+                for (var j = 0; j < category[0].categories[pos].subCategories.length; ++j) {
+                    if (category[0].categories[pos].subCategories[j].name === subcategoria)
+                        index = 1;
+                }
+                if (index > 0) {
                     category[0].categories[i].subCategories.splice(index, 1);
                     category[0].save(function(err) {
                         if (err) {
