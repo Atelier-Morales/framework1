@@ -1,0 +1,111 @@
+<div class="row" style="padding-left: 341px;
+                            top: 130px;
+                            position: absolute;
+                            z-index: 0;">
+      <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
+        <br>
+        <h2 style="padding-left:15px;">Latest posts</h2> 
+        <br>
+
+        <link href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/6035/icomoon-uikit-feb.css" rel="stylesheet">
+
+            <div class="row">
+              <div class="small-12 medium-12 small-centered columns" ng-repeat="categorias in categoriesCopy"> 
+                <div class="weather subcat">
+
+                  <header class="header head{{$index}}">
+                    <h2>{{ categorias.name }}</h2>
+                    <div class="weather-icon-shadow">
+                      <span class="fi-comments"></span>
+                    </div>
+                  </header>
+
+                  <article ng-repeat="subcategorias in categoriesCopy[$index].subCategories">
+                    <br>
+                    <h3 class="subheader" style="padding-left:30px;">{{ subcategorias.name }}</h3>  
+                    <hr>  
+                    <ul ng-repeat="thread in threads">  
+                      <li class="day" style="cursor:pointer;" ng-if="checkCategory(thread, categorias, subcategorias) === 1">
+                        <a ng-href="forum/{{ categorias.id }}/{{ subcategorias.id }}/{{ thread.id}}">
+                        <span class="image">
+                            <img src="http://placehold.it/50x50/f2f2f2" />
+                        </span>                
+                        <span class="day-title">{{ thread.title }}</span><br />
+                        <span class="temp">created by {{ thread.creator }} on {{ thread.created | date:'medium'}}</span>
+                        </a>
+                      </li>
+                    </ul>
+                    <button class="button small radius subcategory" 
+                            data-reveal-id="threadModal" 
+                            ng-click="setThreadCategories(categorias.name, subcategorias.name)">Create a thread in {{ subcategorias.name }}</button>
+                  </article>
+
+                </div>
+                
+              </div>
+            </div>
+          
+        </div>
+</div>
+
+<div id="threadModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
+    <div class="section-container tabs" data-section="tabs">
+        <section class="active">
+          <div class="content" data-section-content>
+            <p>
+              <div class="row">
+                <div class="large-12 columns">
+                  <div class="signup-panel">
+                    <p class="welcome">Create a thread in {{ threadSubcategory }}</p>
+                    <form name="threadForm" novalidate>
+                      
+                      <div class="row collapse">
+                        <div class="small-12  columns">
+                          <label>Title
+                            <input type="text" name="name" ng-model="name" required>
+                          </label>
+                        </div>
+                      </div>
+                        
+                      <div class="row collapse">
+                        <div class="small-12  columns">
+                          <label>Category
+                            <input type="text" name="category" ng-model="category" required value="{{ threadCategory }}" placeholder="{{ threadCategory }}" disabled="disabled">
+                          </label>
+                        </div>
+                      </div>
+                      
+                      <div class="row collapse">
+                        <div class="small-12  columns">
+                          <label>Subcategory
+                            <input type="text" name="subcategory" ng-model="subcategory" value="{{ threadSubcategory }}" placeholder="{{ threadSubcategory }}" disabled="disabled" required>
+                          </label>
+                        </div>
+                      </div>
+                        
+                      <div class="row">
+                        <div class="large-12 columns">
+                          <label>Body
+                            <textarea name="body" ng-model="body" placeholder="Put your comment here" required></textarea>
+                          </label>
+                        </div>
+                      </div>    
+        
+                      <br><br>
+                      <button ng-disabled="threadForm.name.$error.required ||
+                                           threadForm.body.$error.required" 
+                              ng-click="createThread(name, threadCategory, threadSubcategory, body, userInfo.username)" class="button">
+                            Create
+                      </button>
+                    </form>
+                    <span style="color:red" ng-show="regError">
+                        Thread creation error!
+                    </span>
+                  </div>
+                </div>
+               </div></p>
+          </div>
+        </section>
+    </div>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>

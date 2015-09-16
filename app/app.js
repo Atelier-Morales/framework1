@@ -19,7 +19,8 @@
     app.config(function($stateProvider, $urlRouterProvider, $locationProvider){
  
         $urlRouterProvider.otherwise('/home');
-
+        $urlRouterProvider.when("/forum", "/forum/list");
+        
         $stateProvider
         .state('home',{
             url: '/home',
@@ -90,6 +91,16 @@
                     controller: 'forumCtrl'
                 }
             }
+        })
+        .state('forum.list', {
+            url: '/list',
+            templateUrl: '/templates/forum.list.html',
+            controller: 'forumCtrl'
+        })
+        .state('forum.post', {
+            url: '/:catId/:subcatId/:id',
+            templateUrl: '/templates/forum.post.html',
+            controller: 'forumCtrl'
         })
         .state('forbidden', {
             url: '/403',

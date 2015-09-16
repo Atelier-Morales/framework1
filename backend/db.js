@@ -74,14 +74,10 @@ var Forum = new Schema({
             id: { type: Number,  required: true, unique: true },
             created: { type: Date, default: Date.now },
             creator: { type: String, required: true},
-            creatorId: { type: String, required: true },
             category: [
                 { 
                     name: { type: String, required: true, unique: true }
                 }
-            ],
-            tag: [
-                { name: { type: String, unique: true } }
             ],
             body: { type: String, required: true },
             comments: [

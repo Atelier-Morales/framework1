@@ -391,8 +391,21 @@
   font-size: 20px;
 }
 
+.backToList {
+  float: right !important;
+  margin-top: -100px;
+}
+
 .subcategory {
   margin-left: 30px;
+}
+
+.replyButton {
+  font-size: medium;
+}
+
+.backToList:hover, .replyButton:hover {
+  border-bottom: 2px solid #87d37c;
 }
 
 .hero {

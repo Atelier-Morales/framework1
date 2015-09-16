@@ -1,0 +1,54 @@
+<div class="row" style="padding-left: 341px;
+                            top: 130px;
+                            position: absolute;
+                            z-index: 0;">
+      <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
+        <br>
+        <h2 style="padding-left:15px;">{{ fetchPost() }} {{ threads[postId].title }}</h2>
+        <br>
+        <a class="backToList" ui-sref="forum">Go back to list</a>
+
+        <link href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/6035/icomoon-uikit-feb.css" rel="stylesheet">
+          <div class="large-12 columns">
+ 
+      <!-- Feed Entry -->
+      <div class="row">
+        <div class="large-2 columns small-3"><img src="http://placehold.it/80x80&text=[img]" /></div>
+        <div class="large-10 columns">
+          <p><strong>{{ threads[postId].creator }}:</strong> {{ threads[postId].body }}</p>
+          <cite style="font-size:small;">Posted on {{ threads[postId].created | date:'medium'}}</cite>
+          <br>
+          <a class="replyButton" href="">Reply</a>
+ 
+ 
+          <h6>2 Comments</h6>
+          <div class="row">
+            <div class="large-2 columns small-3"><img src="http://placehold.it/50x50&text=[img]" /></div>
+            <div class="large-10 columns"><p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit</p></div>
+          </div>
+          <div class="row">
+            <div class="large-2 columns small-3"><img src="http://placehold.it/50x50&text=[img]" /></div>
+            <div class="large-10 columns"><p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit</p></div>
+          </div>
+        </div>
+        <hr />
+        <div class="large-12 columns small-3">
+            <form name="threadForm" novalidate>           
+              <div class="row">
+                <label>Post your response Here
+                </label>
+                <div class="row collapse">
+                    <div class="small-11 columns">
+                      <textarea name="body" ng-model="body" placeholder="Type a few words..." required></textarea>
+                    </div>
+                    <div class="small-1 columns">
+                      <a href="#" class="button postfix">Go</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+      </div>
+      <!-- End Feed Entry -->
+    </div>        
+  </div>
+</div>

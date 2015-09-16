@@ -76,11 +76,15 @@ app.post('/project/updateProject', routes.projects.updateProject);
 
 app.get('/forum/categories', routes.forum.fetchCategories);
 
+app.get('/forum/threads', routes.forum.fetchThreads);
+
 app.post('/forum/createCategory', routes.forum.createCategory);
 
 app.post('/forum/createSubCategory', routes.forum.createSubCategory);
 
 app.post('/forum/removeSubCategory', routes.forum.removeSubCategory);
+
+app.post('/forum/createThread', routes.forum.createThread);
 
 //email 
 

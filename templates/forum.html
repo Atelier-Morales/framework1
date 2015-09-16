@@ -26,7 +26,7 @@
         <br> 
         <ul class="accordion" data-accordion ng-repeat="category in categoriesCopy">
             <li class="accordion-navigation" id="top">
-                <a href="#panel1{{category.id}}">{{ category.name }}</a>
+                <a href="#panel1{{category.id}}" ng-click="moveTop();">{{ category.name }}</a>
                 <div id="panel1{{category.id}}" class="content">
                     <ul>
                         <li style="background:none;content:none" class="accordion-navigation" ng-repeat="subcategory in category.subCategories">
@@ -43,50 +43,7 @@
         <br>
       </div>
     </div>
-        
-    <div class="row" style="padding-left: 341px;
-                            top: 130px;
-                            position: absolute;
-                            z-index: 0;">
-      <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
-        <br>
-        <h2 style="padding-left:15px;">Latest posts</h2> 
-        <br>
-        
-        <link href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/6035/icomoon-uikit-feb.css" rel="stylesheet">
-
-            <div class="row">
-              <div class="small-12 medium-12 small-centered columns" ng-repeat="categorias in categoriesCopy"> 
-                <div class="weather subcat">
-
-                  <header class="header head{{$index}}">
-                    <h2>{{ categorias.name }}</h2>
-                    <div class="weather-icon-shadow">
-                      <span class="fi-comments"></span>
-                    </div>
-                  </header>
-
-                  <article ng-repeat="subcategorias in categoriesCopy[$index].subCategories">
-                    <h3 style="padding-left:30px;">{{ subcategorias.name }}</h3>  
-                    <ul>  
-                      <li class="day">
-                        <span class="image">
-                          <img src="http://placehold.it/50x50/f2f2f2" />
-                        </span>                
-                        <span class="day-title">test</span><br />
-                        <span class="temp">82&#176;</span>
-                      </li>
-                    </ul>
-
-                  </article>
-
-                </div>
-              </div>
-            </div>
-          
-        </div>
-    </div> 
-
+    <div ui-view></div>
     <!-- close the off-canvas menu -->
     <a class="exit-off-canvas"></a>
 

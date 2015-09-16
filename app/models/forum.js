@@ -31,6 +31,18 @@
                     category: category,
                     subcategory: subcategory
                 });
+            },
+            createThread: function(name, category, subcategory, body, author) {
+                return $http.post(API_URL + '/forum/createThread', {
+                    name: name,
+                    category: category,
+                    subcategory: subcategory,
+                    body: body,
+                    author: author
+                });
+            },
+            getThreads: function() {
+                return $http.get(API_URL + '/forum/threads');
             }
         }
     });

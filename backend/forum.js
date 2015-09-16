@@ -107,7 +107,6 @@ exports.removeSubCategory = function(req, res) {
     var categoria = req.body.category || '';
     var subcategoria = req.body.subcategory || '';
     
-    console.log(categoria+' '+subcategoria);
     if (categoria == '' || subcategoria == '')
         return res.sendStatus(400);
     
@@ -116,7 +115,6 @@ exports.removeSubCategory = function(req, res) {
             if (category[0].categories[i].name === categoria) {
                 var index = 0;
                 var pos = i;
-                console.log(category[0].categories[pos].subCategories);
                 for (var j = 0; j < category[0].categories[pos].subCategories.length; ++j) {
                     if (category[0].categories[pos].subCategories[j].name === subcategoria)
                         index = 1;
@@ -142,25 +140,57 @@ exports.removeSubCategory = function(req, res) {
         }
     });
 }
-/*
-exports.updateProject = function(req, res) {
-    console.log(req.body);
-    db.projectModel.findOne({ name: req.body.oldname }, function(err, project) {
-        if (err || project === null) {
-            console.log(err);
-            return res.sendStatus(401);
-        }
-        console.log(project+"   FUCK");
-        if (project.name != req.body.name)
-            project.name = req.body.name;
-        if (project.deadline != req.body.deadline)
-            project.deadline = req.body.deadline;
-        if (project.description != req.body.description)
-            project.description = req.body.description;
-        project.save();
-        
-        console.log(project);
-        
-        return res.sendStatus(200);
+
+exports.createThread = function(req, res) {
+    var title = req.body.name || '';
+    var body = req.body.body || '';
+    var category = req.body.category || '';
+    var subcategory = req.body.subcategory ||  '';
+    var author = req.body.author || '';
+    
+    if (title === '' || body === '' || author === '')
+        return res.sendStatus(400);
+    
+    db.forumModel.find({}, function(err, result) {
+        if (err) {
+			console.log(err);
+			return res.send(401);
+		}
+        result[0].threads.push({
+            title: title,
+            id: result[0].threads.length,
+            creator: author,
+            category: [
+                { name: category },
+                { name: subcategory }],
+            body: body,
+            comments: []
+        });
+        result[0].save(function(err) {
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+            db.forumModel.find({}, function (err, forum) {
+                if (err) {
+                    console.log(err);
+                    return res.sendStatus(500);
+                }
+                console.log("Thread "+title+" created\n"+forum[0].threads);
+                return res.send(forum[0].threads);
+            });
+        });
     });
-}*/
+}
+
+exports.fetchThreads = function(req, res) {
+    db.forumModel.find({}, function(err, categories) {
+        if (err) {
+			console.log(err);
+			return res.send(401);
+		}
+        if (categories[0] == undefined)
+            return res.sendStatus(401);
+        return res.send(categories[0].threads);       
+    });
+}
