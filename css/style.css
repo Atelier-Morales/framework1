@@ -408,6 +408,10 @@
   border-bottom: 2px solid #87d37c;
 }
 
+.pluralize {
+  margin-left: 125px;
+}
+
 .hero {
   background: url("https://images7.alphacoders.com/330/330811.jpg") no-repeat center center;
   background-size: cover;

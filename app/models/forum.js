@@ -50,6 +50,13 @@
                     comment: comment,
                     id: id
                 });
+            },
+            postReply: function(author, comment, id) {
+                return $http.post(API_URL + '/forum/postReply', {
+                    author: author,
+                    comment: comment,
+                    id: id
+                });
             }
         }
     });

@@ -88,6 +88,8 @@ app.post('/forum/createThread', routes.forum.createThread);
 
 app.post('/forum/postCommentBody', routes.forum.postCommentBody);
 
+app.post('/forum/postReply', routes.forum.postReply);
+
 //email 
 
 app.post('/emailSend', routes.mailer.sendEmail);

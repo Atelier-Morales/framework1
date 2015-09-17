@@ -202,7 +202,12 @@ exports.postCommentBody = function(req, res) {
     var author = req.body.author || '';
     var comment = req.body.comment || '';
     var id = req.body.id || '';
-    console.log(author+' '+comment+' '+id);
+    
+    if (author === '' || comment === '' || id === '') {
+        console.log(err);
+        return res.send(400);
+    }
+        
     db.forumModel.find({}, function(err, result) {
         if (err) {
 			console.log(err);
@@ -233,3 +238,61 @@ exports.postCommentBody = function(req, res) {
         });
     });
 }
+
+exports.postReply = function(req, res) {
+    var author = req.body.author || '';
+    var comment = req.body.comment || '';
+    var id = req.body.id || '';
+    
+    if (author === '' || comment === '' || id === '') {
+        console.log(err);
+        return res.send(400);
+    }
+    
+    db.forumModel.find({}, function(err, result) {
+        if (err) {
+			console.log(err);
+			return res.send(401);
+		}
+        if (result[0] == undefined)
+            return res.sendStatus(401);
+        result[0].threads[id].comments.push(
+            {
+                author : author,
+                commentBody: comment,
+                id: result[0].threads[id].comments.length,
+                replies: []
+            }
+        );
+        result[0].save(function(err) {
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+            db.forumModel.find({}, function (err, forum) {
+                if (err) {
+                    console.log(err);
+                    return res.sendStatus(500);
+                }
+                console.log("Reply posted");
+                console.log(result[0].threads[id].comments);
+                return res.sendStatus(200);
+            });
+        });
+    });
+}
+
+comments: [
+                {
+                    author: { type: String, required: true },
+                    created: { type: Date, default: Date.now },
+                    commentBody: { type: String, required: true },
+                    replies: [
+                        {
+                            author : { type: String, required: true },
+                            created: { type: Date, default: Date.now },
+                            replyBody: { type: String, required: true },
+                        }
+                    ]
+                }
+            ]

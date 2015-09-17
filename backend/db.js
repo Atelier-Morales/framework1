@@ -90,7 +90,7 @@ var Forum = new Schema({
             comments: [
                 {
                     author: { type: String, required: true },
-                    authorId: { type: String, required: true},
+                    id: { type: Number,  required: true, unique: true },
                     created: { type: Date, default: Date.now },
                     commentBody: { type: String, required: true },
                     replies: [

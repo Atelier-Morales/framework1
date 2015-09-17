@@ -101,7 +101,6 @@
             fetchThreads();
             
             $scope.postComment = function(author, comment, id) {
-                console.log(author+' '+comment+' '+id);
                 forumService.postCommentBody(author, comment, id)
                 .success(function(data) {
                     $scope.isBodyCommentOpen = false;
@@ -109,6 +108,19 @@
                 })
                 .error(function(status, data) {
                     $scope.isBodyCommentOpen = false;
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
+            }
+            
+            $scope.postReply = function(author, comment, id) {
+                forumService.postReply(author, comment, id)
+                .success(function(data) {
+                    $('#replyBody').val('')
+                    fetchThreads();
+                })
+                .error(function(status, data) {
                     console.log(status);
                     console.log(data);
                     console.log('Could not fetch info');
