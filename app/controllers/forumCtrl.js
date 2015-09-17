@@ -26,6 +26,7 @@
             var colors = ['turquoise', 'crimson', 'blanchedalmond', 'darkorange', 'dodgerblue', 'rebeccapurple', 'thistle', 'wheat', 'teal', 'darksalmon'];
             
             $scope.isBodyCommentOpen = false;
+            $scope.isCommentOpen = null;
             
             function fetchThreads() {
                 forumService.getThreads()
@@ -68,6 +69,13 @@
                     $scope.isBodyCommentOpen = true;
             }
             
+            $scope.openCommentBox = function(index) {
+                if ($scope.isCommentOpen === index)
+                    $scope.isCommentOpen = null;
+                else
+                    $scope.isCommentOpen = index;
+            }
+            
             $scope.moveTop = function() {
                 $('html, body').animate({scrollTop:0});
             }
@@ -103,6 +111,7 @@
             $scope.postComment = function(author, comment, id) {
                 forumService.postCommentBody(author, comment, id)
                 .success(function(data) {
+                    $('#commentBox').val('')
                     $scope.isBodyCommentOpen = false;
                     fetchThreads();
                 })
@@ -118,6 +127,20 @@
                 forumService.postReply(author, comment, id)
                 .success(function(data) {
                     $('#replyBody').val('')
+                    fetchThreads();
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
+            }
+            
+            $scope.postReplyComment = function(author, comment, postId, id) {
+                console.log(postId+' '+id);
+                forumService.postReplyComment(author, comment, postId, id)
+                .success(function(data) {
+                    $('#replyComment').val('')
                     fetchThreads();
                 })
                 .error(function(status, data) {

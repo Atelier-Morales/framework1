@@ -282,6 +282,46 @@ exports.postReply = function(req, res) {
     });
 }
 
+exports.postReplyComment = function(req, res) {
+    var author = req.body.author || '';
+    var comment = req.body.comment || '';
+    var postId = req.body.postId || '';
+    var id = req.body.id;
+    
+    console.log(author+' '+comment+' '+postId+' '+id);
+    if (author === '' || comment === '' || postId === '' || id === '')
+        return res.sendStatus(400);
+    
+    db.forumModel.find({}, function(err, result) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(401);
+        }
+        if (result[0] == undefined)
+            return res.sendStatus(401);
+        result[0].threads[postId].comments[id].replies.push(
+            {
+                author: author,
+                replyBody: comment
+            }
+        );
+        result[0].save(function(err) {
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+            db.forumModel.find({}, function(err, forum) {
+                if (err) {
+                    console.log(err)
+                    return res.sendStatus(500);
+                }
+                console.log('Comment to reply posted');
+                return res.sendStatus(200);
+            });
+        });
+    });
+}
+/*
 comments: [
                 {
                     author: { type: String, required: true },
@@ -295,4 +335,4 @@ comments: [
                         }
                     ]
                 }
-            ]
+            ]*/

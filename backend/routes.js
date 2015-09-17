@@ -90,6 +90,8 @@ app.post('/forum/postCommentBody', routes.forum.postCommentBody);
 
 app.post('/forum/postReply', routes.forum.postReply);
 
+app.post('/forum/postReplyComment', routes.forum.postReplyComment);
+
 //email 
 
 app.post('/emailSend', routes.mailer.sendEmail);

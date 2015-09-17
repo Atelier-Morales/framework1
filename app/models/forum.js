@@ -57,6 +57,14 @@
                     comment: comment,
                     id: id
                 });
+            },
+            postReplyComment: function(author, comment, postId, id) {
+                return $http.post(API_URL + '/forum/postReplyComment', {
+                    author: author,
+                    comment: comment,
+                    postId: postId,
+                    id: id
+                });
             }
         }
     });

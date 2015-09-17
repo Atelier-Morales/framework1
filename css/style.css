@@ -412,6 +412,10 @@
   margin-left: 125px;
 }
 
+.commentLink {
+  text-align: center;
+}
+
 .hero {
   background: url("https://images7.alphacoders.com/330/330811.jpg") no-repeat center center;
   background-size: cover;
