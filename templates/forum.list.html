@@ -25,14 +25,14 @@
                     <h3 class="subheader" style="padding-left:30px;">{{ subcategorias.name }}</h3>  
                     <hr>  
                     <ul ng-repeat="thread in threads">  
-                      <li class="day" style="cursor:pointer;" ng-if="checkCategory(thread, categorias, subcategorias) === 1">
-                        <a ng-href="forum/{{ categorias.id }}/{{ subcategorias.id }}/{{ thread.id}}">
-                        <span class="image">
-                            <img src="http://placehold.it/50x50/f2f2f2" />
-                        </span>                
-                        <span class="day-title">{{ thread.title }}</span><br />
-                        <span class="temp">created by {{ thread.creator }} on {{ thread.created | date:'medium'}}</span>
-                        </a>
+                      <li class="day" style="cursor:pointer;" ng-if="checkCategory(thread, categorias, subcategorias) === 1" ng-click="$state.go('forum/{{ categorias.id }}/{{ subcategorias.id }}/{{ thread.id}}')">
+                        <div >
+                            <span class="image">
+                                <img src="http://placehold.it/50x50/f2f2f2" />
+                            </span>                
+                            <span class="day-title">{{ thread.title }}</span><br />
+                            <span class="temp">created by {{ thread.creator }} on {{ thread.created | date:'medium'}}</span>
+                        </div>
                       </li>
                     </ul>
                     <button class="button small radius subcategory" 
