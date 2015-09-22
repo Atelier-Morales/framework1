@@ -9,6 +9,7 @@
         'projectCtrl',
         'userMgmtCtrl',
         'forumCtrl',
+        'ticketCtrl',
         'userAuth',
         'projectModel',
         'forumModel',
@@ -20,6 +21,7 @@
  
         $urlRouterProvider.otherwise('/home');
         $urlRouterProvider.when("/forum", "/forum/list");
+        $urlRouterProvider.when("/users", "/users/administration");
         
         $stateProvider
         .state('home',{
@@ -66,6 +68,21 @@
                 }
             }
         })
+        .state('users.administration', {
+            url: '/administration',
+            templateUrl: '/templates/users.administration.html',
+            controller: 'userMgmtCtrl'
+        })
+        .state('users.projects', {
+            url: '/projects',
+            templateUrl: '/templates/users.projects.html',
+            controller: 'projectCtrl'
+        })
+        .state('users.tickets', {
+            url: '/tickets',
+            templateUrl: '/templates/users.tickets.html',
+            controller: 'ticketCtrl'
+        })
         .state('projects', {
             url: '/projects',
             views: {
@@ -101,6 +118,19 @@
             url: '/:catId/:subcatId/:id',
             templateUrl: '/templates/forum.post.html',
             controller: 'forumCtrl'
+        })
+        .state('tickets', {
+            url: '/tickets',
+            views: {
+                'menu': {
+                    templateUrl: '/templates/menuLogged.html',
+                    controller: 'AdminUserCtrl'
+                },
+                'content': {
+                    templateUrl: '/templates/tickets.html',
+                    controller: 'ticketCtrl'
+                }
+            }
         })
         .state('forbidden', {
             url: '/403',
@@ -148,6 +178,7 @@
                  toState.name.indexOf('users') > -1     ||
                  toState.name.indexOf('forbidden') > -1 ||
                  toState.name.indexOf('forum') > -1 ||
+                 toState.name.indexOf('tickets') > -1 ||
                  toState.name.indexOf('projects') > -1)
                  && !$window.sessionStorage.token) {
                 // If logged out and transitioning to a logged in page:
@@ -195,6 +226,7 @@
                  (toState.name.indexOf('users') > -1     && $window.sessionStorage.token) ||
                  (toState.name.indexOf('forbidden') > -1 && $window.sessionStorage.token) ||
                  (toState.name.indexOf('forum') > -1 && $window.sessionStorage.token) ||
+                 (toState.name.indexOf('tickets') > -1 && $window.sessionStorage.token) ||
                  (toState.name.indexOf('projects') > -1  && $window.sessionStorage.token)) {
                     // If logged in and no user info:
                     console.log($rootScope.userInfo);

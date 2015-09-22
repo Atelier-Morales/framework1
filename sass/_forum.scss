@@ -81,7 +81,10 @@ $font: #888;
       font-size: 1.25rem;
       float: right;
     }
-  }  
+  }
+  .day:hover {
+      background: papayawhip;
+  }
 }
 
 .forum-column {

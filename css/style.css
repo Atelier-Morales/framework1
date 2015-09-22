@@ -204,6 +204,31 @@
 
 .item {
   width: 76% !important;
+  backface-visibility: hidden;
+  box-sizing: content-box;
+  cursor: auto;
+  display: block;
+  float: none;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 200;
+  height: 60px;
+  line-height: 24px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  margin-right: -16.3125px;
+  margin-top: 0px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  text-align: center;
+  text-decoration: none;
+}
+.item label {
+  -webkit-font-smoothing: antialiased;
+  font-variant: normal;
 }
 
 .ad-block {
@@ -296,6 +321,20 @@
   background: #f2f2f2 !important;
 }
 
+input[data-toggle] {
+  display: none;
+}
+
+input[data-toggle]:checked + label,
+input[data-toggle]:checked + label:active {
+  background-color: darkolivegreen;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.button-group.toggle li:not(first-child) {
+  margin: 0 -0.9rem;
+}
+
 .sb-date-select-select {
   display: inline-block;
   width: 100px;
@@ -374,6 +413,9 @@
   font-size: 1.25rem;
   float: right;
 }
+.weather .day:hover {
+  background: papayawhip;
+}
 
 .forum-column {
   width: 300px;
@@ -414,6 +456,54 @@
 
 .commentLink {
   text-align: center;
+}
+
+.event {
+  padding: 1rem 1rem 1rem 0;
+  display: table;
+}
+
+.event-date {
+  width: 6rem;
+  margin: 0 auto 1rem;
+  display: table-cell;
+  width: auto;
+}
+.event-date .event-month {
+  margin: 0;
+  background: #eee;
+  padding: 0.5rem 2rem;
+  text-align: center;
+}
+.event-date .event-day {
+  margin: 0;
+  border: 1px solid #eee;
+  padding: 0 2rem;
+  text-align: center;
+  font-size: 2rem;
+}
+
+.event-desc {
+  padding: 0 0 0 1rem;
+  text-align: left;
+  display: table-cell;
+  vertical-align: top;
+}
+.event-desc .event-desc-header {
+  margin: 0 0 0.5rem 0;
+  padding: 0;
+}
+.event-desc .event-desc-detail {
+  margin: 0 0 0.25rem;
+  padding: 0;
+}
+.event-desc .event-desc-time {
+  font-weight: bold;
+}
+.event-desc .rsvp.button {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin: 0;
 }
 
 .hero {

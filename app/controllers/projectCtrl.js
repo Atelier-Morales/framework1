@@ -44,11 +44,17 @@
             while (count < 12) 
                 $scope.months.push(moment().month(count++).format("MMMM"));
             
-            var count = 0;
+            var count = 1;
             $scope.days = [];
-            while (count < 31) 
-                $scope.days.push(moment().day(count++).format("DD"));
-            $scope.days.sort(); 
+            while (count < 31) {
+                if ($scope.days.indexOf(moment().day(count).format("DD")) === -1) {
+                    $scope.days.push(moment().day(count).format("DD"));
+                    count++;
+                }
+            }
+            $scope.days.push("31");
+            $scope.days.sort();
+            console.log($scope.days);
             
             $scope.years = ['2015', '2016'];
             

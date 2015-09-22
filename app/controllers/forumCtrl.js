@@ -19,9 +19,9 @@
         '$stateParams',
         'forumService',
         'moment',
-        function projectCtrl($rootScope, $scope, $location, $window, $state, $log, $timeout, $stateParams, forumService, moment) {
+        function forumCtrl($rootScope, $scope, $location, $window, $state, $log, $timeout, $stateParams, forumService, moment) {
             console.log('Forum section');
-            
+            console.log($rootScope.userInfo);
             console.log($stateParams);
             var colors = ['turquoise', 'crimson', 'blanchedalmond', 'darkorange', 'dodgerblue', 'rebeccapurple', 'thistle', 'wheat', 'teal', 'darksalmon'];
             

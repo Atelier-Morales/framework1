@@ -1,0 +1,73 @@
+<link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
+
+<div class="off-canvas-wrap move-right" data-offcanvas>
+    <div class="inner-wrap">
+
+    <sidebar-admin ng-if="userInfo.is_admin"></sidebar-admin>
+    <sidebar-user ng-if="!userInfo.is_admin"></sidebar-user>
+
+    <!-- main content goes here -->
+    
+    <div class="row">
+        <div class="large-12 columns">
+          <div class="panel">
+            <h1>Tickets {{ setUsername(userInfo.username) }}</h1>
+          </div>
+        </div>
+    </div>
+    
+    <div class="row">
+      <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
+        <br>
+        <h2 style="padding-left:15px;">Your tickets</h2> 
+        <button href="#" data-reveal-id="ticketModal">Create ticket</button>
+        <br>
+        <div class="row">
+            <h3 style="padding-left:20px;">Open tickets</h3>
+            <div class="small-12 columns small-centered" style="cursor: pointer; background:white;">
+                
+                <article class="event">
+                    <div class="event-date">
+                        <p class="event-month">Sept</p>
+                        <p class="event-day">18</p>
+                    </div>
+                    <div>
+                        <span class="image">
+                            <img src="http://placehold.it/100x100/f2f2f2" />
+                        </span>
+                    </div>
+                    <div class="event-desc">
+                        <h4 class="event-desc-header">Ticket Title</h4>
+                        <p class="event-desc-detail"><span class="event-desc-time"></span>in Category | status : pending</p>
+                        <a href="http://bdconf.com/speakers/brandon-arnold/" class="rsvp button">View Ticket</a>
+                    </div>
+                
+                </article>
+                <hr>
+            </div>
+               
+            <div class="small-12 columns small-centered"> 
+                <article class="event">
+                    <div class="event-date">
+                        <p class="event-month">Oct</p>
+                        <p class="event-day">21</p>
+                    </div>
+                    <div class="event-desc">
+                        <h4 class="event-desc-header">Day in the Life of Foundation for Apps</h4>
+                        <p class="event-desc-detail"><span class="event-desc-time"></span>BDConf - Washington, DC</p>
+                        <a href="http://bdconf.com/speakers/brandon-arnold/" class="rsvp button">RSVP &amp; Details</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+        
+          <div class="large-12 medium-12 small-12 columns">
+        </div>
+      </div>
+    </div> 
+
+    <!-- close the off-canvas menu -->
+    <a class="exit-off-canvas"></a>
+
+  </div>
+</div>

@@ -106,6 +106,24 @@ var Forum = new Schema({
     ]
 });
 
+// Tickets Schema
+
+var Tickets = new Schema({
+    title: { type: String, required: true },
+    author: { type: String, required: true },
+    id: { type: Number, required: true, unique: true },
+    date: { type: Date, default: Date.Now },
+    body: { type: String, required: true },
+    replies: [
+        {
+            author: { type: String, required: true },
+            body: { type: String, required: true },
+            date: { type: Date, default: Date.now }
+        }
+    ],
+    status: { type: String, default: "open" }
+});
+
 // Bcrypt middleware on UserSchema
 User.pre('save', function(next) {
   var user = this;
@@ -139,8 +157,10 @@ User.methods.comparePassword = function(password, cb) {
 var userModel = mongoose.model('User', User);
 var projectModel = mongoose.model('Projects', Projects);
 var forumModel = mongoose.model('Forum', Forum);
+var ticketModel = mongoose.model('Tickets', Tickets);
 
 // Export Models
 exports.userModel = userModel;
 exports.projectModel = projectModel;
 exports.forumModel = forumModel;
+exports.forumModel = ticketModel;
