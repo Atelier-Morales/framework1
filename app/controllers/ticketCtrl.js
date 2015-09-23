@@ -34,7 +34,49 @@
                     console.log('Could not fetch info');
                 });
             }
+            
+            function fetchTickets() {
+                ticketService.fetchTickets()
+                .success(function(data){
+                    $scope.tickets = data;
+                    $scope.ticketsCopy = angular.copy($scope.tickets);
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
+            }
+            
             fetchCategories();
+            fetchTickets();
+            $scope.createCategory = function createCategory(name) {
+                ticketService.createCategory(name)
+                .success(function(data) {
+                    $('#ticketCategoryModal').foundation('reveal', 'close');
+                    fetchCategories();
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    $('#ticketCategoryModal').foundation('reveal', 'close');
+                    console.log('Could not fetch info');
+                });
+            }
+            
+            $scope.createTicket = function createTicket(title, description, category, author) {
+                ticketService.createTicket(title, description, category, author)
+                .success(function(data) {
+                    $('#ticketModal').foundation('reveal', 'close');
+                    fetchTickets();
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    $('#ticketModal').foundation('reveal', 'close');
+                    console.log('Could not fetch info');
+                });
+            }
         }
     ]);
 })();

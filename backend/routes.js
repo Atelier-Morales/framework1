@@ -97,7 +97,11 @@ app.post('/forum/postReplyComment', routes.forum.postReplyComment);
 
 app.post('/ticket/createCategory', routes.tickets.createCategory);
 
+app.post('/ticket/createTicket', routes.tickets.createTicket);
+
 app.get('/ticket/categories', routes.tickets.fetchCategories);
+
+app.get('/ticket/tickets', routes.tickets.fetchTickets);
 
 //email 
 

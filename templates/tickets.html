@@ -24,12 +24,13 @@
         <br>
         <div class="row">
             <h3 style="padding-left:20px;">Open tickets</h3>
-            <div class="small-12 columns small-centered" style="cursor: pointer; background:white;">
+            <div class="small-12 columns small-centered" style="cursor: pointer; background:white;"
+                 ng-repeat="ticket in ticketsCopy">
                 
                 <article class="event">
                     <div class="event-date">
-                        <p class="event-month">Sept</p>
-                        <p class="event-day">18</p>
+                        <p class="event-month">{{ ticket.date | date:'MMM' }}</p>
+                        <p class="event-day">{{ ticket.date | date:'dd' }}</p>
                     </div>
                     <!--<div>
                         <span class="image">
@@ -37,30 +38,17 @@
                         </span>
                     </div>-->
                     <div class="event-desc">
-                        <h4 class="event-desc-header">Ticket Title</h4>
-                        <p class="event-desc-detail"><span class="event-desc-time"></span>in Category | status : pending</p>
+                        <h4 class="event-desc-header">{{ ticket.title }}</h4>
+                        <p class="event-desc-detail"><span class="event-desc-time"></span>by {{ ticket.author }}</p>
+                        <p class="event-desc-detail"><span class="event-desc-time"></span>in {{ ticket.category }} | status : {{ ticket.status}}</p>
                         <a href="http://bdconf.com/speakers/brandon-arnold/" class="rsvp button">View Ticket</a>
                     </div>
                 </article>
                 <hr>
-            </div>
-               
-            <div class="small-12 columns small-centered"> 
-                <article class="event">
-                    <div class="event-date">
-                        <p class="event-month">Oct</p>
-                        <p class="event-day">21</p>
-                    </div>
-                    <div class="event-desc">
-                        <h4 class="event-desc-header">Day in the Life of Foundation for Apps</h4>
-                        <p class="event-desc-detail"><span class="event-desc-time"></span>BDConf - Washington, DC</p>
-                        <a href="http://bdconf.com/speakers/brandon-arnold/" class="rsvp button">RSVP &amp; Details</a>
-                    </div>
-                </article>
-            </div>
+            </div>         
         </div>
         
-          <div class="large-12 medium-12 small-12 columns">
+        <div class="large-12 medium-12 small-12 columns">
         </div>
       </div>
     </div> 
@@ -70,3 +58,60 @@
 
   </div>
 </div>
+
+<div id="ticketModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
+    <div class="section-container tabs" data-section="tabs">
+        <section class="active">
+          <div class="content" data-section-content>
+            <p>
+              <div class="row">
+                <div class="large-12 columns">
+                  <div class="signup-panel">
+                    <p class="welcome">Submit your issue</p>
+                    <form name="ticketForm" novalidate>
+                      
+                      <div class="row collapse">
+                        <p>* Issue title</p>
+                        <div class="small-12  columns">     
+                          <input type="text" name="title" ng-model="title" required>   
+                        </div>
+                      </div>
+                     
+                      <div class="row collapse">
+                        <p>* Issue Description</p>
+                        <div class="small-12  columns">
+                          <textarea id="description" name="description" ng-model="description" placeholder="Describe your problem here..." required></textarea>
+                        </div>
+                      </div>
+                        
+                      <div class="row collapse">
+                        <p>Category</p>
+                          <div class="large-12 small-12 columns">
+                              <select name="category" ng-model="category" required>
+                                <option value="{{ category.title }}"
+                                       
+                                        ng-repeat="category in ticketCategories" >{{ category.title }}</option>
+                              </select>
+                          </div>
+                      </div>
+                      <br>
+                      <button ng-disabled="ticketForm.title.$error.required ||
+                                           ticketForm.description.$error.required ||
+                                           ticketForm.category.$error.required"
+                              ng-click="createTicket(title, description, category, userInfo.username)" class="button">Create Issue</button>
+                    </form>
+                    <span style="color:red" ng-show="regError">
+                        error!
+                    </span>
+                  </div>
+                </div>
+               </div></p>
+          </div>
+        </section>
+    </div>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
+
+<script type="text/javascript"> 
+            $(document).foundation();
+</script>

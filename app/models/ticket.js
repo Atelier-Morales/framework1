@@ -15,8 +15,21 @@
             fetchCategories: function() {
                 return $http.get(API_URL + '/ticket/categories');
             },
-            createCategory: function() {
-                return $http.post(API_URL + '/ticket/createCategory');
+            fetchTickets: function() {
+                return $http.get(API_URL + '/ticket/tickets');
+            },
+            createCategory: function(name) {
+                return $http.post(API_URL + '/ticket/createCategory', {
+                    name: name
+                });
+            },
+            createTicket: function(title, description, category, author) {
+                return $http.post(API_URL + '/ticket/createTicket', {
+                    title: title,
+                    description: description,
+                    category: category,
+                    author: author
+                });
             }
         }
     });

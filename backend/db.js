@@ -110,9 +110,9 @@ var Forum = new Schema({
 var Tickets = new Schema({
     title: { type: String, required: true },
     author: { type: String, required: true },
-    id: { type: Number, required: true, unique: true },
+    id: { type: Number, unique: true },
     category: { type: String, required: true },
-    date: { type: Date, default: Date.Now },
+    date: { type: Date, default: Date.now },
     body: { type: String, required: true },
     replies: [
         {
