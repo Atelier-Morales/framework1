@@ -163,4 +163,4 @@ var ticketModel = mongoose.model('Tickets', Tickets);
 exports.userModel = userModel;
 exports.projectModel = projectModel;
 exports.forumModel = forumModel;
-exports.forumModel = ticketModel;
+exports.ticketModel = ticketModel;

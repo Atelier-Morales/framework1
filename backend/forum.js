@@ -8,6 +8,7 @@ exports.fetchCategories = function(req, res) {
 			console.log(err);
 			return res.send(401);
 		}
+        console.log(categories);
         if (categories[0] == undefined)
             return res.sendStatus(401);
         return res.send(categories[0].categories);       
