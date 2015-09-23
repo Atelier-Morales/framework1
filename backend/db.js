@@ -107,11 +107,11 @@ var Forum = new Schema({
 });
 
 // Tickets Schema
-
 var Tickets = new Schema({
     title: { type: String, required: true },
     author: { type: String, required: true },
     id: { type: Number, required: true, unique: true },
+    category: { type: String, required: true },
     date: { type: Date, default: Date.Now },
     body: { type: String, required: true },
     replies: [
@@ -122,6 +122,11 @@ var Tickets = new Schema({
         }
     ],
     status: { type: String, default: "open" }
+});
+
+//Tickets categories
+var ticketCategories = new Schema({
+    title: { type: String, required: true, unique: true }
 });
 
 // Bcrypt middleware on UserSchema
@@ -158,9 +163,11 @@ var userModel = mongoose.model('User', User);
 var projectModel = mongoose.model('Projects', Projects);
 var forumModel = mongoose.model('Forum', Forum);
 var ticketModel = mongoose.model('Tickets', Tickets);
+var ticketCategoriesModel = mongoose.model('ticketCategories', ticketCategories);
 
 // Export Models
 exports.userModel = userModel;
 exports.projectModel = projectModel;
 exports.forumModel = forumModel;
 exports.ticketModel = ticketModel;
+exports.ticketCategoriesModel = ticketCategoriesModel;

@@ -2,6 +2,7 @@
 
 (function() {
     var ticketCtrl = angular.module('ticketCtrl', [
+        'ticketModel',
         'ngCookies',
         'sidebarDirective',
         'angularMoment'
@@ -16,11 +17,24 @@
         '$log',
         '$timeout',
         '$stateParams',
-        'forumService',
+        'ticketService',
         'moment',
-        function ticketCtrl($rootScope, $scope, $location, $window, $state, $log, $timeout, $stateParams, forumService, moment) {
+        function ticketCtrl($rootScope, $scope, $location, $window, $state, $log, $timeout, $stateParams, ticketService, moment) {
             console.log('Ticket section');
-            console.log($rootScope.userInfo);
+            
+            function fetchCategories() {
+                ticketService.fetchCategories()
+                .success(function(data){
+                    $scope.ticketCategories = data;
+                    $scope.ticketCategoriesCopy = angular.copy($scope.ticketCategories);
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
+            }
+            fetchCategories();
         }
     ]);
 })();

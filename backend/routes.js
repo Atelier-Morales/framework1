@@ -23,6 +23,7 @@ var routes = {};
 routes.users = require('./user');
 routes.projects = require('./project');
 routes.forum = require('./forum');
+routes.tickets = require('./tickets');
 routes.mailer = require('./mailer');
 
 app.all('*', function(req, res, next) {
@@ -91,6 +92,12 @@ app.post('/forum/postCommentBody', routes.forum.postCommentBody);
 app.post('/forum/postReply', routes.forum.postReply);
 
 app.post('/forum/postReplyComment', routes.forum.postReplyComment);
+
+//ticket functions
+
+app.post('/ticket/createCategory', routes.tickets.createCategory);
+
+app.get('/ticket/categories', routes.tickets.fetchCategories);
 
 //email 
 
