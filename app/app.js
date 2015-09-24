@@ -22,6 +22,7 @@
         $urlRouterProvider.otherwise('/home');
         $urlRouterProvider.when("/forum", "/forum/list");
         $urlRouterProvider.when("/users", "/users/administration");
+        $urlRouterProvider.when("/users/tickets", "/users/tickets/all");
         
         $stateProvider
         .state('home',{
@@ -81,6 +82,16 @@
         .state('users.tickets', {
             url: '/tickets',
             templateUrl: '/templates/users.tickets.html',
+            controller: 'ticketCtrl'
+        })
+        .state('users.tickets.list', {
+            url: '/all',
+            templateUrl: '/templates/users.tickets.list.html',
+            controller: 'ticketCtrl'
+        })
+        .state('users.tickets.view', {
+            url: '/:ticketId',
+            templateUrl: '/templates/users.tickets.view.html',
             controller: 'ticketCtrl'
         })
         .state('projects', {
