@@ -280,7 +280,10 @@ exports.updateUser = function(req, res) {
     var username = req.body.username;
     var oldUsername = req.body.oldUsername;
     var email = req.body.email;
-    var role = req.body.role = "true" ? true : false;
+    if (req.body.role === "true")
+        var role = true;
+    else
+        var role = false;
     
     db.userModel.findOne({ username: req.body.oldUsername }, function (err, doc) {
         if (err) {
@@ -291,8 +294,8 @@ exports.updateUser = function(req, res) {
             doc.username = username;
         if (doc.email != email)
             doc.email = email;
-        if (doc.role != role)
-            doc.role = role;
+        if (doc.is_admin != role)
+            doc.is_admin = role;
         
         doc.save();
         

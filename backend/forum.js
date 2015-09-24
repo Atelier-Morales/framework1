@@ -322,18 +322,3 @@ exports.postReplyComment = function(req, res) {
         });
     });
 }
-/*
-comments: [
-                {
-                    author: { type: String, required: true },
-                    created: { type: Date, default: Date.now },
-                    commentBody: { type: String, required: true },
-                    replies: [
-                        {
-                            author : { type: String, required: true },
-                            created: { type: Date, default: Date.now },
-                            replyBody: { type: String, required: true },
-                        }
-                    ]
-                }
-            ]*/

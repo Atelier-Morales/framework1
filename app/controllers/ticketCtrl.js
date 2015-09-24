@@ -3,6 +3,7 @@
 (function() {
     var ticketCtrl = angular.module('ticketCtrl', [
         'ticketModel',
+        'userAuth',
         'ngCookies',
         'sidebarDirective',
         'angularMoment'
@@ -18,8 +19,9 @@
         '$timeout',
         '$stateParams',
         'ticketService',
+        'userService',
         'moment',
-        function ticketCtrl($rootScope, $scope, $location, $window, $state, $log, $timeout, $stateParams, ticketService, moment) {
+        function ticketCtrl($rootScope, $scope, $location, $window, $state, $log, $timeout, $stateParams, ticketService, userService, moment) {
             console.log('Ticket section');
             
             function fetchCategories() {
@@ -60,8 +62,26 @@
                 });
             }
             
+            function getAdminUsers() {
+                userService.fetchUserInfos()
+                .success(function(data){
+                    $scope.adminUsers = [];
+                    for (var i = 0; i < data.length; ++i) {
+                        if (data[i].is_admin === true)
+                            $scope.adminUsers.push({username: data[i].username});
+                    }
+                    $scope.adminUsersCopy = angular.copy($scope.adminUsers);
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
+            }
+            
             fetchCategories();
             fetchTickets();
+            getAdminUsers();
             
             $rootScope.$watch('userInfo', function () {
                 if ($rootScope.userInfo === undefined || $rootScope.userInfo === null || $rootScope.userInfo === "")
@@ -99,6 +119,15 @@
                     $('#ticketModal').foundation('reveal', 'close');
                     console.log('Could not fetch info');
                 });
+            }
+            
+            $scope.postTicketReply = function postTicketReply(author, body, id) {
+                console.log(author+' '+body+' '+id);
+                $('#replyBody').val('')
+            }
+            
+            $scope.updateTicket = function updateTicket(assigner, status, ticketId) {
+                console.log(assigner+' '+status+' '+ticketId);
             }
         }
     ]);

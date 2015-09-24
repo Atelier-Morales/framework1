@@ -27,7 +27,6 @@
                 .success(function(data){
                     $scope.users = data;
                     $scope.usersCopy = angular.copy($scope.users);
-                    console.log('fruvf'+$scope.usersCopy)
                 })
                 .error(function(status, data) {
                     console.log(status);
@@ -43,6 +42,7 @@
             }
             
             $scope.updateUser = function updateUser(username, oldUsername, email, role) {
+                console.log(role);
                 if (authService.isLogged && $window.sessionStorage.token) {
                     userService.updateUser(username, oldUsername, email, role)
                     .success(function(data) {
