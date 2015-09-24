@@ -11,7 +11,7 @@
     <div class="row">
         <div class="large-12 columns">
           <div class="panel">
-            <h1>Tickets {{ setUsername(userInfo.username) }}</h1>
+            <h1>Tickets {{ setUsername(userInfo.username) }}{{ fetchUserTickets(userInfo.username) }}</h1>
           </div>
         </div>
     </div>
@@ -25,23 +25,28 @@
         <div class="row">
             <h3 style="padding-left:20px;">Open tickets</h3>
             <div class="small-12 columns small-centered" style="cursor: pointer; background:white;"
-                 ng-repeat="ticket in ticketsCopy">
+                 ng-repeat="ticket in userTickets | orderBy: '-date'">
                 
-                <article class="event">
-                    <div class="event-date">
+                <article class="event small-12 columns small-centered">
+                    <div class="event-date small-2 columns">
                         <p class="event-month">{{ ticket.date | date:'MMM' }}</p>
                         <p class="event-day">{{ ticket.date | date:'dd' }}</p>
+                        <p class="event-month">{{ ticket.date | date:'HH:mm' }}</p>
                     </div>
                     <!--<div>
                         <span class="image">
                             <img src="http://placehold.it/100x100/f2f2f2" />
                         </span>
                     </div>-->
-                    <div class="event-desc">
+                    <div class="event-desc small-4 columns">
                         <h4 class="event-desc-header">{{ ticket.title }}</h4>
                         <p class="event-desc-detail"><span class="event-desc-time"></span>by {{ ticket.author }}</p>
                         <p class="event-desc-detail"><span class="event-desc-time"></span>in {{ ticket.category }} | status : {{ ticket.status}}</p>
                         <a href="http://bdconf.com/speakers/brandon-arnold/" class="rsvp button">View Ticket</a>
+                    </div>
+                    <div class="event-desc small-6 columns">
+                        <h4 class="event-desc-header">Message :</h4>
+                        <p class="event-desc-detail"><span class="event-desc-time"></span>{{ ticket.body }}</p>
                     </div>
                 </article>
                 <hr>

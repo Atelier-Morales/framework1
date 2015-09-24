@@ -18,6 +18,11 @@
             fetchTickets: function() {
                 return $http.get(API_URL + '/ticket/tickets');
             },
+            fetchUserTickets: function(author) {
+                return $http.post(API_URL + '/tickets/userTickets', {
+                    author: author
+                });
+            },
             createCategory: function(name) {
                 return $http.post(API_URL + '/ticket/createCategory', {
                     name: name

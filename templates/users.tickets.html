@@ -3,37 +3,36 @@
         <br>
         <h2 style="padding-left:15px;">Ticket Administration{{ setUsername(userInfo.username) }}</h2> 
         <br>
-        <h2>categories {{ ticketCategories }}</h2>
+        <h2>categories</h2>
           <button ng-if="userInfo.is_admin" href="#" data-reveal-id="ticketCategoryModal">Create a Category</button>
         <div class="row">
-            <div class="small-9 columns small-centered">
+            <h3 style="padding-left:20px;">Open tickets</h3>
+            <div class="small-12 columns small-centered" style="cursor: pointer; background:white;"
+                 ng-repeat="ticket in ticketsCopy | orderBy: '-date'">
                 
-                <article class="event">
-                    <div class="event-date">
-                        <p class="event-month">Sept</p>
-                        <p class="event-day">18</p>
+                <article class="event small-12 columns small-centered">
+                    <div class="event-date small-2 columns">
+                        <p class="event-month">{{ ticket.date | date:'MMM' }}</p>
+                        <p class="event-day">{{ ticket.date | date:'dd' }}</p>
+                        <p class="event-month">{{ ticket.date | date:'HH:mm' }}</p>
                     </div>
-                    
-                    <div class="event-desc">
-                        <h4 class="event-desc-header">Day in the Life of Foundation for Apps</h4>
-                        <p class="event-desc-detail"><span class="event-desc-time"></span>BDConf - Altlanta</p>
-                        <a href="http://bdconf.com/speakers/brandon-arnold/" class="rsvp button">RSVP &amp; Details</a>
+                    <!--<div>
+                        <span class="image">
+                            <img src="http://placehold.it/100x100/f2f2f2" />
+                        </span>
+                    </div>-->
+                    <div class="event-desc small-4 columns">
+                        <h4 class="event-desc-header">{{ ticket.title }}</h4>
+                        <p class="event-desc-detail"><span class="event-desc-time"></span>by {{ ticket.author }}</p>
+                        <p class="event-desc-detail"><span class="event-desc-time"></span>in {{ ticket.category }} | status : {{ ticket.status}}</p>
+                        <a href="http://bdconf.com/speakers/brandon-arnold/" class="rsvp button">View Ticket</a>
+                    </div>
+                    <div class="event-desc small-6 columns">
+                        <h4 class="event-desc-header">Message :</h4>
+                        <p class="event-desc-detail"><span class="event-desc-time"></span>{{ ticket.body }}</p>
                     </div>
                 </article>
-                
                 <hr>
-                
-                <article class="event">
-                    <div class="event-date">
-                        <p class="event-month">Oct</p>
-                        <p class="event-day">21</p>
-                    </div>
-                    <div class="event-desc">
-                        <h4 class="event-desc-header">Day in the Life of Foundation for Apps</h4>
-                        <p class="event-desc-detail"><span class="event-desc-time"></span>BDConf - Washington, DC</p>
-                        <a href="http://bdconf.com/speakers/brandon-arnold/" class="rsvp button">RSVP &amp; Details</a>
-                    </div>
-                </article>
             </div>
         </div>
         

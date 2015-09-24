@@ -48,8 +48,27 @@
                 });
             }
             
+            function fetchUserTickets(author) {
+                ticketService.fetchUserTickets(author)
+                .success(function(data){
+                    $scope.userTickets = data;
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
+            }
+            
             fetchCategories();
             fetchTickets();
+            
+            $rootScope.$watch('userInfo', function () {
+                if ($rootScope.userInfo === undefined || $rootScope.userInfo === null || $rootScope.userInfo === "")
+                    return;
+                fetchUserTickets($rootScope.userInfo.username);
+            })
+
             $scope.createCategory = function createCategory(name) {
                 ticketService.createCategory(name)
                 .success(function(data) {

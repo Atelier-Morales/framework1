@@ -79,3 +79,19 @@ exports.createTicket = function(req, res) {
         });
     });   
 }
+
+exports.fetchUserTickets= function(req, res) {
+    var author = req.body.author || '';
+    
+    if (author === '')
+        return res.sendStatus(400);
+    
+    db.ticketModel.find({author: author}, function(err, tickets) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(401);
+        }
+        console.log(tickets);
+        res.send(tickets);
+    });
+}
