@@ -111,6 +111,7 @@ var Tickets = new Schema({
     title: { type: String, required: true },
     author: { type: String, required: true },
     id: { type: Number, unique: true },
+    assignTo: { type: String, required: true, default: "unassigned" },
     category: { type: String, required: true },
     date: { type: Date, default: Date.now },
     body: { type: String, required: true },

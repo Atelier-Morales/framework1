@@ -58,6 +58,7 @@ exports.createTicket = function(req, res) {
     ticket.category = category;
     ticket.body = description;
     ticket.replies = [];
+    ticket.assignTo = "unassigned";
     ticket.save(function(err) {
         if (err) {
             console.log(err);

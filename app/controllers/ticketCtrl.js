@@ -68,6 +68,10 @@
                     return;
                 fetchUserTickets($rootScope.userInfo.username);
             })
+            
+            $scope.fetchId = function() {
+                $scope.ticketId = $stateParams.ticketId;
+            }
 
             $scope.createCategory = function createCategory(name) {
                 ticketService.createCategory(name)

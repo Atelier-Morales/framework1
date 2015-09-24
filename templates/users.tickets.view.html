@@ -1,0 +1,50 @@
+<a class="backToList" ui-sref="users.tickets.list">Go back to list</a>
+
+        <link href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/6035/icomoon-uikit-feb.css" rel="stylesheet">
+        <h3 style="padding-left:30px;">{{ fetchId() }} {{ ticketsCopy[ticketId - 1].title }}</h3>
+        <div class="large-12 columns">
+            <!-- Feed Entry -->
+            <div class="row">
+                <div class="large-12 columns">
+                    <div class="large-1 small-1 columns">
+                        <img src="http://placehold.it/80x80&text=[img]" />
+                    </div>
+                    <p>
+                        <strong>{{ ticketsCopy[ticketId - 1].author }}:</strong> {{ ticketsCopy[ticketId - 1].body }}<br>
+                        <cite style="font-size:small;">Posted on {{ ticketsCopy[ticketId - 1].date | date:'medium'}}</cite>
+                    </p>
+                    <br><br>  
+                </div>
+                
+                
+                <div class="large-12 columns" ng-repeat="reply in threads[postId].comments">
+                    <hr />
+                    <div class="large-1 small-1 columns">
+                        <img src="http://placehold.it/80x80&text=[img]" />
+                    </div>
+                    <p>
+                        <strong>{{ reply.author }}:</strong> {{ reply.commentBody }}<br>
+                        <cite style="font-size:small;">Posted on {{ reply.created | date:'medium'}}</cite>
+                    </p>
+                    <br><br>
+                </div>
+                    <!-- End Feed Entry -->
+                <hr/>
+                <div class="large-12 columns small-3">
+                    <form name="replyForm" novalidate>           
+                        <div class="row">
+                            <label>Post your response Here
+                            </label>
+                            <div class="row collapse">
+                                <div class="small-11 columns">
+                                    <textarea id="replyBody" name="replyBody" ng-model="replyBody" placeholder="Type a few words..." required></textarea>
+                                </div>
+                                <div class="small-1 columns">
+                                    <a ng-disabled="replyForm.replyBody.$error.required" ng-click="postReply(userInfo.username, replyBody, postId)" class="button postfix">go</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>

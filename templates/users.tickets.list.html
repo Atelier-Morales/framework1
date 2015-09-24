@@ -1,3 +1,4 @@
+<button ng-if="userInfo.is_admin" href="#" data-reveal-id="ticketCategoryModal">Create a ticket category</button>
 <div class="row">
             <h3 style="padding-left:20px;">Open tickets</h3>
             <div class="small-12 columns small-centered" style="cursor: pointer; background:white;"
@@ -17,7 +18,8 @@
                     <div class="event-desc small-4 columns">
                         <h4 class="event-desc-header">{{ ticket.title }}</h4>
                         <p class="event-desc-detail"><span class="event-desc-time"></span>by {{ ticket.author }}</p>
-                        <p class="event-desc-detail"><span class="event-desc-time"></span>in {{ ticket.category }} | status : {{ ticket.status}}</p>
+                        <p class="event-desc-detail"><span class="event-desc-time"></span>in {{ ticket.category }} | status : {{ ticket.status}} | <span ng-show="ticket.assignTo != 'unassigned'">assigned to : </span>{{ ticket.assignTo }}
+                        </p>
                         <a ng-href="users/tickets/{{ticket.id}}" class="rsvp button">View Ticket</a>
                     </div>
                     <div class="event-desc small-6 columns">
@@ -27,4 +29,43 @@
                 </article>
                 <hr>
             </div>
-        </div>
+</div>
+
+<div id="ticketCategoryModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
+    <div class="section-container tabs" data-section="tabs">
+        <section class="active">
+          <div class="content" data-section-content>
+            <p>
+              <div class="row">
+                <div class="large-12 columns">
+                  <div class="signup-panel">
+                    <p class="welcome">Create category</p>
+                    <form name="ticketCategoryForm" novalidate>
+                      
+                      <div class="row collapse">
+                        <p>Name</p>
+                        <div class="small-10  columns">     
+                          <input type="text" name="name" ng-model="name" required>   
+                        </div>
+                      </div>
+        
+                      <br><br>
+                      <button ng-disabled="ticketCategoryForm.name.$error.required" ng-click="createCategory(name)" class="button">
+                            Create
+                      </button>
+                    </form>
+                    <span style="color:red" ng-show="regError">
+                        Category creation error!
+                    </span>
+                  </div>
+                </div>
+               </div></p>
+          </div>
+        </section>
+    </div>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
+
+<script type="text/javascript"> 
+            $(document).foundation();
+</script>
