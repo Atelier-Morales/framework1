@@ -8,7 +8,6 @@ exports.fetchCategories = function(req, res) {
 			console.log(err);
 			return res.send(401);
 		}
-        console.log(categories);
         return res.send(categories);       
     });
 }
@@ -19,7 +18,6 @@ exports.fetchTickets = function(req, res) {
 			console.log(err);
 			return res.send(401);
 		}
-        console.log(tickets);
         return res.send(tickets);       
     });
 }
@@ -92,7 +90,27 @@ exports.fetchUserTickets= function(req, res) {
             console.log(err);
             return res.sendStatus(401);
         }
-        console.log(tickets);
         res.send(tickets);
+    });
+}
+
+exports.updateTicket = function(req, res) {
+    var assigner = req.body.assigner || '';
+    var id = req.body.ticketId || '';
+    var status = req.body.status || '';
+    
+    if (assigner === '' || id === '' || status === '')
+        return res.sendStatus(400);
+    
+    db.ticketModel.findOne({id: id}, function(err, ticket) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(401);
+        }
+        ticket.status = status;
+        ticket.assignTo = assigner;
+        ticket.save();
+        console.log("Ticket "+id+" updated");
+        res.sendStatus(200);
     });
 }

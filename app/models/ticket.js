@@ -35,6 +35,13 @@
                     category: category,
                     author: author
                 });
+            },
+            updateTicket: function(assigner, status, ticketId) {
+                return $http.post(API_URL + '/tickets/updateTicket', {
+                    assigner: assigner,
+                    status: status,
+                    ticketId: ticketId
+                });
             }
         }
     });

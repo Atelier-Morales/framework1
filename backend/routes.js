@@ -101,6 +101,8 @@ app.post('/ticket/createTicket', routes.tickets.createTicket);
 
 app.post('/tickets/userTickets', routes.tickets.fetchUserTickets);
 
+app.post('/tickets/updateTicket', routes.tickets.updateTicket);
+
 app.get('/ticket/categories', routes.tickets.fetchCategories);
 
 app.get('/ticket/tickets', routes.tickets.fetchTickets);

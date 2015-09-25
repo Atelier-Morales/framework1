@@ -90,7 +90,14 @@
             })
             
             $scope.fetchId = function() {
-                $scope.ticketId = $stateParams.ticketId;
+                if ($scope.ticketsCopy === undefined)
+                    return;
+                var id = $stateParams.ticketId;
+                for (var i = 0; i < $scope.ticketsCopy.length; ++i) {
+                    if ($scope.ticketsCopy[i].id == id) {
+                        $scope.currentTicket = $scope.ticketsCopy[i];
+                    }
+                }
             }
 
             $scope.createCategory = function createCategory(name) {
@@ -127,7 +134,15 @@
             }
             
             $scope.updateTicket = function updateTicket(assigner, status, ticketId) {
-                console.log(assigner+' '+status+' '+ticketId);
+                ticketService.updateTicket(assigner, status, ticketId)
+                .success(function(data) {
+                    fetchTickets();
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
             }
         }
     ]);
