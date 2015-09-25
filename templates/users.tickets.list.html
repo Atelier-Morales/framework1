@@ -1,8 +1,21 @@
 <button ng-if="userInfo.is_admin" href="#" data-reveal-id="ticketCategoryModal">Create a ticket category</button>
+<br>
+<dl class="sub-nav">
+  <dt>Status:</dt>
+  <dd ng-class="{active: currentStatus === 'all'}"><a ng-click="changeTicketStatus('all')">All</a></dd>
+  <dd ng-class="{active: currentStatus === 'open'}"><a ng-click="changeTicketStatus('open')">Open</a></dd>
+  <dd ng-class="{active: currentStatus === 'closed'}"><a ng-click="changeTicketStatus('closed')">Closed</a></dd>
+</dl>
+<dl class="sub-nav">
+  <dt>Assigned to:</dt>
+  <dd ng-class="{active: adminStatus === 'all'}"><a ng-click="filterByAdmin('all')">All</a></dd>
+  <dd ng-class="{active: adminStatus === 'unassigned'}"><a ng-click="filterByAdmin('unassigned')">Unassigned</a></dd>
+  <dd ng-repeat="admin in adminUsers" ng-class="{active: adminStatus === admin.username}"><a ng-click="filterByAdmin(admin.username)">{{ admin.username }}</a></dd>
+</dl>
 <div class="row">
-            <h3 style="padding-left:20px;">Open tickets</h3>
+            <h3 style="padding-left:20px;">{{ currentStatus }} tickets</h3>
             <div class="small-12 columns small-centered" style="cursor: pointer; background:white;"
-                 ng-repeat="ticket in ticketsCopy | orderBy: '-date'">
+                 ng-repeat="ticket in ticketsCopy | orderBy: '-date' | filter: myFilter | filter : adminFilter">
                 
                 <article class="event small-12 columns small-centered">
                     <div class="event-date small-2 columns">

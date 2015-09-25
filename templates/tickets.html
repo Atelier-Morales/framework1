@@ -20,12 +20,19 @@
       <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
         <br>
         <h2 style="padding-left:15px;">Your tickets</h2> 
+        <button href="#" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="button info dropdown">display</button>
+            <ul style="left:50px;" id="drop1" data-dropdown-content class="f-dropdown" aria-hidden="true">
+              <li><a ng-click="changeTicketStatus('open')">open tickets</a></li>
+              <li><a ng-click="changeTicketStatus('closed')">closed tickets</a></li>
+              <li><a ng-click="changeTicketStatus('all')">all tickets</a></li>
+            </ul>
         <button href="#" data-reveal-id="ticketModal">Create ticket</button>
         <br>
         <div class="row">
-            <h3 style="padding-left:20px;">Open tickets</h3>
+            <h3 style="padding-left:20px;">{{ currentStatus }} tickets</h3>
+            
             <div class="small-12 columns small-centered" style="cursor: pointer; background:white;"
-                 ng-repeat="ticket in userTickets | orderBy: '-date'">
+                 ng-repeat="ticket in userTickets | orderBy: '-date' | filter: myFilter">
                 
                 <article class="event small-12 columns small-centered">
                     <div class="event-date small-2 columns">
@@ -41,7 +48,8 @@
                     <div class="event-desc small-4 columns">
                         <h4 class="event-desc-header">{{ ticket.title }}</h4>
                         <p class="event-desc-detail"><span class="event-desc-time"></span>by {{ ticket.author }}</p>
-                        <p class="event-desc-detail"><span class="event-desc-time"></span>in {{ ticket.category }} | status : {{ ticket.status}}</p>
+                        <p class="event-desc-detail"><span class="event-desc-time"></span>in {{ ticket.category }} | status : {{ ticket.status}} | <span ng-show="ticket.assignTo === 'unassigned'">unassigned</span>
+                            <span ng-hide="ticket.assignTo === 'unassigned'">assigned to {{ ticket.assignTo }}</span></p>
                         <a href="http://bdconf.com/speakers/brandon-arnold/" class="rsvp button">View Ticket</a>
                     </div>
                     <div class="event-desc small-6 columns">
