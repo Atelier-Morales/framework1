@@ -101,7 +101,6 @@
                     $scope.myFilter = { status : status };
                 else
                     $scope.myFilter = undefined;
-                console.log($scope.myFilter);
                 $scope.currentStatus = status;
             }
             
@@ -113,7 +112,6 @@
                 else
                     $scope.adminFilter = undefined;
                 $scope.adminStatus = option;
-                console.log($scope.adminFilter);
             }
             
             $scope.fetchId = function() {
