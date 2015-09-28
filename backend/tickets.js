@@ -98,7 +98,7 @@ exports.updateTicket = function(req, res) {
     var assigner = req.body.assigner || '';
     var id = req.body.ticketId || '';
     var status = req.body.status || '';
-    
+    console.log(assigner+' '+id+' '+status);
     if (assigner === '' || id === '' || status === '')
         return res.sendStatus(400);
     

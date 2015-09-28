@@ -46,14 +46,19 @@
                 <label>Assign to :</label>
                 <select name="assigner" ng-model="assigner" required>
                     <option ng-repeat="admin in adminUsers" 
-                            value="{{ admin.username }}">{{ admin.username }}</option>
+                            value="{{ admin.username }}"
+                            ng-selected="admin.username == currentTicket.assignTo">{{ admin.username }}</option>
                 </select>
             </div>
             <div class="large-2 small-2 columns">
                 <label>Change status</label>
                 <select name="status" ng-model="status" required>
-                    <option ng-click="assignTicket('closed')" value="closed">closed</option>
-                    <option ng-click="assignTicket('open')" value="open">open</option>
+                    <option ng-click="assignTicket('closed')" 
+                            value="closed"
+                            ng-selected="currentTicket.status == 'closed'">closed</option>
+                    <option ng-click="assignTicket('open')"
+                            value="open"
+                            ng-selected="currentTicket.status == 'open'">open</option>
                 </select>
             </div>
             <div class="large-2 small-2 columns end">
