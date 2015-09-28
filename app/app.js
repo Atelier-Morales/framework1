@@ -23,6 +23,7 @@
         $urlRouterProvider.when("/forum", "/forum/list");
         $urlRouterProvider.when("/users", "/users/administration");
         $urlRouterProvider.when("/users/tickets", "/users/tickets/all");
+        $urlRouterProvider.when("/tickets", "/tickets/all");
         
         $stateProvider
         .state('home',{
@@ -142,6 +143,16 @@
                     controller: 'ticketCtrl'
                 }
             }
+        })
+        .state('tickets.all', {
+            url: '/all',
+            templateUrl: '/templates/tickets.all.html',
+            controller: 'ticketCtrl'
+        })
+        .state('tickets.view', {
+            url: '/:id',
+            templateUrl: '/templates/tickets.view.html',
+            controller: 'ticketCtrl'
         })
         .state('forbidden', {
             url: '/403',

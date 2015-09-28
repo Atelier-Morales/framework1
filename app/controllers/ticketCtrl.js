@@ -124,6 +124,17 @@
                     }
                 }
             }
+            
+            $scope.getId = function() {
+                if ($scope.ticketsCopy === undefined)
+                    return;
+                var id = $stateParams.id;
+                for (var i = 0; i < $scope.ticketsCopy.length; ++i) {
+                    if ($scope.ticketsCopy[i].id == id) {
+                        $scope.currentTicket = $scope.ticketsCopy[i];
+                    }
+                }
+            }
 
             $scope.createCategory = function createCategory(name) {
                 ticketService.createCategory(name)
@@ -142,6 +153,7 @@
             $scope.createTicket = function createTicket(title, description, category, author) {
                 ticketService.createTicket(title, description, category, author)
                 .success(function(data) {
+                    console.log('HEY');
                     $('#ticketModal').foundation('reveal', 'close');
                     fetchUserTickets($rootScope.userInfo.username);
                 })
@@ -154,12 +166,45 @@
             }
             
             $scope.postTicketReply = function postTicketReply(author, body, id) {
-                console.log(author+' '+body+' '+id);
-                $('#replyBody').val('')
+                ticketService.postTicketReply(author, body, id)
+                .success(function(data) {
+                    fetchTickets();
+                    $('#replyBody').val('')
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
+                
             }
             
             $scope.updateTicket = function updateTicket(assigner, status, ticketId) {
                 ticketService.updateTicket(assigner, status, ticketId)
+                .success(function(data) {
+                    fetchTickets();
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
+            }
+            
+            $scope.reopenTicket = function reopenTicket(id, status) {
+                ticketService.reopenTicket(id, status)
+                .success(function(data) {
+                    fetchTickets();
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
+            }
+            
+            $scope.closeTicket = function closeTicket(id, status) {
+                ticketService.closeTicket(id, status)
                 .success(function(data) {
                     fetchTickets();
                 })

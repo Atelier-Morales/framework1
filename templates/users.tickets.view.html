@@ -10,11 +10,11 @@
             <div class="large-1 small-1 columns">
                 <img src="http://placehold.it/80x80&text=[img]" />
             </div>
-            <p>
+            <p class="replyText">
                 <strong>{{ currentTicket.author }}:</strong> {{ currentTicket.body }}<br>
                 <cite style="font-size:small;">Posted on {{ currentTicket.date | date:'medium'}}</cite>
             </p>
-            <br><br>  
+
         </div>
 
         <div class="large-12 columns" ng-repeat="reply in currentTicket.replies">
@@ -22,11 +22,10 @@
             <div class="large-1 small-1 columns">
                 <img src="http://placehold.it/80x80&text=[img]" />
             </div>
-            <p>
+            <p class="replyText">
                 <strong>{{ reply.author }}:</strong> {{ reply.body }}<br>
                 <cite style="font-size:small;">Posted on {{ reply.date | date:'medium'}}</cite>
             </p>
-            <br><br>
         </div>
             <!-- End Feed Entry -->
         <div class="row">

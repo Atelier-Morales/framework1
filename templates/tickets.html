@@ -15,116 +15,17 @@
           </div>
         </div>
     </div>
-    
     <div class="row">
       <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
-        <br>
-        <h2 style="padding-left:15px;">Your tickets</h2> 
-        <button href="#" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="button info dropdown">display</button>
-            <ul style="left:50px;" id="drop1" data-dropdown-content class="f-dropdown" aria-hidden="true">
-              <li><a ng-click="changeTicketStatus('open')">open tickets</a></li>
-              <li><a ng-click="changeTicketStatus('closed')">closed tickets</a></li>
-              <li><a ng-click="changeTicketStatus('all')">all tickets</a></li>
-            </ul>
-        <button href="#" data-reveal-id="ticketModal">Create ticket</button>
-        <br>
-        <div class="row">
-            <h3 style="padding-left:20px;">{{ currentStatus }} tickets</h3>
-            
-            <div class="small-12 columns small-centered" style="cursor: pointer; background:white;"
-                 ng-repeat="ticket in userTickets | orderBy: '-date' | filter: myFilter">
-                
-                <article class="event small-12 columns small-centered">
-                    <div class="event-date small-2 columns">
-                        <p class="event-month">{{ ticket.date | date:'MMM' }}</p>
-                        <p class="event-day">{{ ticket.date | date:'dd' }}</p>
-                        <p class="event-month">{{ ticket.date | date:'HH:mm' }}</p>
-                    </div>
-                    <!--<div>
-                        <span class="image">
-                            <img src="http://placehold.it/100x100/f2f2f2" />
-                        </span>
-                    </div>-->
-                    <div class="event-desc small-4 columns">
-                        <h4 class="event-desc-header">{{ ticket.title }}</h4>
-                        <p class="event-desc-detail"><span class="event-desc-time"></span>by {{ ticket.author }}</p>
-                        <p class="event-desc-detail"><span class="event-desc-time"></span>in {{ ticket.category }} | status : {{ ticket.status}} | <span ng-show="ticket.assignTo === 'unassigned'">unassigned</span>
-                            <span ng-hide="ticket.assignTo === 'unassigned'">assigned to {{ ticket.assignTo }}</span></p>
-                        <a href="http://bdconf.com/speakers/brandon-arnold/" class="rsvp button">View Ticket</a>
-                    </div>
-                    <div class="event-desc small-6 columns">
-                        <h4 class="event-desc-header">Message :</h4>
-                        <p class="event-desc-detail"><span class="event-desc-time"></span>{{ ticket.body }}</p>
-                    </div>
-                </article>
-                <hr>
-            </div>         
-        </div>
-        
-        <div class="large-12 medium-12 small-12 columns">
-        </div>
+          <br>
+<h2 style="padding-left:15px;">Your tickets</h2> 
+          <hr>
+        <div ui-view></div>
       </div>
-    </div> 
+    </div>
 
     <!-- close the off-canvas menu -->
     <a class="exit-off-canvas"></a>
 
   </div>
 </div>
-
-<div id="ticketModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
-    <div class="section-container tabs" data-section="tabs">
-        <section class="active">
-          <div class="content" data-section-content>
-            <p>
-              <div class="row">
-                <div class="large-12 columns">
-                  <div class="signup-panel">
-                    <p class="welcome">Submit your issue</p>
-                    <form name="ticketForm" novalidate>
-                      
-                      <div class="row collapse">
-                        <p>* Issue title</p>
-                        <div class="small-12  columns">     
-                          <input type="text" name="title" ng-model="title" required>   
-                        </div>
-                      </div>
-                     
-                      <div class="row collapse">
-                        <p>* Issue Description</p>
-                        <div class="small-12  columns">
-                          <textarea id="description" name="description" ng-model="description" placeholder="Describe your problem here..." required></textarea>
-                        </div>
-                      </div>
-                        
-                      <div class="row collapse">
-                        <p>Category</p>
-                          <div class="large-12 small-12 columns">
-                              <select name="category" ng-model="category" required>
-                                <option value="{{ category.title }}"
-                                       
-                                        ng-repeat="category in ticketCategories" >{{ category.title }}</option>
-                              </select>
-                          </div>
-                      </div>
-                      <br>
-                      <button ng-disabled="ticketForm.title.$error.required ||
-                                           ticketForm.description.$error.required ||
-                                           ticketForm.category.$error.required"
-                              ng-click="createTicket(title, description, category, userInfo.username)" class="button">Create Issue</button>
-                    </form>
-                    <span style="color:red" ng-show="regError">
-                        error!
-                    </span>
-                  </div>
-                </div>
-               </div></p>
-          </div>
-        </section>
-    </div>
-    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-</div>
-
-<script type="text/javascript"> 
-            $(document).foundation();
-</script>

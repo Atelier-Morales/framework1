@@ -1,0 +1,67 @@
+<br>
+<a class="backToList" ui-sref="tickets.all">Go back to list</a>
+
+<link href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/6035/icomoon-uikit-feb.css" rel="stylesheet">
+<h3 style="padding-left:30px;">{{ getId() }} {{ currentTicket.title }}</h3>
+<div class="row">
+            <div class="large-4 small-4 columns" >
+                <p style="padding-left:30px;">Ticket assigned to 
+                    <span class="warning radius label" ng-show="currentTicket.assignTo === 'unassigned'">
+                        unassigned
+                    </span>
+                    <span class="info radius label" ng-show="currentTicket.assignTo != 'unassigned'">
+                        {{ currentTicket.assignTo }}
+                    </span>
+                    ||  status : <span ng-show="currentTicket.status === 'open'" class="success radius label">{{ currentTicket.status }}</span><span ng-show="currentTicket.status != 'open'" class="alert radius label">{{ currentTicket.status }}</span>
+                </p>
+            </div>
+</div>
+
+<div class="large-12 columns" >
+    
+    <!-- Feed Entry -->
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="large-1 small-1 columns">
+                <img src="http://placehold.it/80x80&text=[img]" />
+            </div>
+            <p class="replyText">
+                <strong>{{ currentTicket.author }}:</strong> {{ currentTicket.body }}<br>
+                <cite style="font-size:small;">Posted on {{ currentTicket.date | date:'medium'}}</cite>
+            </p>
+
+        </div>
+
+        <div class="large-12 columns" ng-repeat="reply in currentTicket.replies">
+            <hr />
+            <div class="large-1 small-1 columns">
+                <img src="http://placehold.it/80x80&text=[img]" />
+            </div>
+            <p class="replyText">
+                <strong>{{ reply.author }}:</strong> {{ reply.body }}<br>
+                <cite style="font-size:small;">Posted on {{ reply.date | date:'medium'}}</cite>
+            </p>
+            <br>
+        </div>
+            <!-- End Feed Entry -->
+        <br><br><br><br>
+        <hr/>
+        <div class="large-12 columns small-3">
+            <form ng-if="currentTicket.status === 'open'" name="replyForm" novalidate>           
+                <div class="row">
+                    <label>Post your response Here or <a ng-click="closeTicket(currentTicket.id, currentTicket.status)">close ticket</a>
+                    </label>
+                    <div class="row collapse">
+                        <div class="small-11 columns">
+                            <textarea id="replyBody" name="replyBody" ng-model="replyBody" placeholder="Type a few words..." required></textarea>
+                        </div>
+                        <div class="small-1 columns">
+                            <a ng-disabled="replyForm.replyBody.$error.required" ng-click="postTicketReply(userInfo.username, replyBody, currentTicket.id)" class="button postfix">go</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <p ng-if="currentTicket.status === 'closed'">Ticket is closed, <a ng-click="reopenTicket(currentTicket.id, currentTicket.status)">re-open</a> it to reply</p>
+        </div>
+    </div>
+</div>

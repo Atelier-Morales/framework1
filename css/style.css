@@ -506,6 +506,10 @@ input[data-toggle]:checked + label:active {
   margin: 0;
 }
 
+.replyText {
+  margin-left: 9% !important;
+}
+
 .hero {
   background: url("https://images7.alphacoders.com/330/330811.jpg") no-repeat center center;
   background-size: cover;

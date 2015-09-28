@@ -99,9 +99,15 @@ app.post('/ticket/createCategory', routes.tickets.createCategory);
 
 app.post('/ticket/createTicket', routes.tickets.createTicket);
 
-app.post('/tickets/userTickets', routes.tickets.fetchUserTickets);
+app.post('/ticket/userTickets', routes.tickets.fetchUserTickets);
 
-app.post('/tickets/updateTicket', routes.tickets.updateTicket);
+app.post('/ticket/updateTicket', routes.tickets.updateTicket);
+
+app.post('/ticket/postTicketReply', routes.tickets.postTicketReply);
+
+app.post('/ticket/reopenTicket', routes.tickets.reopenTicket);
+
+app.post('/ticket/closeTicket', routes.tickets.closeTicket);
 
 app.get('/ticket/categories', routes.tickets.fetchCategories);
 

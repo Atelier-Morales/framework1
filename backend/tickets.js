@@ -114,3 +114,68 @@ exports.updateTicket = function(req, res) {
         res.sendStatus(200);
     });
 }
+
+exports.postTicketReply = function(req, res) {
+    var author = req.body.author || '';
+    var body = req.body.body || '';
+    var id = req.body.id || '';
+    
+    if (author === '' || id === '' || body === '')
+        return res.sendStatus(400);
+    
+    console.log(author+' '+body+' '+id);
+    db.ticketModel.findOne({id: id}, function(err, ticket) {
+        if (err) {
+            console.log(err);
+            res.sendStatus(401);
+        }
+        ticket.replies.push({
+            author: author,
+            body: body
+        });
+        ticket.save();
+        res.sendStatus(200); 
+    });
+}
+
+exports.reopenTicket = function(req, res) {
+    var id = req.body.id || '';
+    var status = req.body.status || '';
+    
+    if (id === '' || status === '')
+        return res.sendStatus(400);
+    if (status === 'open')
+        return res.sendStatus(200);
+    
+    db.ticketModel.findOne({id: id}, function(err, ticket) {
+        if (err) {
+            console.log(err);
+            res.sendStatus(401);
+        }
+        ticket.status = 'open';
+        ticket.save();
+        console.log(ticket.status);
+        res.sendStatus(200);
+    });
+}
+
+exports.closeTicket = function(req, res) {
+    var id = req.body.id || '';
+    var status = req.body.status || '';
+    
+    if (id === '' || status === '')
+        return res.sendStatus(400);
+    if (status === 'closed')
+        return res.sendStatus(200);
+    
+    db.ticketModel.findOne({id: id}, function(err, ticket) {
+        if (err) {
+            console.log(err);
+            res.sendStatus(401);
+        }
+        ticket.status = 'closed';
+        ticket.save();
+        console.log(ticket.status);
+        res.sendStatus(200);
+    });
+}
