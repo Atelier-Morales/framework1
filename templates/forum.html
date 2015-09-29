@@ -21,11 +21,11 @@
         <br> 
         <ul class="accordion" data-accordion ng-repeat="category in categoriesCopy">
             <li class="accordion-navigation" id="top">
-                <a href="#panel1{{category.id}}" ng-click="moveTop();">{{ category.name }}</a>
+                <a href="#panel1{{category.id}}" ng-click="moveTop();">{{ category.name }} <i ng-click="removeCategory(category.name)" class="fi-x"></i></a>
                 <div id="panel1{{category.id}}" class="content">
                     <ul>
                         <li style="background:none;content:none" class="accordion-navigation" ng-repeat="subcategory in category.subCategories">
-                            <a>{{ subcategory.name }} <i ng-click="removeSubcategory(category.name, subcategory.name)" class="fi-x"></i></a>
+                            <a>{{ subcategory.name }} <i ng-click="removeSubcategory(category.name, subcategory.name)" class="fi-x"></i>    <i ng-click="modifySubcategory(category.name, subcategory.name)" class="fi-pencil"></i></a>
                         </li>
                     </ul>
                     <br>

@@ -8,7 +8,6 @@ exports.fetchCategories = function(req, res) {
 			console.log(err);
 			return res.send(401);
 		}
-        console.log(categories);
         if (categories[0] == undefined)
             return res.sendStatus(401);
         return res.send(categories[0].categories);       
@@ -104,6 +103,48 @@ exports.createSubCategory = function(req, res) {
     });
 }
 
+exports.removeCategory = function(req, res) {
+    var categoria = req.body.category || '';
+    
+    if (categoria == '')
+        return res.sendStatus(400);
+    
+    db.forumModel.find({}, function(err, category) {
+        for (var i = 0; i < category[0].categories.length; ++i) {
+            if (category[0].categories[i].name === categoria) {
+                var index = i;
+                if (index > 0) {
+                    if (category[0].categories.length === 1)
+                        category[0].categories.shift();
+                    else
+                        category[0].categories.splice(index, 1);
+                    for (var k = 0; k < category[0].threads.length; ++k) {
+                        if (category[0].threads[k].category[0].name === categoria) {
+                            category[0].threads.splice(k, 1);
+                            k = 0;
+                            console.log('test');
+                        }
+                    }
+                    category[0].save(function(err) {
+                        if (err) {
+                            console.log(err);
+                            return res.sendStatus(500);
+                        }
+                        db.forumModel.find({}, function (err, forum) {
+                            if (err) {
+                                console.log(err);
+                                return res.sendStatus(500);
+                            }
+                            console.log(categoria+" deleted");
+                            return res.send(forum);
+                        });
+                    });
+                }
+            }
+        }
+    });
+}
+
 exports.removeSubCategory = function(req, res) {
     var categoria = req.body.category || '';
     var subcategoria = req.body.subcategory || '';
@@ -118,13 +159,18 @@ exports.removeSubCategory = function(req, res) {
                 var pos = i;
                 for (var j = 0; j < category[0].categories[pos].subCategories.length; ++j) {
                     if (category[0].categories[pos].subCategories[j].name === subcategoria)
-                        index = 1;
+                        index = j;
                 }
                 if (index > 0) {
                     if (category[0].categories[i].subCategories.length === 1)
                         category[0].categories[i].subCategories.shift();
                     else
                         category[0].categories[i].subCategories.splice(index, 1);
+                    for (var k = 0; k < category[0].threads.length; ++k) {
+                        if (category[0].threads[k].category[1].name === subcategoria) {
+                            category[0].threads.splice(k, 1);
+                        }
+                    }
                     category[0].save(function(err) {
                         if (err) {
                             console.log(err);

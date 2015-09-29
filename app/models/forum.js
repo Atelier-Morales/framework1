@@ -32,6 +32,11 @@
                     subcategory: subcategory
                 });
             },
+            removeTopic: function(category) {
+                return $http.post(API_URL + '/forum/removeCategory', {
+                    category: category
+                });
+            },
             createThread: function(name, category, subcategory, body, author) {
                 return $http.post(API_URL + '/forum/createThread', {
                     name: name,

@@ -182,6 +182,21 @@
                 .success(function(data) {
                     console.log('category removed');
                     fetchCategories();
+                    fetchThreads();
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
+            }
+            
+            $scope.removeCategory = function removeCategory(category) {
+                forumService.removeTopic(category)
+                .success(function(data) {
+                    console.log('category removed');
+                    fetchCategories();
+                    fetchThreads();
                 })
                 .error(function(status, data) {
                     console.log(status);
