@@ -71,7 +71,6 @@ exports.createSubCategory = function(req, res) {
     
 	if (name == '' || categoria == '')
         return res.sendStatus(400);
-    console.log(name+' '+categoria);
     db.forumModel.find({}, function(err, category) {
         if (err) {
 			console.log(err);
@@ -100,6 +99,92 @@ exports.createSubCategory = function(req, res) {
                 });
             }
         }
+    });
+}
+
+exports.modifySubcategory = function(req, res) {
+    var categoria = req.body.category || '';
+    var subcategoria = req.body.subcategory || '';
+    var newValue = req.body.newName || '';
+    
+    if (categoria === '' || subcategoria === '' || newValue === '')
+        return res.sendStatus(400);
+    db.forumModel.find({}, function(err, category) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(401);
+        }
+        for (var i = 0; i < category[0].categories.length; ++i) {
+            if (category[0].categories[i].name === categoria) {
+                var pos = i;
+                break;
+            }
+        }
+        for (var j = 0; j < category[0].categories[pos].subCategories.length; ++j) {
+            if (category[0].categories[pos].subCategories[j].name === subcategoria) {
+                var subPos = j;
+                break;
+            }
+        }
+        var oldValue = category[0].categories[pos].subCategories[subPos].name;
+        category[0].categories[pos].subCategories[subPos].name = newValue;
+        for (var k = 0; k < category[0].threads.length; ++k) {
+            if (category[0].threads[k].category[1].name === subcategoria)
+                category[0].threads[k].category[1].name = newValue;
+        }
+        category[0].save(function(err) {
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+            db.forumModel.find({}, function (err, forum) {
+                if (err) {
+                    console.log(err);
+                    return res.sendStatus(500);
+                }
+                console.log(categoria+" modified");
+                return res.send(forum);
+            });
+        });
+    });
+}
+
+exports.modifyCategory = function(req, res) {
+    var categoria = req.body.category || '';
+    var newValue = req.body.newName || '';
+    
+    if (categoria === '' || newValue === '')
+        return res.sendStatus(400);
+    
+    db.forumModel.find({}, function(err, category) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(401);
+        }
+        for (var i = 0; i < category[0].categories.length; ++i) {
+            if (category[0].categories[i].name === categoria) {
+                category[0].categories[i].name = newValue;
+                break;
+            }
+        }
+        for (var j = 0; j < category[0].threads.length; ++j) {
+            if (category[0].threads[j].category[0].name === categoria)
+                category[0].threads[j].category[0].name = newValue;
+        }
+        category[0].save(function(err) {
+            if (err) {
+                console.log(err);
+                res.sendStatus(500);
+            }
+            db.forumModel.find({}, function(err, forum) {
+                if (err) {
+                    console.log(err);
+                    return res.sendStatus(500);
+                }
+                console.log(categoria+' modified');
+                return res.send(forum);
+            });
+        });
     });
 }
 

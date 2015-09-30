@@ -32,6 +32,19 @@
                     subcategory: subcategory
                 });
             },
+            modifySubcategory: function(category, subcategory, newName) {
+                return $http.post(API_URL + '/forum/modifySubcategory',{
+                    category: category,
+                    subcategory: subcategory,
+                    newName: newName
+                });
+            },
+            modifyCategory: function(category, newName) {
+                return $http.post(API_URL + '/forum/modifyCategory', {
+                    category: category,
+                    newName: newName
+                });
+            },
             removeTopic: function(category) {
                 return $http.post(API_URL + '/forum/removeCategory', {
                     category: category

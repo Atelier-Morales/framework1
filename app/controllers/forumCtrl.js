@@ -105,6 +105,11 @@
                 $scope.scopeName = name;
             }
             
+            $scope.setDualScope = function(category, subcategory) {
+                $scope.scopeCategory = category;
+                $scope.scopeSubcategory = subcategory;
+            }
+            
             fetchCategories();
             fetchThreads();
             
@@ -199,6 +204,38 @@
                     fetchThreads();
                 })
                 .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
+            }
+            
+            
+            $scope.modifyCategory = function(category, newName) {
+                forumService.modifyCategory(category, newName)
+                .success(function(data) {
+                    $('#modifyCat').foundation('reveal', 'close');
+                    fetchCategories();
+                    fetchThreads();
+                })
+                .error(function(status, data) {
+                    $('#modifyCat').foundation('reveal', 'close');
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not fetch info');
+                });
+            }
+            
+            $scope.modifySubcategory = function modifySubcategory(category, subcategory, newName) {
+                forumService.modifySubcategory(category, subcategory, newName)
+                .success(function(data) {
+                    $('#modifySubcat').foundation('reveal', 'close');
+                    console.log('category modified');
+                    fetchCategories();
+                    fetchThreads();
+                })
+                .error(function(status, data) {
+                    $('#modifySubcat').foundation('reveal', 'close');
                     console.log(status);
                     console.log(data);
                     console.log('Could not fetch info');

@@ -21,11 +21,32 @@
         <br> 
         <ul class="accordion" data-accordion ng-repeat="category in categoriesCopy">
             <li class="accordion-navigation" id="top">
-                <a href="#panel1{{category.id}}" ng-click="moveTop();">{{ category.name }} <i ng-click="removeCategory(category.name)" class="fi-x"></i></a>
+                <a style="padding-bottom:0px;" href="#panel1{{category.id}}" ng-click="moveTop();">{{ category.name }}
+                    <button ng-click="removeCategory(category.name)" 
+                            class="button tiny"
+                            ng-if="userInfo.is_admin">
+                        <i class="fi-x"></i>
+                    </button>
+                    <button class="button tiny radius" 
+                            data-reveal-id="modifyCat" 
+                            ng-click="setDualScope(category.name, subcategory.name)"
+                            ng-if="userInfo.is_admin">
+                        <i class="fi-pencil"></i>
+                    </button>
+                </a>
                 <div id="panel1{{category.id}}" class="content">
                     <ul>
-                        <li style="background:none;content:none" class="accordion-navigation" ng-repeat="subcategory in category.subCategories">
-                            <a>{{ subcategory.name }} <i ng-click="removeSubcategory(category.name, subcategory.name)" class="fi-x"></i>    <i ng-click="modifySubcategory(category.name, subcategory.name)" class="fi-pencil"></i></a>
+                        <li style="background:none;content:none;" class="accordion-navigation" ng-repeat="subcategory in category.subCategories">
+                            <a style="padding-bottom:0px;">{{ subcategory.name }} 
+                            <button ng-click="removeSubcategory(category.name, subcategory.name)" 
+                                    class="button tiny"
+                                    ng-if="userInfo.is_admin">
+                                <i class="fi-x"></i>
+                            </button>    
+                            <button class="button tiny radius" 
+                            data-reveal-id="modifySubcat" 
+                            ng-click="setDualScope(category.name, subcategory.name)"
+                            ng-if="userInfo.is_admin"><i class="fi-pencil"></i></button></a>
                         </li>
                     </ul>
                     <br>
@@ -43,6 +64,70 @@
     <a class="exit-off-canvas"></a>
 
   </div>
+</div>
+
+<div id="modifyCat" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
+    <div class="section-container tabs" data-section="tabs">
+        <section class="active">
+          <div class="content" data-section-content>
+            <p>
+              <div class="row">
+                <div class="large-12 columns">
+                  <div class="signup-panel">
+                    <p class="welcome">modify category {{ scopeSubcategory }}</p>
+                    <form name="modifyForm1" novalidate>
+                      
+                      <div class="row collapse">
+                        <p>Name</p>
+                        <div class="small-10  columns">     
+                          <input type="text" name="name" ng-model="name" required>   
+                        </div>
+                      </div>
+        
+                      <br><br>
+                      <button ng-disabled="modifyForm1.name.$error.required" ng-click="modifyCategory(scopeCategory, name)" class="button">
+                            Modify
+                      </button>
+                    </form>
+                  </div>
+                </div>
+               </div></p>
+          </div>
+        </section>
+    </div>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
+
+<div id="modifySubcat" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
+    <div class="section-container tabs" data-section="tabs">
+        <section class="active">
+          <div class="content" data-section-content>
+            <p>
+              <div class="row">
+                <div class="large-12 columns">
+                  <div class="signup-panel">
+                    <p class="welcome">modify sub-category {{ scopeSubcategory }}</p>
+                    <form name="modifyForm" novalidate>
+                      
+                      <div class="row collapse">
+                        <p>Name</p>
+                        <div class="small-10  columns">     
+                          <input type="text" name="name" ng-model="name" required>   
+                        </div>
+                      </div>
+        
+                      <br><br>
+                      <button ng-disabled="modifyForm.name.$error.required" ng-click="modifySubcategory(scopeCategory, scopeSubcategory, name)" class="button">
+                            Modify
+                      </button>
+                    </form>
+                  </div>
+                </div>
+               </div></p>
+          </div>
+        </section>
+    </div>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
 
 <div id="forumModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">

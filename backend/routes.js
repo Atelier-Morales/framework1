@@ -87,6 +87,10 @@ app.post('/forum/removeSubCategory', routes.forum.removeSubCategory);
 
 app.post('/forum/removeCategory', routes.forum.removeCategory);
 
+app.post('/forum/modifySubcategory', routes.forum.modifySubcategory);
+
+app.post('/forum/modifyCategory', routes.forum.modifyCategory);
+
 app.post('/forum/createThread', routes.forum.createThread);
 
 app.post('/forum/postCommentBody', routes.forum.postCommentBody);

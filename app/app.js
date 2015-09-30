@@ -14,11 +14,19 @@
         'projectModel',
         'forumModel',
         'ui.router',
-        'ngCookies'
+        'ngCookies',
+        'pascalprecht.translate'
     ]);
     
-    app.config(function($stateProvider, $urlRouterProvider, $locationProvider){
- 
+    app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider){
+        
+        $translateProvider
+            .translations('en', {
+            HEADLINE: 'Welcome to the IIIntranet',
+            INTRO_TEXT: 'And it has i18n support!'
+        });
+        $translateProvider.preferredLanguage('en');
+        
         $urlRouterProvider.otherwise('/home');
         $urlRouterProvider.when("/forum", "/forum/list");
         $urlRouterProvider.when("/users", "/users/administration");
