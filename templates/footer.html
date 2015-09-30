@@ -8,8 +8,8 @@
         <div class="row">
           <div class="medium-9 medium-push-3 columns">
             <label>
-              <label for="email" class="contact">Contact Us</label>
-              <input type="email" name="sender" ng-model="sender" id="email" placeholder="Email Address" required/>
+              <label for="email" class="contact">{{ 'CONTACTUS' | translate }}</label>
+              <input type="email" name="sender" ng-model="sender" id="email" placeholder="Email" required/>
             </label>
           </div>
         </div>
@@ -22,7 +22,7 @@
           <div class="row">
             <div class="medium-9 medium-push-3 columns">
               <button ng-disabled="emailForm.sender.$error.required || emailForm.text.$error.required"
-                      ng-click="sendEmail(sender, 'new contact', text)" value="Submit">Send</button>
+                      ng-click="sendEmail(sender, 'new contact', text)" value="Submit">{{ 'SEND' | translate }}</button>
             </div>
           </div>
         </div>

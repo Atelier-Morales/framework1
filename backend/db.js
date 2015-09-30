@@ -24,6 +24,7 @@ var User = new Schema({
     email:    { type: String, required: true },
     is_admin: { type: Boolean, default: false },
     created: { type: Date, default: Date.now },
+    lang: { type: String, required: true, default: "eng" },
     projects: [
         {
             name: { type: String, required: true },

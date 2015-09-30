@@ -11,7 +11,7 @@
         <div class="row">
             <div class="large-12 columns">
                 <div class="panel">
-                    <h1>Administration section</h1>
+                    <h1>{{ 'ADMINISTRATION' | translate }}</h1>
                 </div>
             </div>
         </div>
@@ -21,11 +21,11 @@
                 <ul class="button-group round toggle" data-toggle="buttons-radio">
                     <li>
                         <input type="radio" id="r1" name="r-group" data-toggle="button">
-                        <label ui-sref="users.administration" ui-sref-active="current" class="button" for="r1">Users</label>
+                        <label ui-sref="users.administration" ui-sref-active="current" class="button" for="r1">{{ 'USERS' | translate }}</label>
                     </li>
                     <li>
                         <input type="radio" id="r2" name="r-group" data-toggle="button">
-                        <label ui-sref="users.projects" ui-sref-active="current" class="button" for="r1">Projects</label>
+                        <label ui-sref="users.projects" ui-sref-active="current" class="button" for="r1">{{ 'PROJECTS' | translate }}</label>
                     </li>
                     <li>
                         <input type="radio" id="r3" name="r-group" data-toggle="button">

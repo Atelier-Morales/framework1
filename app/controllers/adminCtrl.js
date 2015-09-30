@@ -8,7 +8,8 @@
     var adminCtrl = angular.module('adminCtrl', [
         'userAuth',
         'ngCookies',
-        'sidebarDirective'
+        'sidebarDirective',
+        'pascalprecht.translate'
     ]);
     
     adminCtrl.controller('AdminUserCtrl', [
@@ -20,9 +21,10 @@
         '$log',
         '$cookies',
         '$timeout',
+        '$translate',
         'userService', 
         'authService',
-        function AdminUserCtrl($rootScope, $scope, $location, $window, $state, $log, $cookies, $timeout, userService, authService) {
+        function AdminUserCtrl($rootScope, $scope, $location, $window, $state, $log, $cookies, $timeout, $translate, userService, authService) {
             //Admin User Controller (login, logout)
             
             $scope.authError = false;
@@ -42,6 +44,10 @@
             
             function isNumeric(num){
                 return !isNaN(num)
+            }
+            
+            $scope.changeLanguage = function(lang) {
+                $translate.use(lang);
             }
             
             //sidenav resize

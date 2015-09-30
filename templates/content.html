@@ -7,8 +7,8 @@
     <div class="welcome-block five columns centered">
         <h1>{{ 'HEADLINE' | translate }}</h1><br>
         <ul class="inline-list hide-for-small-only account-action">
-            <li><a href="#" ng-click="fuck()" data-reveal-id="myModal">Login</a></li>
-            <li class=""><a class="signup" href="#" data-reveal-id="myModal2">Signup</a></li>
+            <li><a href="#" ng-click="fuck()" data-reveal-id="myModal">{{ 'CONNECTION' | translate }}</a></li>
+            <li class=""><a class="signup" href="#" data-reveal-id="myModal2">{{ 'REGISTER' | translate }}</a></li>
         </ul>
     </div>
 </div>
@@ -25,8 +25,8 @@
                   <div class="row">
                     <div class="large-12 columns">
                       <div class="signup-panel">
-                        <p class="welcome" ng-show="!confirmAuth">Welcome back!</p>
-                        <p class="welcome" ng-show="confirmAuth">Please log in to confirm your registration</p> 
+                        <p class="welcome" ng-show="!confirmAuth">{{ 'WELCOMEBACK' | translate }}</p>
+                        <p class="welcome" ng-show="confirmAuth">{{ 'CONFIRMREG' | translate }}</p> 
                         <form name="loginForm" novalidate>
                           <div class="row collapse">
                             <div class="small-2 columns">
@@ -41,14 +41,14 @@
                               <span class="prefix"><i class="fi-lock"></i></span>
                             </div>
                             <div class="small-10 columns ">
-                              <input type="password" name="password" ng-model="password" placeholder="Password" required>
+                              <input type="password" name="password" ng-model="password" placeholder="{{ 'PASSWORD' | translate }}" required>
                             </div>
                           </div>
                         </form>
                         <button ng-disabled="loginForm.username.$error.required || loginForm.password.$error.required" 
-                                ng-click="logIn(username, password)" class="button ">Log in</button>
+                                ng-click="logIn(username, password)" class="button ">{{ 'CONNECTION' | translate }}</button>
                           <span style="color:red" ng-show="authError">
-                            <span>Email/password are incorrect</span>
+                            <span>{{ 'INCORRECT' | translate }}</span>
                           </span>
                       </div>
                     </div>
@@ -68,25 +68,25 @@
               <div class="row">
                 <div class="large-12 columns">
                   <div class="signup-panel">
-                    <p class="welcome">Hello, new user!</p>
+                    <p class="welcome">{{ 'NEWUSER' | translate }}</p>
                     <form name="registerForm" novalidate>
                       <div class="row collapse">
                         <span style="color:red" ng-show="registerForm.username.$dirty && registerForm.username.$invalid">
-                            <span ng-show="registerForm.username.$error.required">Username is required</span>
+                            <span ng-show="registerForm.username.$error.required">{{ 'REQUIREDUSERNAME' | translate }}</span>
                         </span>
                         <div class="small-2  columns">
                           <span class="prefix"><i class="fi-torso"></i></span>
                         </div>
                         <div class="small-10  columns">
                             
-                          <input type="text" name="username" ng-model="username" placeholder="Username" required>
+                          <input type="text" name="username" ng-model="username" placeholder="{{ 'USERNAME' | translate }}" required>
                             
                         </div>
                       </div>
                       <div class="row collapse">
                         <span style="color:red" ng-show="registerForm.email.$dirty && registerForm.email.$invalid">
-                            <span ng-show="registerForm.email.$error.required">Email is required</span>
-                            <span ng-show="registerForm.email.$error.email">Invalid email address</span>
+                            <span ng-show="registerForm.email.$error.required">{{ 'REQUIREDEMAIL' | translate }}</span>
+                            <span ng-show="registerForm.email.$error.email">{{ 'INVALIDEMAIL' | translate }}</span>
                         </span>
                         <div class="small-2 columns">
                           <span class="prefix"><i class="fi-mail"></i></span>
@@ -99,28 +99,28 @@
                       </div>
                       <div class="row collapse">
                         <span style="color:red" ng-show="registerForm.password.$modelValue.length === 0">
-                            <span ng-show="registerForm.password.$modelValue.length === 0">Password is required</span>
+                            <span ng-show="registerForm.password.$modelValue.length === 0">{{ 'REQUIREDPASS' | translate }}</span>
                         </span>
                         <div class="small-2 columns ">
                           <span class="prefix"><i class="fi-lock"></i></span>
                         </div>
                         <div class="small-10 columns ">
                             
-                          <input type="password" name="password" ng-model="password" placeholder="Password">
+                          <input type="password" name="password" ng-model="password" placeholder="{{ 'PASSWORD' | translate }}">
                             
                         </div>
                       </div>
                       <div class="row collapse">
                         <span style="color:red" ng-show="registerForm.confirm.$dirty">
-                            <span ng-show="registerForm.confirm.$modelValue.length === 0">Please confirm password</span>
-                            <span ng-show="registerForm.password.$modelValue != registerForm.confirm.$modelValue">Passwords don't match</span>
+                            <span ng-show="registerForm.confirm.$modelValue.length === 0">{{ 'CONFIRMPASS' | translate }}</span>
+                            <span ng-show="registerForm.password.$modelValue != registerForm.confirm.$modelValue">{{ 'PASSDONTMATCH' | translate }}</span>
                         </span>
                         <div class="small-2 columns ">
                           <span class="prefix"><i class="fi-lock"></i></span>
                         </div>
                         <div class="small-10 columns ">
                           
-                          <input type="password" name="confirm" ng-model="confirm" placeholder="Confirm password">
+                          <input type="password" name="confirm" ng-model="confirm" placeholder="{{ 'CONFIRM' | translate }}">
                             
                         </div>
                       </div><br><br>
@@ -132,10 +132,10 @@
                                 registerForm.confirm.$error.required  ||
                                 registerForm.password.$modelValue != registerForm.confirm.$modelValue"
                                 ng-click="register(username, email, password, confirm)" class="button">
-                            Sign Up</button>
+                            {{ 'REGISTER' | translate }}</button>
                     </form>
                     <span style="color:red" ng-show="regError">
-                        Registration error!
+                        {{ 'REGERROR' | translate }}
                     </span>
                   </div>
                 </div>

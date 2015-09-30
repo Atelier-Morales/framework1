@@ -61,7 +61,6 @@
             function fetchProjects(username) {
                 projectService.fetchProjects(username)
                 .success(function(data){
-                    console.log(data);
                     $scope.projects = data;
                     $scope.projectsCopy = angular.copy($scope.projects);
                 })
@@ -138,7 +137,6 @@
                 var date = deadline.year+"-"+deadline.month+"-"+deadline.day;
                 projectService.updateProject(name, oldname, date, description)
                 .success(function(data) {
-                    console.log(data);
                     $('#updateProjectModal').foundation('reveal', 'close');
                     window.alert('Project '+oldname+' updated!');
                     fetchProjects($scope.username);

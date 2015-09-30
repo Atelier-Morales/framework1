@@ -1,19 +1,21 @@
-<button ng-if="userInfo.is_admin" href="#" data-reveal-id="ticketCategoryModal">Create a ticket category</button>
+<button ng-if="userInfo.is_admin" href="#" data-reveal-id="ticketCategoryModal">{{ 'CREATETICKETCATEGORY' | translate }}</button>
 <br>
 <dl class="sub-nav">
   <dt>Status:</dt>
-  <dd ng-class="{active: currentStatus === 'all'}"><a ng-click="changeTicketStatus('all')">All</a></dd>
-  <dd ng-class="{active: currentStatus === 'open'}"><a ng-click="changeTicketStatus('open')">Open</a></dd>
-  <dd ng-class="{active: currentStatus === 'closed'}"><a ng-click="changeTicketStatus('closed')">Closed</a></dd>
+  <dd ng-class="{active: currentStatus === 'all'}"><a ng-click="changeTicketStatus('all')">{{ 'ALL' | translate }}</a></dd>
+  <dd ng-class="{active: currentStatus === 'open'}"><a ng-click="changeTicketStatus('open')">{{ 'OPEN' | translate }}</a></dd>
+  <dd ng-class="{active: currentStatus === 'closed'}"><a ng-click="changeTicketStatus('closed')">{{ 'CLOSED' | translate }}</a></dd>
 </dl>
 <dl class="sub-nav">
-  <dt>Assigned to:</dt>
-  <dd ng-class="{active: adminStatus === 'all'}"><a ng-click="filterByAdmin('all')">All</a></dd>
-  <dd ng-class="{active: adminStatus === 'unassigned'}"><a ng-click="filterByAdmin('unassigned')">Unassigned</a></dd>
+  <dt>{{ 'ASSIGNTO' | translate }}:</dt>
+  <dd ng-class="{active: adminStatus === 'all'}"><a ng-click="filterByAdmin('all')">{{ 'ALL' | translate }}</a></dd>
+  <dd ng-class="{active: adminStatus === 'unassigned'}"><a ng-click="filterByAdmin('unassigned')">{{ 'UNASSIGNED' | translate }}</a></dd>
   <dd ng-repeat="admin in adminUsers" ng-class="{active: adminStatus === admin.username}"><a ng-click="filterByAdmin(admin.username)">{{ admin.username }}</a></dd>
 </dl>
 <div class="row">
-            <h3 style="padding-left:20px;">{{ currentStatus }} tickets</h3>
+            <h3 ng-if="currentStatus === 'open'" style="padding-left:20px;">{{ 'OPENTICKETS' | translate }}</h3>
+            <h3 ng-if="currentStatus === 'closed'"style="padding-left:20px;">{{ 'CLOSEDTICKETS' | translate }}</h3>
+            <h3 ng-if="currentStatus === 'all'" style="padding-left:20px;">{{ 'ALLTICKETS' | translate }}</h3>
             <div class="small-12 columns small-centered" style="cursor: pointer; background:white;"
                  ng-repeat="ticket in ticketsCopy | orderBy: '-date' | filter: myFilter | filter : adminFilter">
                 
@@ -30,10 +32,10 @@
                     </div>-->
                     <div class="event-desc small-4 columns">
                         <h4 class="event-desc-header">{{ ticket.title }}</h4>
-                        <p class="event-desc-detail"><span class="event-desc-time"></span>by {{ ticket.author }}</p>
-                        <p class="event-desc-detail"><span class="event-desc-time"></span>in {{ ticket.category }} | status : {{ ticket.status}} | <span ng-show="ticket.assignTo != 'unassigned'">assigned to : </span>{{ ticket.assignTo }}
+                        <p class="event-desc-detail"><span class="event-desc-time"></span>{{ 'BY' | translate }} {{ ticket.author }}</p>
+                        <p class="event-desc-detail"><span class="event-desc-time"></span>{{ 'IN' | translate }} {{ ticket.category }} | status : {{ ticket.status}} | <span ng-show="ticket.assignTo != 'unassigned'">{{ 'ASSIGNTO' | translate }} : </span>{{ ticket.assignTo }}
                         </p>
-                        <a ng-href="users/tickets/{{ticket.id}}" class="rsvp button">View Ticket</a>
+                        <a ng-href="users/tickets/{{ticket.id}}" class="rsvp button">{{ 'VIEW' | translate }} Ticket</a>
                     </div>
                     <div class="event-desc small-6 columns">
                         <h4 class="event-desc-header">Message :</h4>
@@ -52,11 +54,11 @@
               <div class="row">
                 <div class="large-12 columns">
                   <div class="signup-panel">
-                    <p class="welcome">Create category</p>
+                    <p class="welcome">{{ 'CREATECATEGORY' | translate }}</p>
                     <form name="ticketCategoryForm" novalidate>
                       
                       <div class="row collapse">
-                        <p>Name</p>
+                        <p>{{ 'NAME' | translate }}</p>
                         <div class="small-10  columns">     
                           <input type="text" name="name" ng-model="name" required>   
                         </div>
@@ -64,11 +66,11 @@
         
                       <br><br>
                       <button ng-disabled="ticketCategoryForm.name.$error.required" ng-click="createCategory(name)" class="button">
-                            Create
+                            {{ 'CREATE' | translate }}
                       </button>
                     </form>
                     <span style="color:red" ng-show="regError">
-                        Category creation error!
+                        {{ 'PROJECT ERROR' | translate  }}
                     </span>
                   </div>
                 </div>

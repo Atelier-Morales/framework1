@@ -1,4 +1,4 @@
-<a class="backToList" ui-sref="users.tickets.list">Go back to list</a>
+<a class="backToList" ui-sref="users.tickets.list">{{ 'BACKTOLIST' | translate }}</a>
 
 <link href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/6035/icomoon-uikit-feb.css" rel="stylesheet">
 <h3 style="padding-left:30px;">{{ fetchId() }} {{ currentTicket.title }}</h3>
@@ -24,13 +24,13 @@
             </div>
             <p class="replyText">
                 <strong>{{ reply.author }}:</strong> {{ reply.body }}<br>
-                <cite style="font-size:small;">Posted on {{ reply.date | date:'medium'}}</cite>
+                <cite style="font-size:small;">{{ 'POSTEDON' | translate }} {{ reply.date | date:'medium'}}</cite>
             </p>
         </div>
             <!-- End Feed Entry -->
         <div class="row">
             <div class="large-2 small-2 columns">
-                <p>Ticket assigned to 
+                <p>{{ 'ASSIGNTO' | translate }} 
                     <span ng-show="ticketsCopy[ticketId].assignTo === 'unassigned'">
                         nobody
                     </span>

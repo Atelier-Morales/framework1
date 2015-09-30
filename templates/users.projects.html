@@ -1,8 +1,8 @@
 <div class="row">
       <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
         <br>
-        <h2 style="padding-left:15px;">Available Projects {{ setUsername(userInfo.username) }}</h2> 
-          <button ng-if="userInfo.is_admin" href="#" data-reveal-id="projectModal">Create a Project</button>
+        <h2 style="padding-left:15px;">{{ 'PROJECTS' | translate }} {{ setUsername(userInfo.username) }}</h2> 
+          <button ng-if="userInfo.is_admin" href="#" data-reveal-id="projectModal">{{ 'CREATEPROJECT' | translate }}</button>
         <br>
         
         <div class="large-12 medium-12 small-12 columns">
@@ -12,9 +12,9 @@
                 <p>Deadline : {{ project.deadline | date:'medium'}}</p>
                 <p>Description : {{ project.description }}</p>
               </div>
-                <button ng-if="userInfo.is_admin" ng-click="setIndex($index)" href="#" data-reveal-id="updateProjectModal">Update</button>
-                <a ng-if="userInfo.is_admin" ng-click="deleteProject(project.name)" class="button alert">Remove</a>
-                <a href="#" ng-click="registerProject(project.name, username, project.deadline)" class="button success">Register</a>
+                <button ng-if="userInfo.is_admin" ng-click="setIndex($index)" href="#" data-reveal-id="updateProjectModal">{{ 'UPDATE' | translate }}</button>
+                <a ng-if="userInfo.is_admin" ng-click="deleteProject(project.name)" class="button alert">{{ 'REMOVE' | translate }}</a>
+                <a href="#" ng-click="registerProject(project.name, username, project.deadline)" class="button success">{{ 'REGISTER' | translate }}</a>
             </div> 
         </div>
       </div>
@@ -28,7 +28,7 @@
               <div class="row">
                 <div class="large-12 columns">
                   <div class="signup-panel">
-                    <p class="welcome">Create project</p>
+                    <p class="welcome">{{ 'CREATEPROJECT' | translate }}</p>
                     <form name="projectForm" novalidate>
                       
                       <div class="row collapse">
@@ -46,7 +46,7 @@
                       </div>
                         
                       <div class="row">
-                          <p>Set deadline</p>
+                          <p>{{ 'DEADLINE' | translate }}</p>
                           <div class="large-4 columns">
                             <label>
                                 <select ng-model="deadline.year">
@@ -73,17 +73,17 @@
                       </div>
                       <span style="color:red" ng-show="
                         date_is_invalid(deadline.year, deadline.month, deadline.day) === false">
-                        Bad Date! Choose another one.</span>
+                        {{ 'BADDATE' | translate }}</span>
                       </span>
                         <br><br>
                         <button ng-disabled="projectForm.name.$error.required ||
                                              projectForm.description.$error.required ||
                                              date_is_invalid(deadline.year, deadline.month, deadline.day) === false"
                                 ng-click="createProject(name, deadline, description)" class="button">
-                            Create</button>
+                            {{ 'CREATE' | translate }}</button>
                     </form>
                     <span style="color:red" ng-show="regError">
-                        Project creation error!
+                        {{ 'PROJECTERROR' | translate }}
                     </span>
                   </div>
                 </div>
@@ -103,7 +103,7 @@
               <div class="row">
                 <div class="large-12 columns">
                   <div class="signup-panel">
-                    <p class="welcome">Update project {{ projects[index].name }}</p>
+                    <p class="welcome">{{ 'UPDATEPROJECT' | translate }} {{ projects[index].name }}</p>
                     <form name="updateForm" novalidate>
                       <div class="row collapse">
                         <div class="small-2  columns">
@@ -123,7 +123,7 @@
                       </div>
                       
                       <div class="row">
-                          <p>Set deadline</p>
+                          <p>{{ 'DEADLINE' | translate }}</p>
                           <div class="large-4 columns">
                             <label>
                                 <select ng-model="deadline.year">
@@ -150,7 +150,7 @@
                       </div>
                       <span style="color:red" ng-show="
                         date_is_invalid(deadline.year, deadline.month, deadline.day) === false">
-                        Bad Date! Choose another one.</span>
+                        {{ 'BADDATE' | translate }}</span>
                       </span>
                         <br><br>
                         <button ng-disabled="updateForm.name.$error.required ||
@@ -158,10 +158,10 @@
                                              deadline.year === undefined || deadline.month === undefined || deadline.day === undefined ||
                                              date_is_invalid(deadline.year, deadline.month, deadline.day) === false"
                                 ng-click="updateProject(projectsCopy[index].name, projects[index].name, deadline, projectsCopy[index].description)" class="button">
-                            Update</button>
+                            {{ 'UPDATE' | translate }}</button>
                     </form>
                     <span style="color:red" ng-show="regError">
-                        Update error!
+                        {{ 'PROJECTERROR' | translate }}
                     </span>
                   </div>
                 </div>

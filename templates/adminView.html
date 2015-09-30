@@ -11,7 +11,7 @@
     <div class="row">
             <div class="large-12 columns">
                 <div class="panel">
-                    <h1>Welcome to the Intranet, {{ userInfo.username }}{{ API_URL }}</h1>
+                    <h1>{{ 'WELCOME' | translate }}, {{ userInfo.username }}{{ API_URL }}</h1>
                 </div>
             </div>
     </div>
@@ -19,13 +19,13 @@
     <div class="row">
       <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
         <br>
-        <h2 style="padding-left:15px;">Your Projects</h2>
+        <h2 style="padding-left:15px;">{{ 'YOURPROJECTS' | translate }}</h2>
         <br>
         
         
         <div class="medium-4 large-4 small-12 columns">
             
-            <h3>In Progress</h3>
+            <h3>{{ 'PROGRESS' | translate }}</h3>
             
             <div class="callout-card warning radius" ng-repeat="project in userInfo.projects | filter: { status: 'ongoing' }">
 
@@ -36,11 +36,11 @@
               </div>
               <div class="callout-card-content">
                 <h3 class="lead">{{ project.name }}</h3>
-                <p>{{ project.status }}</p>
-                <p>No grade yet</p>
+                <p ng-if="project.status === 'ongoing'">{{ 'ONGOING' | translate }}</p>
+                <p>{{ 'NOGRADE' | translate }}</p>
                 <p>Deadline : {{ project.deadline | date:'yyyy-MM-dd' }}</p>
 
-                <button ng-click="setIndex(project.name)" href="#" data-reveal-id="finishProjectModal" class="button success">Finish</button>
+                <button ng-click="setIndex(project.name)" href="#" data-reveal-id="finishProjectModal" class="button success">{{ 'FINISH' | translate }}</button>
               </div>
             </div>
             
@@ -48,20 +48,20 @@
           
         <div class="medium-4 large-4 small-12 columns">
             
-            <h3>Successful</h3>
+            <h3>{{ 'SUCCESS' | translate }}</h3>
              
             
             <div class="callout-card success radius" ng-repeat="project in userInfo.projects | filter: { status: 'finished' }" ng-if="!isFailed(project.grade)">
               <div class="card-label">
                 <div class="label-text">
-                  done
+                  {{ 'DONE' | translate }}
                 </div>
               </div>
               <div class="callout-card-content">
                 <h3 class="lead">{{ project.name }}</h3>
-                <p>Project done</p>
-                <p>Grade : {{ project.grade }}% (passed)</p>
-                <p>Submitted on : 22/05/2014</p>
+                <p>{{ 'PROJECTDONE' | translate }}</p>
+                <p>{{ 'GRADE' | translate }} : {{ project.grade }}% (passed)</p>
+                <p>{{ 'SUBMITTED' | translate }} : 22/05/2014</p>
               </div>
             </div>
             
@@ -69,19 +69,19 @@
           
         <div class="medium-4 large-4 small-12 columns">
             
-            <h3>Failed</h3>
+            <h3>{{ 'FAILED' | translate }}</h3>
             
             <div class="callout-card alert radius" ng-repeat="project in userInfo.projects | filter: { status: 'finished' }" ng-if="isFailed(project.grade)">
               <div class="card-label">
                 <div class="label-text">
-                  done
+                  {{ 'DONE' | translate }}
                 </div>
               </div>
               <div class="callout-card-content">
                 <h3 class="lead">{{ project.name }}</h3>
-                <p>Project done</p>
-                <p>Grade : {{ project.grade }} (failed)</p>
-                <p>Submitted on : 14/01/2014</p>
+                <p>{{ 'PROJECTDONE' | translate }}</p>
+                <p>{{ 'GRADE' | translate }} : {{ project.grade }} (failed)</p>
+                <p>{{ 'SUBMITTED' | translate }} : 14/01/2014</p>
               </div>
             </div>
             
