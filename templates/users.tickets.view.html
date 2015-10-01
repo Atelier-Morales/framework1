@@ -12,7 +12,7 @@
             </div>
             <p class="replyText">
                 <strong>{{ currentTicket.author }}:</strong> {{ currentTicket.body }}<br>
-                <cite style="font-size:small;">Posted on {{ currentTicket.date | date:'medium'}}</cite>
+                <cite style="font-size:small;">{{ 'POSTEDON' | translate }} {{ currentTicket.date | date:'medium'}}</cite>
             </p>
 
         </div>
@@ -42,7 +42,7 @@
             </div>
             <form name="ticketUpdateForm" novalidate>
             <div class="large-2 small-2 columns">
-                <label>Assign to :</label>
+                <label>{{ 'ASSIGN' | translate }} :</label>
                 <select name="assigner" ng-model="assigner" required>
                     <option ng-repeat="admin in adminUsers" 
                             value="{{ admin.username }}"
@@ -50,14 +50,14 @@
                 </select>
             </div>
             <div class="large-2 small-2 columns">
-                <label>Change status</label>
+                <label>{{ 'CHANGESTATUS' | translate }}</label>
                 <select name="status" ng-model="status" required>
                     <option ng-click="assignTicket('closed')" 
                             value="closed"
-                            ng-selected="currentTicket.status == 'closed'">closed</option>
+                            ng-selected="currentTicket.status == 'closed'">{{ 'CLOSED' | translate }}</option>
                     <option ng-click="assignTicket('open')"
                             value="open"
-                            ng-selected="currentTicket.status == 'open'">open</option>
+                            ng-selected="currentTicket.status == 'open'">{{ 'OPEN' | translate }}</option>
                 </select>
             </div>
             <div class="large-2 small-2 columns end">
@@ -65,7 +65,7 @@
                    ng-disabled="ticketUpdateForm.assigner.$error.required ||
                                 ticketUpdateForm.status.$error.required"
                    ng-click="updateTicket(assigner, status, currentTicket.id)" 
-                   class="button postfix">Update</a>
+                   class="button postfix">{{ 'UPDATE' | translate }}</a>
             </div>
             </form>
         </div>
@@ -73,7 +73,7 @@
         <div class="large-12 columns small-3">
             <form name="replyForm" novalidate>           
                 <div class="row">
-                    <label>Post your response Here
+                    <label>{{ 'POSTRESPONSE' | translate }}
                     </label>
                     <div class="row collapse">
                         <div class="small-11 columns">

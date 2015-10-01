@@ -361,3 +361,37 @@ exports.completeProject = function(req, res) {
         }
     });
 }
+
+exports.changeLanguage = function(req, res) {
+    var username = req.body.user || '';
+    var language = req.body.lang || '';
+    
+    if (username === '' || language === '')
+        return res.sendStatus(400);
+    
+    db.userModel.findOne({ username: username }, function(err, user) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(401);
+        }
+        user.lang = language;
+        user.save();
+        return res.send(user.lang);
+    });
+}
+
+exports.getLanguage = function(req, res) {
+    var username = req.body.user || '';
+    
+    if (username === '')
+        return res.sendStatus(400);
+    
+    db.userModel.findOne({ username: username }, function(err, user) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(401);
+        }
+        var lang = user.lang;
+        return res.send(lang);
+    });
+}

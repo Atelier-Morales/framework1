@@ -3,9 +3,9 @@
 <nav class="menu">
   <img class="logo" alt="42 logo" src="assets/42_logo-7dfc9110a5319a308863b96bda33cea995046d1731cebb735e41b16255106c12.svg">
   <h1 class="name">
-      BorntoCode
+      BorntoCode {{ setLanguage(userInfo.username) }}
   </h1>
     <a style="float:right" ng-click="logOut()">logout</a>
-    <a style="float:right; margin-right:30px;" ng-click="changeLanguage('fr')">fr</a>
-    <a style="float:right; margin-right:10px;" ng-click="changeLanguage('en')">en</a>
+    <a style="float:right; margin-right:30px;" ng-click="changeLanguage(userInfo.username, 'fr')">fr</a>
+    <a style="float:right; margin-right:10px;" ng-click="changeLanguage(userInfo.username, 'en')">en</a>
 </nav>

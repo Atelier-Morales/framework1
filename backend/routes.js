@@ -63,6 +63,10 @@ app.post('/user/loginLDAP', routes.users.loginLDAP);
 
 app.post('/user/logout', routes.users.logout);
 
+app.post('/user/changeLanguage', routes.users.changeLanguage);
+
+app.post('/user/getAndSetLanguage', routes.users.getLanguage);
+
 // Project functions
 
 app.post('/project/fetchProjects', routes.projects.fetchProjects);

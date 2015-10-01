@@ -1,13 +1,15 @@
-<button href="#" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="button info dropdown">display</button>
+<button href="#" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="button info dropdown">{{ 'DISPLAY' | translate }}</button>
     <ul style="left:50px;" id="drop1" data-dropdown-content class="f-dropdown" aria-hidden="true">
-      <li><a ng-click="changeTicketStatus('open')">open tickets</a></li>
-      <li><a ng-click="changeTicketStatus('closed')">closed tickets</a></li>
-      <li><a ng-click="changeTicketStatus('all')">all tickets</a></li>
+      <li><a ng-click="changeTicketStatus('open')">{{ 'OPENTICKETS' | translate }}</a></li>
+      <li><a ng-click="changeTicketStatus('closed')">{{ 'CLOSEDTICKETS' | translate }}</a></li>
+      <li><a ng-click="changeTicketStatus('all')">{{ 'ALLTICKETS' | translate }}</a></li>
     </ul>
-<button href="#" data-reveal-id="ticketModal">Create ticket</button>
+<button href="#" data-reveal-id="ticketModal">{{ 'CREATE' | translate }} ticket</button>
 <br>
 <div class="row">
-    <h3 style="padding-left:20px;">{{ currentStatus }} tickets</h3>
+    <h3 ng-if="currentStatus === 'open'" style="padding-left:20px;">{{ 'OPENTICKETS' | translate }}</h3>
+            <h3 ng-if="currentStatus === 'closed'"style="padding-left:20px;">{{ 'CLOSEDTICKETS' | translate }}</h3>
+            <h3 ng-if="currentStatus === 'all'" style="padding-left:20px;">{{ 'ALLTICKETS' | translate }}</h3>
 
     <div class="small-12 columns small-centered" style="background:white;"
          ng-repeat="ticket in userTickets | orderBy: '-date' | filter: myFilter">
@@ -25,10 +27,10 @@
             </div>-->
             <div class="event-desc small-4 columns">
                 <h4 class="event-desc-header">{{ ticket.title }}</h4>
-                <p class="event-desc-detail"><span class="event-desc-time"></span>by {{ ticket.author }}</p>
-                <p class="event-desc-detail"><span class="event-desc-time"></span>in {{ ticket.category }} | status : <span ng-if="ticket.status === 'open'" class="success radius label">{{ ticket.status}}</span><span ng-if="ticket.status != 'open'" class="alert radius label">{{ ticket.status}}</span> <span ng-show="ticket.assignTo === 'unassigned'" class="warning radius label">unassigned</span>
-                    <span ng-hide="ticket.assignTo === 'unassigned'">assigned to <span class="info radius label">{{ ticket.assignTo }}</span></span></p>
-                <a ng-href="tickets/{{ticket.id}}" class="rsvp button">View Ticket</a>
+                <p class="event-desc-detail"><span class="event-desc-time"></span>{{ 'BY' | translate }} {{ ticket.author }}</p>
+                <p class="event-desc-detail"><span class="event-desc-time"></span>{{ 'IN' | translate }} {{ ticket.category }} | status : <span ng-if="ticket.status === 'open'" class="success radius label">{{ 'OPEN' | translate }}</span><span ng-if="ticket.status != 'open'" class="alert radius label">{{ 'CLOSED' | translate }}</span> <span ng-show="ticket.assignTo === 'unassigned'" class="warning radius label">{{ 'UNASSIGNED' | translate }}</span>
+                    <span ng-hide="ticket.assignTo === 'unassigned'">{{ 'ASSIGNTO' | translate }} <span class="info radius label">{{ ticket.assignTo }}</span></span></p>
+                <a ng-href="tickets/{{ticket.id}}" class="rsvp button">{{ 'VIEW' | translate }} Ticket</a>
             </div>
             <div class="event-desc small-6 columns">
                 <h4 class="event-desc-header">Message :</h4>
@@ -47,25 +49,25 @@
               <div class="row">
                 <div class="large-12 columns">
                   <div class="signup-panel">
-                    <p class="welcome">Submit your issue</p>
+                    <p class="welcome">{{ 'SUBMITISSUE' | translate }}</p>
                     <form name="ticketForm" novalidate>
                       
                       <div class="row collapse">
-                        <p>* Issue title</p>
+                        <p>* {{ 'NAME' | translate }}</p>
                         <div class="small-12  columns">     
                           <input type="text" name="title" ng-model="title" required>   
                         </div>
                       </div>
                      
                       <div class="row collapse">
-                        <p>* Issue Description</p>
+                        <p>* Description</p>
                         <div class="small-12  columns">
                           <textarea id="description" name="description" ng-model="description" placeholder="Describe your problem here..." required></textarea>
                         </div>
                       </div>
                         
                       <div class="row collapse">
-                        <p>Category</p>
+                        <p>{{ 'CATEGORY' | translate }}</p>
                           <div class="large-12 small-12 columns">
                               <select name="category" ng-model="category" required>
                                 <option value="{{ category.title }}"
@@ -78,10 +80,10 @@
                       <button ng-disabled="ticketForm.title.$error.required ||
                                            ticketForm.description.$error.required ||
                                            ticketForm.category.$error.required"
-                              ng-click="createTicket(title, description, category, userInfo.username)" class="button">Create Issue</button>
+                              ng-click="createTicket(title, description, category, userInfo.username)" class="button">{{ 'CREATE' | translate }}</button>
                     </form>
                     <span style="color:red" ng-show="regError">
-                        error!
+                        {{ 'PROJECTERROR' | translate }}
                     </span>
                   </div>
                 </div>

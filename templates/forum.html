@@ -17,7 +17,7 @@
     
     <div class="row forum-column">
       <div>
-        <button class="button small radius" href="#" data-reveal-id="forumModal">Create a category</button>
+        <button class="button small radius" href="#" data-reveal-id="forumModal">{{ 'CREATECATEGORY' | translate }}</button>
         <br> 
         <ul class="accordion" data-accordion ng-repeat="category in categoriesCopy">
             <li class="accordion-navigation" id="top">
@@ -52,7 +52,7 @@
                     <br>
                     <button class="button small radius subcategory" 
                             data-reveal-id="categoryModal" 
-                            ng-click="setScope(category.name)">Create a sub-category</button>
+                            ng-click="setScope(category.name)">{{ 'CREATESUBCATEGORY' | translate }}</button>
                 </div>
             </li>
         </ul>
@@ -74,11 +74,11 @@
               <div class="row">
                 <div class="large-12 columns">
                   <div class="signup-panel">
-                    <p class="welcome">modify category {{ scopeSubcategory }}</p>
+                    <p class="welcome">{{ 'MODIFYCATEGORY' | translate }} {{ scopeSubcategory }}</p>
                     <form name="modifyForm1" novalidate>
                       
                       <div class="row collapse">
-                        <p>Name</p>
+                        <p>{{ 'NAME' | translate }}</p>
                         <div class="small-10  columns">     
                           <input type="text" name="name" ng-model="name" required>   
                         </div>
@@ -86,7 +86,7 @@
         
                       <br><br>
                       <button ng-disabled="modifyForm1.name.$error.required" ng-click="modifyCategory(scopeCategory, name)" class="button">
-                            Modify
+                            {{ 'UPDATE' | translate }}
                       </button>
                     </form>
                   </div>
@@ -106,11 +106,11 @@
               <div class="row">
                 <div class="large-12 columns">
                   <div class="signup-panel">
-                    <p class="welcome">modify sub-category {{ scopeSubcategory }}</p>
+                    <p class="welcome">{{ 'MODIFYSUBCATEGORY' | translate }} {{ scopeSubcategory }}</p>
                     <form name="modifyForm" novalidate>
                       
                       <div class="row collapse">
-                        <p>Name</p>
+                        <p>{{ 'NAME' | translate }}</p>
                         <div class="small-10  columns">     
                           <input type="text" name="name" ng-model="name" required>   
                         </div>
@@ -118,7 +118,7 @@
         
                       <br><br>
                       <button ng-disabled="modifyForm.name.$error.required" ng-click="modifySubcategory(scopeCategory, scopeSubcategory, name)" class="button">
-                            Modify
+                            {{ 'UPDATE' | translate }}
                       </button>
                     </form>
                   </div>
@@ -138,11 +138,11 @@
               <div class="row">
                 <div class="large-12 columns">
                   <div class="signup-panel">
-                    <p class="welcome">Create category</p>
+                    <p class="welcome">{{ 'CREATECATEGORY' | translate }}</p>
                     <form name="categoryForm" novalidate>
                       
                       <div class="row collapse">
-                        <p>Name</p>
+                        <p>{{ 'NAME' | translate }}</p>
                         <div class="small-10  columns">     
                           <input type="text" name="name" ng-model="name" required>   
                         </div>
@@ -150,11 +150,11 @@
         
                       <br><br>
                       <button ng-disabled="categoryForm.name.$error.required" ng-click="createCategory(name)" class="button">
-                            Create
+                            {{ 'CREATE' | translate }}
                       </button>
                     </form>
                     <span style="color:red" ng-show="regError">
-                        Category creation error!
+                        {{ 'PROJECTERROR' | translate }}
                     </span>
                   </div>
                 </div>
@@ -173,11 +173,11 @@
               <div class="row">
                 <div class="large-12 columns">
                   <div class="signup-panel">
-                    <p class="welcome">Create subcategory in {{ scopeName }}</p>
+                    <p class="welcome">{{ 'CREATESUBCATEGORY' | translate }} {{ 'IN' | translate }} {{ scopeName }}</p>
                     <form name="subcategoryForm" novalidate>
                       
                       <div class="row collapse">
-                        <p>Name</p>
+                        <p>{{ 'NAME' | translate }}</p>
                         <div class="small-10  columns">     
                           <input type="text" name="name" ng-model="name" required>   
                         </div>
@@ -185,11 +185,11 @@
         
                       <br><br>
                       <button ng-disabled="subcategoryForm.name.$error.required" ng-click="createSubCategory(name, scopeName)" class="button">
-                            Create
+                            {{ 'CREATE' | translate }}
                       </button>
                     </form>
                     <span style="color:red" ng-show="regError">
-                        Subcategory creation error!
+                        {{ 'PROJECTERROR' | translate }}
                     </span>
                   </div>
                 </div>

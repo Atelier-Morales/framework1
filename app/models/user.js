@@ -88,6 +88,22 @@
                     subject: subject,
                     text: text
                 });
+            },
+            changeLanguage: function(user, lang) {
+                return $http.post(API_URL + '/user/changeLanguage', {
+                    user: user,
+                    lang: lang
+                });
+            },
+            getLanguage: function(user) {
+                return $http.post(API_URL + '/user/getLanguage', {
+                    user: user
+                });
+            },
+            getAndSetlanguage: function(user) {
+                return $http.post(API_URL + '/user/getAndSetLanguage', {
+                    user: user
+                });
             }
         }
     });

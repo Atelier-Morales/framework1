@@ -4,7 +4,7 @@
                             z-index: 0;">
       <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
         <br>
-        <h2 style="padding-left:15px;">Latest posts</h2> 
+        <h2 style="padding-left:15px;">{{ 'LATESTPOST' | translate }}</h2> 
         <br>
 
         <link href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/6035/icomoon-uikit-feb.css" rel="stylesheet">
@@ -32,14 +32,14 @@
                                 <img src="http://placehold.it/50x50/f2f2f2" />
                             </span>                
                             <span class="day-title">{{ thread.title }}</span><br />
-                            <span class="temp">created by {{ thread.creator }} on {{ thread.created | date:'medium'}}</span>
+                            <span class="temp">{{ 'CREATED' | translate }} {{ 'BY' | translate }} {{ thread.creator }} {{ 'ON' | translate }} {{ thread.created | date:'medium'}}</span>
                         </div>
                       </li>
                     </a>
                     </ul>
                     <button class="button small radius subcategory" 
                             data-reveal-id="threadModal" 
-                            ng-click="setThreadCategories(categorias.name, subcategorias.name)">Create a thread in {{ subcategorias.name }}</button>
+                            ng-click="setThreadCategories(categorias.name, subcategorias.name)">{{ 'CREATE' | translate }} thread {{ 'IN' | translate }} {{ subcategorias.name }}</button>
                   </article>
 
                 </div>
@@ -58,12 +58,12 @@
               <div class="row">
                 <div class="large-12 columns">
                   <div class="signup-panel">
-                    <p class="welcome">Create a thread in {{ threadSubcategory }}</p>
+                    <p class="welcome">{{ 'CREATE' | translate }} thread {{ 'IN' | translate }} {{ threadSubcategory }}</p>
                     <form name="threadForm" novalidate>
                       
                       <div class="row collapse">
                         <div class="small-12  columns">
-                          <label>Title
+                          <label>{{ 'NAME' | translate }}
                             <input type="text" name="name" ng-model="name" required>
                           </label>
                         </div>
@@ -71,7 +71,7 @@
                         
                       <div class="row collapse">
                         <div class="small-12  columns">
-                          <label>Category
+                          <label>{{ 'CATEGORY' | translate }}
                             <input type="text" name="category" ng-model="category" required value="{{ threadCategory }}" placeholder="{{ threadCategory }}" disabled="disabled">
                           </label>
                         </div>
@@ -79,7 +79,7 @@
                       
                       <div class="row collapse">
                         <div class="small-12  columns">
-                          <label>Subcategory
+                          <label>{{ 'SUBCATEGORY' | translate }}
                             <input type="text" name="subcategory" ng-model="subcategory" value="{{ threadSubcategory }}" placeholder="{{ threadSubcategory }}" disabled="disabled" required>
                           </label>
                         </div>
@@ -97,11 +97,11 @@
                       <button ng-disabled="threadForm.name.$error.required ||
                                            threadForm.body.$error.required" 
                               ng-click="createThread(name, threadCategory, threadSubcategory, body, userInfo.username)" class="button">
-                            Create
+                            {{ 'CREATE' | translate }}
                       </button>
                     </form>
                     <span style="color:red" ng-show="regError">
-                        Thread creation error!
+                        {{ 'PROJECTERROR' | translate }}
                     </span>
                   </div>
                 </div>

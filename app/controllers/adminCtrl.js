@@ -30,6 +30,7 @@
             $scope.authError = false;
             $scope.regError = false;
             $scope.confirmAuth = false;
+            var count = true;
             
             
             $scope.setIndex = function(index) {
@@ -46,8 +47,40 @@
                 return !isNaN(num)
             }
             
-            $scope.changeLanguage = function(lang) {
+            function setLanguage(user) {
+                userService.getAndSetlanguage(user)
+                .success(function(data) {
+                    console.log('setting lang ');
+                    $translate.use(data);
+                    return count;
+                })
+                .error(function(status,data) {
+                    console.log(status+' '+data);
+                    console.log('cannot set language');
+                });
+            }
+            
+            $rootScope.$watch('userInfo', function () {
+                if ($rootScope.userInfo === undefined || $rootScope.userInfo === null || $rootScope.userInfo === "")
+                    return;
+                setLanguage($rootScope.userInfo.username);
+            });
+            
+            $scope.changeInitLanguage = function(lang) {
+                $translate.use(lang);   
+            }
+            
+            $scope.changeLanguage = function(user, lang) {
                 $translate.use(lang);
+                userService.changeLanguage(user, lang)
+                .success(function(data) {
+                    console.log('language switched to '+data);
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    console.log('Couldn\'t change language');
+                });
             }
             
             //sidenav resize
@@ -75,7 +108,8 @@
             
             $scope.logIn = function logIn(username, password) {
                 if (username !== undefined && password !== undefined) {
-                    userService.logIn(username, password).success(function(data) {
+                    userService.logIn(username, password)
+                        .success(function(data) {
                         $('#myModal').foundation('reveal', 'close');
                         $log.log('User '+username+' successfully logged in');
                         $scope.authError = false;

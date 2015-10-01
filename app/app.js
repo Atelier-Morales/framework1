@@ -18,7 +18,7 @@
         'pascalprecht.translate'
     ]);
     
-    app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider){
+    app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider) {
         
         $translateProvider
         .translations('en', {
@@ -65,6 +65,7 @@
             DEADLINE: 'Set deadline',
             BADDATE: 'Bad Date! Choose another one.',
             CREATE: 'Create',
+            CREATED: 'Created',
             PROJECTERROR: 'Creation error!',
             UPDATEPROJECT: 'Update project',
             TICKETSPOOL: 'Ticket Spool',
@@ -72,18 +73,38 @@
             ALL: 'All',
             OPEN: 'Open',
             CLOSED: 'Closed',
+            CLOSE: 'close',
             ASSIGNTO: 'Assigned to',
+            ASSIGN: 'Assign to',
             UNASSIGNED: 'Unassigned',
             OPENTICKETS: 'Open tickets',
             CLOSEDTICKETS: 'Closed Tickets',
             ALLTICKETS: 'All tickets',
             BY: 'by',
             IN: 'in',
+            ON : 'on',
+            OR: 'or',
             VIEW: 'View',
             CREATECATEGORY: 'Create category',
+            CATEGORY: 'category',
+            SUBCATEGORY: 'sub-category',
             BACKTOLIST: 'Go back to list',
             POSTEDON: 'Posted on',
-            NOBODY: 'nobody'
+            NOBODY: 'nobody',
+            CHANGESTATUS: 'Change status',
+            POSTRESPONSE: 'Post your response here',
+            CREATECATEGORY: 'Create a category',
+            CREATESUBCATEGORY: 'Create a sub-category',
+            MODIFYCATEGORY: 'Modify category',
+            MODIFYSUBCATEGORY: 'Modify sub-category',
+            LATESTPOST: 'Latest posts',
+            COMMENT: 'comment',
+            TYPE: 'Type a few words...',
+            YOUR: 'your',
+            DISPLAY: 'display',
+            SUBMITISSUE: 'Soumettez votre problème',
+            REOPEN: 're-open',
+            TOREPLY: 'to reply'
         })
         .translations('fr', {
             HEADLINE: 'Bienvenue dans l\'Intranet',
@@ -129,6 +150,7 @@
             DEADLINE: 'Fixer deadline',
             BADDATE: 'Mauvaise date! Choisis une autre.',
             CREATE: 'Créer',
+            CREATED: 'Créé',
             PROJECTERROR: 'Erreur de création',
             UPDATEPROJECT: 'Modifier projet',
             TICKETSPOOL: 'Spool de tickets',
@@ -136,20 +158,42 @@
             ALL: 'Tous',
             OPEN: 'Ouvert',
             CLOSED: 'Fermé',
+            CLOSE: 'fermer',
             ASSIGNTO: 'Assigné à',
+            ASSIGN: 'Assigner à',
             UNASSIGNED: 'Non-assigné',
             OPENTICKETS: 'Tickets ouverts',
             CLOSEDTICKETS: 'Tickets fermés',
             ALLTICKETS: 'Tous les tickets',
             BY: 'par',
             IN: 'dans',
+            ON : 'le',
+            OR: 'ou',
             VIEW: 'Voir',
             CREATECATEGORY: 'Créer catégorie',
+            CATEGORY: 'catégorie',
+            SUBCATEGORY: 'sous-catégorie',
             BACKTOLIST: 'Revenir à la liste',
             POSTEDON: 'Posté le',
-            NOBODY: 'personne'
+            NOBODY: 'personne',
+            CHANGESTATUS: 'Changer statut',
+            POSTRESPONSE: 'Postez votre réponse ici',
+            CREATECATEGORY: 'Créer une catégorie',
+            CREATESUBCATEGORY: 'Créer une sous-catégorie',
+            MODIFYCATEGORY: 'Modifier catégorie',
+            MODIFYSUBCATEGORY: 'Modifier sous-catégorie',
+            LATESTPOST: 'Derniers posts',
+            COMMENT: 'commenter',
+            TYPE: 'Ecrivez 2-3 mots...',
+            YOUR: 'vos',
+            DISPLAY: 'afficher',
+            SUBMITISSUE: 'Soumettez votre problème',
+            REOPEN: 'réouvrir',
+            TOREPLY: 'pour répondre'
         });
         $translateProvider.preferredLanguage('en');
+        
+        
         
         $urlRouterProvider.otherwise('/home');
         $urlRouterProvider.when("/forum", "/forum/list");
@@ -303,9 +347,8 @@
         $locationProvider.html5Mode(true);
     });
     
-    app.run(function($rootScope, $state, $window, $cookies, $timeout, authService, userService) {
+    app.run(function($rootScope, $state, $window, $cookies, $timeout, authService, userService, $translate) {
         $rootScope.$on("$stateChangeStart", function(e, toState, toParams, fromState, fromParams) {
-            console.log($window.sessionStorage.token);
             var token = $cookies.get('token');
             
             if (toState.name.indexOf('home') > -1 && !$window.sessionStorage.token && fromState.name === "") {
@@ -315,11 +358,12 @@
                     userService.verifyToken(token)
                     .success(function(data) {
                         $timeout(function() {
-                            $rootScope.userInfo = data;
+                            $rootScope.userInfo = data;                         
                         });
                         console.log('1: User already logged in. Redirecting...');
                         $window.sessionStorage.token = token;
                         e.preventDefault();
+                        
                         $state.go('dashboard');
                     })
                     .error(function(status, data) {

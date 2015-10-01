@@ -6,7 +6,7 @@
         <br>
         <h2 style="padding-left:15px;">{{ fetchPost() }} {{ threads[postId].title }}</h2>
         <br>
-        <a class="backToList" ui-sref="forum">Go back to list</a>
+        <a class="backToList" ui-sref="forum">{{ 'BACKTOLIST' | translate }}</a>
 
         <link href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/6035/icomoon-uikit-feb.css" rel="stylesheet">
         <div class="large-12 columns">
@@ -18,10 +18,10 @@
                     </div>
                     <p>
                         <strong>{{ threads[postId].creator }}:</strong> {{ threads[postId].body }}<br>
-                        <cite style="font-size:small;">Posted on {{ threads[postId].created | date:'medium'}}</cite>
+                        <cite style="font-size:small;">{{ 'POSTEDON' | translate }} {{ threads[postId].created | date:'medium'}}</cite>
                     </p>
                     <div class="large-3 small-3 columns commentLink">
-                        <a class="replyButton" ng-click="openBodyCommentBox()">Comment</a>
+                        <a class="replyButton" ng-click="openBodyCommentBox()">{{ 'COMMENT' | translate }}</a>
                     </div>
                     <br>
                     <div class="large-3 small-3 columns commentLink">
@@ -40,7 +40,7 @@
                         </div>
                         <div class="large-10 columns">
                             <p><strong>{{ comment.author }}:</strong> {{ comment.replyBody }}<br>
-                                <cite style="font-size:small;">Posted on {{ comment.created | date:'medium'}}</cite>
+                                <cite style="font-size:small;">{{ 'POSTEDON' | translate }} {{ comment.created | date:'medium'}}</cite>
                             </p>
                         </div>
                         <br>
@@ -68,10 +68,10 @@
                     </div>
                     <p>
                         <strong>{{ reply.author }}:</strong> {{ reply.commentBody }}<br>
-                        <cite style="font-size:small;">Posted on {{ reply.created | date:'medium'}}</cite>
+                        <cite style="font-size:small;">{{ 'POSTEDON' | translate }} {{ reply.created | date:'medium'}}</cite>
                     </p>
                     <div class="large-3 small-3 columns commentLink">
-                        <a class="replyButton" ng-click="openCommentBox($index)">Comment</a>
+                        <a class="replyButton" ng-click="openCommentBox($index)">{{ 'COMMENT' | translate }}</a>
                     </div>
                     <br>
                     <div class="large-3 small-3 columns commentLink">
@@ -91,7 +91,7 @@
                         <div class="large-10 columns">
                             <p>
                                 <strong>{{ comment.author }}:</strong> {{ comment.replyBody }}<br>
-                                <cite style="font-size:small;">Posted on {{ comment.created | date:'medium'}}</cite>
+                                <cite style="font-size:small;">{{ 'POSTEDON' | translate }} {{ comment.created | date:'medium'}}</cite>
                             </p>
                         </div>
                         <br>
@@ -102,7 +102,7 @@
                             <div class="row">
                                 <div class="row collapse">
                                     <div class="large-10 small-10 large-offset-1 small-offset-1 columns">
-                                        <textarea id="replyComment" name="bodyComment" ng-model="bodyComment" placeholder="Type a few words..." required></textarea>
+                                        <textarea id="replyComment" name="bodyComment" ng-model="bodyComment" placeholder="{{ 'TYPE' | translate }}" required></textarea>
                                     </div>
                                     <div class="large-1 small-1 columns">
                                         <a ng-disabled="bodycommentForm.bodyComment.$error.required" ng-click="postReplyComment(userInfo.username, bodyComment, postId, $index)" class="button postfix">go</a>
@@ -118,11 +118,11 @@
                 <div class="large-12 columns small-3">
                     <form name="replyForm" novalidate>           
                         <div class="row">
-                            <label>Post your response Here
+                            <label>{{ 'POSTRESPONSE' | translate }}
                             </label>
                             <div class="row collapse">
                                 <div class="small-11 columns">
-                                    <textarea id="replyBody" name="replyBody" ng-model="replyBody" placeholder="Type a few words..." required></textarea>
+                                    <textarea id="replyBody" name="replyBody" ng-model="replyBody" placeholder="{{ 'TYPE' | translate }}" required></textarea>
                                 </div>
                                 <div class="small-1 columns">
                                     <a ng-disabled="replyForm.replyBody.$error.required" ng-click="postReply(userInfo.username, replyBody, postId)" class="button postfix">go</a>
