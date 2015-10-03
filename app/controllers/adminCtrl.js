@@ -50,8 +50,9 @@
             function setLanguage(user) {
                 userService.getAndSetlanguage(user)
                 .success(function(data) {
-                    console.log('setting lang ');
-                    $translate.use(data);
+                     $timeout(function() {
+                         $translate.use(data);
+                     });
                     return count;
                 })
                 .error(function(status,data) {
@@ -63,7 +64,9 @@
             $rootScope.$watch('userInfo', function () {
                 if ($rootScope.userInfo === undefined || $rootScope.userInfo === null || $rootScope.userInfo === "")
                     return;
-                setLanguage($rootScope.userInfo.username);
+                console.log($rootScope.userInfo.lang);
+                if ($rootScope.userInfo.lang != 'eng')
+                    setLanguage($rootScope.userInfo.username);
             });
             
             $scope.changeInitLanguage = function(lang) {

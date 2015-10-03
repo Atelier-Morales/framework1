@@ -74,7 +74,8 @@ exports.verifyToken = function(req, res) {
                     email   : user.email,
                     is_admin: user.is_admin,
                     created : user.created,
-                    projects: user.projects
+                    projects: user.projects,
+                    lang: user.lang
                 });
             });
         }       

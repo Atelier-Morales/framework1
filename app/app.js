@@ -193,8 +193,6 @@
         });
         $translateProvider.preferredLanguage('en');
         
-        
-        
         $urlRouterProvider.otherwise('/home');
         $urlRouterProvider.when("/forum", "/forum/list");
         $urlRouterProvider.when("/users", "/users/administration");
