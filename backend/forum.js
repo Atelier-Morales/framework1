@@ -246,9 +246,11 @@ exports.removeSubCategory = function(req, res) {
                     if (category[0].categories[pos].subCategories[j].name === subcategoria)
                         index = j;
                 }
-                if (index > 0) {
-                    if (category[0].categories[i].subCategories.length === 1)
+                if (index >= 0) {
+                    if (category[0].categories[i].subCategories.length === 1) {
+                        
                         category[0].categories[i].subCategories.shift();
+                    }
                     else
                         category[0].categories[i].subCategories.splice(index, 1);
                     for (var k = 0; k < category[0].threads.length; ++k) {

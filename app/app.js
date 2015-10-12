@@ -22,6 +22,7 @@
         
         $translateProvider
         .translations('en', {
+            HOME: 'Home',
             HEADLINE: 'Welcome to the Intranet',
             CONNECTION: 'Login',
             REGISTER: 'Signup',
@@ -104,9 +105,11 @@
             DISPLAY: 'display',
             SUBMITISSUE: 'Soumettez votre problème',
             REOPEN: 're-open',
-            TOREPLY: 'to reply'
+            TOREPLY: 'to reply',
+            AVAILABLEPROJECTS: 'Available projects'
         })
         .translations('fr', {
+            HOME: 'Accueil',
             HEADLINE: 'Bienvenue dans l\'Intranet',
             CONNECTION: 'Connexion',
             REGISTER: 'Inscription',
@@ -189,7 +192,8 @@
             DISPLAY: 'afficher',
             SUBMITISSUE: 'Soumettez votre problème',
             REOPEN: 'réouvrir',
-            TOREPLY: 'pour répondre'
+            TOREPLY: 'pour répondre',
+            AVAILABLEPROJECTS: 'Projets disponibles' 
         });
         $translateProvider.preferredLanguage('en');
         

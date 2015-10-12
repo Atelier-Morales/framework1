@@ -52,7 +52,7 @@
                             var classy = '.head'+i; 
                             $(classy).css('background', random_color);
                         }
-                        
+                        $scope.name = '';
                     });
                 })
                 .error(function(status, data) {
@@ -183,6 +183,7 @@
             }
             
             $scope.removeSubcategory = function removeSubcategory(category, subcategory) {
+                console.log(category, subcategory);
                 forumService.removeSubTopic(category, subcategory)
                 .success(function(data) {
                     console.log('category removed');

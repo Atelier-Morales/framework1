@@ -33,7 +33,8 @@
                     <div class="event-desc small-4 columns">
                         <h4 class="event-desc-header">{{ ticket.title }}</h4>
                         <p class="event-desc-detail"><span class="event-desc-time"></span>{{ 'BY' | translate }} {{ ticket.author }}</p>
-                        <p class="event-desc-detail"><span class="event-desc-time"></span>{{ 'IN' | translate }} {{ ticket.category }} | status : {{ ticket.status}} | <span ng-show="ticket.assignTo != 'unassigned'">{{ 'ASSIGNTO' | translate }} : </span>{{ ticket.assignTo }}
+                        <p class="event-desc-detail"><span class="event-desc-time"></span>{{ 'IN' | translate }} {{ ticket.category }} | status : <span ng-if="ticket.status === 'open'" class="success radius label">{{ 'OPEN' | translate }}</span><span ng-if="ticket.status != 'open'" class="alert radius label">{{ 'CLOSED' | translate }}</span> <span ng-show="ticket.assignTo === 'unassigned'" class="warning radius label">{{ 'UNASSIGNED' | translate }}</span>
+                    <span ng-hide="ticket.assignTo === 'unassigned'">{{ 'ASSIGNTO' | translate }} <span class="info radius label">{{ ticket.assignTo }}</span></span>
                         </p>
                         <a ng-href="users/tickets/{{ticket.id}}" class="rsvp button">{{ 'VIEW' | translate }} Ticket</a>
                     </div>
