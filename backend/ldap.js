@@ -1,58 +1,124 @@
 "use strict";
-/*
-var ldap = require('ldapjs-hotfix');
-var client = ldap.createClient({
-    url: 'ldaps://ldap.42.fr'
-});
 
-var months = ['july', 'august', 'september'];
-var years  = [2013, 2014, 2015];
+var ldap = require('ldapjs-hotfix');
+
+
+var month = ['july', 'august', 'september'];
+
+var year = ['2013', '2014'];
+
+
 
 function testldap(req, res) {
-    for (var i = 0; i < years.length; ++i) {
-        for (var j = 0; j < months.length; ++j) {
-            client.bind('cn=Fernan MORALES', secret, function(err) {
-                if (!err) {
-                    console.log('SUCCESS : fmorales ');
-                }
-                else
-                    console.log(err);
-            });
+    var client = ldap.createClient({
+        url: 'ldaps://ldap.42.fr:636'
+    });
+    var en = 'uid=fmorales,ou=july,ou=2013,ou=paris,ou=people,dc=42,dc=fr';
+    if (en === req) {
+        console.log('ywp');
+    }
+    client.bind(en,, function(err) {
+        if (err) {
+            console.log(err);
+            process.exit();
         }
+        else {
+            client.search('ou=paris,ou=people,dc=42,dc=fr', {
+				scope: 'sub',
+				attributes: ['uidNumber', 'uid', 'givenName', 'sn', 'mobile', 'alias'],
+				timeLimit: 600
+			}, function (err, data) {
+				var entries = {};
+                console.log('SUCCESS : fmorales');
+				data.on('searchEntry', function (entry) {
+//					var match = entry.object.dn.match(/uid=[a-z\-]{3,8},ou=(july|august|september),ou=([0-9]{4})/);
+//					if (match) {
+//						console.log('entry: ' + JSON.stringify(entry.object));
+//						var month = match[1];
+//						var year = match[2];
+//						if (!entries[year])
+//							entries[year] = {};
+//						if (!entries[year][month])
+//							entries[year][month] = [];
+//						entries[year][month].push(entry.object);
+//					}
+				});
+				data.on('searchReference', function (referral) {
+					console.log('referral: ' + referral.uris.join());
+				});
+				data.on('error', function (err) {
+					console.error('error: ' + err.message);
+					client.unbind();
+					res.status(400).send({error: err.message});
+				});
+				data.on('end', function (result) {
+					console.log('status: ' + result.status);
+					client.unbind();
+                    return res.send(entries);
+				});
+			});
+        }
+    });
+}
+//var dn = 'uid=fmorales,ou=july,ou=2013,ou=paris,ou=people,dc=42,dc=fr';
+
+for (var i = 0; i < year.length; i++) {
+    for (var j = 0; j < month.length; j++) {
+        var dn = 'uid=fmorales,ou='+month[j]+',ou='+year[i]+',ou=paris,ou=people,dc=42,dc=fr';
+        testldap(dn);
     }
 }
 
-testldap('fmorales');
+/*
+exports.list = function (req, res) {
 
-uid=fgundlac,ou=july,ou=2013,ou=paris,ou=people,dc=42,dc=fr*/
+	// do not initialize this var in global scope or it won't work anymore
+	var client = ldap.createClient({
+		url: 'ldaps://ldap.42.fr:636'
+	});
 
-var passport     = require('passport');
-var LdapStrategy = require('passport-ldapauth');
+	var dn = 'uid=' + config.ldap.login + ',ou=' + config.ldap.month + ',ou=' + config.ldap.year + ',ou=paris,ou=people,dc=42,dc=fr';
 
-var getLDAPConfiguration = function(req, callback) {
-  // Fetching things from database or whatever
-    console.log(req);
-  process.nextTick(function() {
-    var opts = {
-      server: {
-        url: 'ldaps://ldap.42.fr',
-        bindDn: 'uid=fmorales,dc=42,dc=fr',
-        searchFilter: '(uid=fmorales)'
-      }
-    };
- 
-    callback(null, opts);
-  });
-};
- 
-passport.use(new LdapStrategy(getLDAPConfiguration, function(user, done) {
-    console.log(user);
-    console.log("fuck");
-    return done(null, user);
-  }
-));
+	// Bind LDAP
+	client.bind(dn, config.ldap.password, function (err) {
+		if (err)
+			return res.send({error: err.message});
+		else {
+			client.search('ou=paris,ou=people,dc=42,dc=fr', {
+				scope: 'sub',
+				attributes: ['uidNumber', 'uid', 'givenName', 'sn', 'mobile', 'alias'],
+				timeLimit: 600
+			}, function (err, data) {
+				var entries = {};
 
-passport.authenticate('ldapauth', {session: false}), function(req, res) {
-    console.log(res);
-  res.send({status: 'ok'});
-};
+				data.on('searchEntry', function (entry) {
+					var match = entry.object.dn.match(/uid=[a-z\-]{3,8},ou=(july|august|september),ou=([0-9]{4})/);
+					if (match) {
+						console.log('entry: ' + JSON.stringify(entry.object));
+						var month = match[1];
+						var year = match[2];
+						if (!entries[year])
+							entries[year] = {};
+						if (!entries[year][month])
+							entries[year][month] = [];
+						entries[year][month].push(entry.object);
+					}
+				});
+				data.on('searchReference', function (referral) {
+					console.log('referral: ' + referral.uris.join());
+				});
+				data.on('error', function (err) {
+					console.error('error: ' + err.message);
+					client.unbind();
+					res.status(400).send({error: err.message});
+				});
+				data.on('end', function (result) {
+					console.log('status: ' + result.status);
+					client.unbind();
+					res.send(entries);
+				});
+			});
+		}
+	});
+
+};*/
