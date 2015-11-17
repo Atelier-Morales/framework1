@@ -17,10 +17,13 @@ function testldap(req, res) {
     if (en === req) {
         console.log('ywp');
     }
-    client.bind(en,, function(err) {
+    client.bind(req, '', function(err) {
         if (err) {
+             console.log('FAIL : fmorales');
+            console.log(req);
             console.log(err);
-            process.exit();
+            client.unbind();
+            return (0);
         }
         else {
             client.search('ou=paris,ou=people,dc=42,dc=fr', {
@@ -54,7 +57,7 @@ function testldap(req, res) {
 				data.on('end', function (result) {
 					console.log('status: ' + result.status);
 					client.unbind();
-                    return res.send(entries);
+                    return (1);
 				});
 			});
         }
@@ -65,7 +68,9 @@ function testldap(req, res) {
 for (var i = 0; i < year.length; i++) {
     for (var j = 0; j < month.length; j++) {
         var dn = 'uid=fmorales,ou='+month[j]+',ou='+year[i]+',ou=paris,ou=people,dc=42,dc=fr';
-        testldap(dn);
+        console.log(dn);
+        if (testldap('uid=fmorales,ou='+month[j]+',ou='+year[i]+',ou=paris,ou=people,dc=42,dc=fr') === 1)
+            break;
     }
 }
 
