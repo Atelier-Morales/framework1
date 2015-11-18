@@ -13,20 +13,16 @@ function testldap(req, res) {
     var client = ldap.createClient({
         url: 'ldaps://ldap.42.fr:636'
     });
-    var en = 'uid=fmorales,ou=july,ou=2013,ou=paris,ou=people,dc=42,dc=fr';
-    if (en === req) {
-        console.log('ywp');
-    }
-    client.bind(req, '', function(err) {
+    
+    client.bind(req,, function(err) {
         if (err) {
-             console.log('FAIL : fmorales');
             console.log(req);
             console.log(err);
             client.unbind();
             return (0);
         }
         else {
-            client.search('ou=paris,ou=people,dc=42,dc=fr', {
+            client.search('uid=fmorales,ou=paris,ou=people,dc=42,dc=fr', {
 				scope: 'sub',
 				attributes: ['uidNumber', 'uid', 'givenName', 'sn', 'mobile', 'alias'],
 				timeLimit: 600
@@ -34,17 +30,17 @@ function testldap(req, res) {
 				var entries = {};
                 console.log('SUCCESS : fmorales');
 				data.on('searchEntry', function (entry) {
-//					var match = entry.object.dn.match(/uid=[a-z\-]{3,8},ou=(july|august|september),ou=([0-9]{4})/);
-//					if (match) {
-//						console.log('entry: ' + JSON.stringify(entry.object));
-//						var month = match[1];
-//						var year = match[2];
-//						if (!entries[year])
-//							entries[year] = {};
-//						if (!entries[year][month])
-//							entries[year][month] = [];
-//						entries[year][month].push(entry.object);
-//					}
+					var match = entry.object.dn.match(/uid=[a-z\-]{3,8},ou=(july|august|september),ou=([0-9]{4})/);
+					if (match) {
+						console.log('entry: ' + JSON.stringify(entry.object));
+						var month = match[1];
+						var year = match[2];
+						if (!entries[year])
+							entries[year] = {};
+						if (!entries[year][month])
+							entries[year][month] = [];
+						entries[year][month].push(entry.object);
+					}
 				});
 				data.on('searchReference', function (referral) {
 					console.log('referral: ' + referral.uris.join());
@@ -64,15 +60,25 @@ function testldap(req, res) {
     });
 }
 //var dn = 'uid=fmorales,ou=july,ou=2013,ou=paris,ou=people,dc=42,dc=fr';
+var result = {};
+result.i = 0;
+result.j;
 
-for (var i = 0; i < year.length; i++) {
-    for (var j = 0; j < month.length; j++) {
-        var dn = 'uid=fmorales,ou='+month[j]+',ou='+year[i]+',ou=paris,ou=people,dc=42,dc=fr';
-        console.log(dn);
-        if (testldap('uid=fmorales,ou='+month[j]+',ou='+year[i]+',ou=paris,ou=people,dc=42,dc=fr') === 1)
-            break;
+while (resulti < year.length) {
+    j = 0;
+    while (j < month.length) {
+        setTimeout(testldap(i, j), 0);
+        j++;
     }
+    ++i;
 }
+
+//for (var i = 0; i < year.length; i++) {
+//    for (var j = 0; j < month.length; j++) {
+//        var dn = 'uid=fmorales,ou='+month[j]+',ou='+year[i]+',ou=paris,ou=people,dc=42,dc=fr';
+//        setTimeout(testldap(dn), 0);
+//    }
+//}
 
 /*
 exports.list = function (req, res) {
