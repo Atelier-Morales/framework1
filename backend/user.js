@@ -26,11 +26,7 @@ var expireToken = function(token) {
 	}
 };
 
-// Create LDAP client
 
-var client = ldap.createClient({
-    url: 'ldaps://ldap.42.fr'
-});
 
 //verify if user is logged via LDAP function
 
@@ -127,82 +123,119 @@ exports.loginLDAP = function(req, res) {
 	if (username == '' || password == '')
         return res.send(401);
     
-    var cn = 'uid='+username+',ou=july,ou=2013,ou=paris,ou=people,dc=42,dc=fr';
+    var cn = 'uid=fmorales,ou=july,ou=2013,ou=paris,ou=people,dc=42,dc=fr';
     
     console.log(cn);
     console.log(username);
-    client.bind(cn, password, function(err) {
+    
+    // Create LDAP client
+    
+    var client = ldap.createClient({
+        url: 'ldaps://ldap.42.fr:636'
+    });
+    
+    client.bind(cn, '', function(err) {
         if (err) {
             console.log(err);
+            console.log("fail");
+            client.unbind();
             return res.send(401);
         }
-        db.userModel.findOne({ username: username }, function (err, user) {
-		if (err || user == undefined) {
-			console.log(err);
-			return res.send(401);
-		}
-		
-		user.comparePassword(password, function(isMatch) {
-			if (!isMatch) {
-				console.log("Attempt failed to login with " + user.username);
-				return res.send(401);
-            }
-            
-            var token = jwt.sign(
-                { id: user._id }, 
-                'shhhhh', 
-                { expiresInMinutes: TOKEN_EXPIRATION }
-            );
-            
-			return res.json({ 
-                token: token
+        else {
+            client.search('ou=paris,ou=people,dc=42,dc=fr', {
+                scope: 'sub',
+                attributes: ['uidNumber', 'uid', 'givenName', 'sn', 'mobile', 'alias'],
+                timeLimit: 600
+            }, function (err, data) {
+                
+                var entries = {};
+                
+                console.log('login success : '+username);
+                
+                data.on('searchEntry', function (entry) {
+                    
+                    var match = entry.object.dn.match('uid='+username);
+                    
+                    if (match) {
+                        
+                        console.log('entry: ' + JSON.stringify(entry.object));
+                        var month = match[1];
+                        var year = match[2];
+                        if (!entries[year])
+                            entries[year] = {};
+                        if (!entries[year][month])
+                            entries[year][month] = [];
+                        entries[year][month].push(entry.object);
+                        
+                        client.bind(cn, password, function(err) {
+                            if (err) {
+                                console.log("wrong password");
+                                client.unbind();
+                                return res.send(500);
+                            }
+                            else {
+                                console.log('success');
+                                db.userModel.findOne({ username: username }, function (err, user) {
+                                    if (err || user == undefined) {
+                                        console.log("User not in db, creating user");
+                                        
+                                        var newUser = new db.userModel();
+                                        newUser.username = username;
+                                        newUser.email    = username+'@student.42.fr';
+                                        newUser.password = password;
+
+                                        newUser.save(function(err) {
+                                            if (err) {
+                                                console.log(err);
+                                                return res.sendStatus(500);
+                                            }
+
+                                            db.userModel.count(function(err, counter) {
+                                                if (err) {
+                                                    console.log(err);
+                                                    return res.sendStatus(500);
+                                                }
+
+                                                if (counter == 1) {
+                                                    db.userModel.update({username:user.username}, {is_admin:true}, function(err, nbRow) {
+                                                        if (err) {
+                                                            console.log(err);
+                                                            return res.sendStatus(500);
+                                                        }
+                                                        console.log('First user created as an Admin');
+                                                        return res.sendStatus(200);
+                                                    });
+                                                } 
+                                                else {
+                                                    console.log(newUser);
+                                                    return res.sendStatus(200);
+                                                }
+                                            });
+                                        });
+                                        
+                                    }
+                                    else {
+                                        var token = jwt.sign(
+                                            { id: user._id }, 
+                                            'shhhhh', 
+                                            { expiresInMinutes: TOKEN_EXPIRATION }
+                                        );
+
+                                        return res.json({ 
+                                            token: token
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+                data.on('end', function (result) {
+                    console.log('status: ' + result.status);
+                    client.unbind();
+                });
             });
-		});
-	});
-        var username = req.body.username || '';
-        var email    = req.body.username+"@student.42.fr" || '';
-        var password = req.body.password || '';
-
-        if (username == '' || password == '')
-            return res.sendStatus(400);
-
-        var user = new db.userModel();
-        user.username = username;
-        user.email    = email;
-        user.password = password;
-
-        user.save(function(err) {
-            if (err) {
-                console.log(err);
-                return res.sendStatus(500);
-            }
-
-            db.userModel.count(function(err, counter) {
-                if (err) {
-                    console.log(err);
-                    return res.sendStatus(500);
-                }
-
-                if (counter == 1) {
-                    db.userModel.update({username:user.username}, {is_admin:true}, function(err, nbRow) {
-                        if (err) {
-                            console.log(err);
-                            return res.sendStatus(500);
-                        }
-                        console.log('First user created as an Admin');
-                        return res.sendStatus(200);
-                    });
-                } 
-                else {
-                    console.log(user);
-                    return res.sendStatus(200);
-                }
-            });
-        });
-            
-        return res.json({ 
-            token: token
-        });
+        }
     });
 }
 
