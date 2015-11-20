@@ -157,17 +157,9 @@ exports.loginLDAP = function(req, res) {
                     var match = entry.object.dn.match('uid='+username);
                     
                     if (match) {
+                        var dn = entry.object.dn;
                         
-                        console.log('entry: ' + JSON.stringify(entry.object));
-                        var month = match[1];
-                        var year = match[2];
-                        if (!entries[year])
-                            entries[year] = {};
-                        if (!entries[year][month])
-                            entries[year][month] = [];
-                        entries[year][month].push(entry.object);
-                        
-                        client.bind(cn, password, function(err) {
+                        client.bind(dn, password, function(err) {
                             if (err) {
                                 console.log("wrong password");
                                 client.unbind();
@@ -203,16 +195,21 @@ exports.loginLDAP = function(req, res) {
                                                             return res.sendStatus(500);
                                                         }
                                                         console.log('First user created as an Admin');
-                                                        return res.sendStatus(200);
                                                     });
                                                 } 
-                                                else {
+                                                else
                                                     console.log(newUser);
-                                                    return res.sendStatus(200);
-                                                }
+                                                var token = jwt.sign(
+                                                    { id: newUser._id }, 
+                                                    'shhhhh', 
+                                                    { expiresInMinutes: TOKEN_EXPIRATION }
+                                                );
+
+                                                return res.json({ 
+                                                    token: token
+                                                });
                                             });
-                                        });
-                                        
+                                        });    
                                     }
                                     else {
                                         var token = jwt.sign(
