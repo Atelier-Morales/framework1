@@ -1,0 +1,47 @@
+<link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
+
+<div class="off-canvas-wrap move-right" style="overflow: visible;" data-offcanvas>
+    <div class="inner-wrap">
+
+        <sidebar-admin ng-if="userInfo.is_admin"></sidebar-admin>
+        <sidebar-user ng-if="!userInfo.is_admin"></sidebar-user>
+
+        <h1>User information {{ setUsername(userInfo.username) }}</h1>
+        <div ng-if="ldap">
+            <h2>{{ profile.displayname }}</h2>
+            <br>
+            <img width="10%" ng-src="{{ picture }}" />
+            <br>
+            <h2>id : {{ profile.id }}</h2>
+            <h2>email : {{ profile.email }}</h2>
+            <h2>login : {{ profile.login }}</h2>
+            <h2>phone : {{ profile.mobile }}</h2>
+            <h2>location : {{ profile.location }}</h2>
+            <h2>campus : {{ profile.campus.name }}</h2>
+            
+            <div ng-repeat="curs in profile.cursus">
+                <h2>cursus: {{ curs.cursus.name }}</h2>
+                <h2>grade : {{ curs.grade }} | level : {{ curs.level }}</h2>
+            </div>
+            {{ profile }}
+            
+            <div ng-repeat="prof in profile">
+                <h2>{{ prof }}</h2>
+            </div>
+        </div>
+        
+        <div ng-if="!ldap">
+            <h2>username : {{ profile.username }} </h2>
+            <h2>email : {{ profile.email }} </h2>
+            <h2>role : <span ng-if="profile.is_admin">admin</span><span ng-if="!profile.is_admin">user</span></h2>
+            <h2>creation date : {{ profile.created | date:'yyyy-MM-dd | HH:mm:ss ' }}</h2>
+            <h2>current language : {{ profile.lang }}</h2>
+            <h2>projects :</h2>
+            <ul ng-repeat="project in profile.projects">
+                <li>{{ project }}</li>
+            </ul>
+        </div>
+    
+    </div>
+    
+</div>

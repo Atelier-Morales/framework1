@@ -4,8 +4,10 @@ var db = require('./db');
 var ldap = require('ldapjs-hotfix');
 var jwt = require('jsonwebtoken');
 var redis = require('redis');
+var APIConnect = require('./oauth42');
 var redisClient = redis.createClient();
 var TOKEN_EXPIRATION = 60;
+var API_TOKEN_EXPIRATION = 7200;
 
 //Initialize Redis
 
@@ -26,27 +28,25 @@ var expireToken = function(token) {
 	}
 };
 
-
-
-//verify if user is logged via LDAP function
-
-exports.verifyTokenLDAP = function(req, res) {
-	var token = req.body.token || '';
-	console.log(token);
-	if (token == '')
-        return res.send(401);
-    
-    jwt.verify(token, 'shhhhh', function(err, decoded) {
-        if (err)
-            return res.send(401);
-        else {
-            console.log(decoded.id);
-            return res.json({ 
-                    username: decoded.id
-            });
-        }       
-    });
-}
+////verify if user is logged via LDAP function
+//
+//exports.verifyTokenLDAP = function(req, res) {
+//	var token = req.body.token || '';
+//	console.log(token);
+//	if (token == '')
+//        return res.send(401);
+//    
+//    jwt.verify(token, 'shhhhh', function(err, decoded) {
+//        if (err)
+//            return res.send(401);
+//        else {
+//            console.log(decoded.id);
+//            return res.json({ 
+//                    username: decoded.id
+//            });
+//        }       
+//    });
+//}
 
 //verify if user is logged function
 
@@ -96,21 +96,29 @@ exports.login = function(req, res) {
             return res.send(401);
 		
 		user.comparePassword(password, function(isMatch) {
-			if (!isMatch) {
+			
+            if (!isMatch) {
 				console.log("Attempt failed to login with " + user.username);
 				return res.send(401);
             }
-            
-            var token = jwt.sign(
-                { id: user._id }, 
-                'shhhhh', 
-                { expiresInMinutes: TOKEN_EXPIRATION }
-            );
-            
-			return res.json({ 
-                token: token
+
+            APIConnect.createAPIToken(function(error, result) {
+                if (error) {
+                    console.log(error);
+                    return res.send(401);
+                }
+                var token = jwt.sign(
+                    { id: user._id }, 
+                    'shhhhh', 
+                    { expiresInMinutes: TOKEN_EXPIRATION }
+                );
+                return res.json({ 
+                    token: token,
+                    APIToken: result
+                });
+    
             });
-		});
+        });
 	});
 }
 
@@ -175,6 +183,7 @@ exports.loginLDAP = function(req, res) {
                                         newUser.username = username;
                                         newUser.email    = username+'@student.42.fr';
                                         newUser.password = password;
+                                        newUser.ldap = true;
 
                                         newUser.save(function(err) {
                                             if (err) {
@@ -212,14 +221,21 @@ exports.loginLDAP = function(req, res) {
                                         });    
                                     }
                                     else {
-                                        var token = jwt.sign(
-                                            { id: user._id }, 
-                                            'shhhhh', 
-                                            { expiresInMinutes: TOKEN_EXPIRATION }
-                                        );
+                                        APIConnect.createAPIToken(function(error, result) {
+                                            if (error) {
+                                                console.log(error);
+                                                return res.send(401);
+                                            }
+                                            var token = jwt.sign(
+                                                { id: user._id }, 
+                                                'shhhhh', 
+                                                { expiresInMinutes: TOKEN_EXPIRATION }
+                                            );
+                                            return res.json({ 
+                                                token: token,
+                                                APIToken: result
+                                            });
 
-                                        return res.json({ 
-                                            token: token
                                         });
                                     }
                                 });

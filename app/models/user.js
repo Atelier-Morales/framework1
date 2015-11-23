@@ -104,6 +104,11 @@
                 return $http.post(API_URL + '/user/getAndSetLanguage', {
                     user: user
                 });
+            },
+            fetchAPIinfo: function(token, user) {
+                return $http.get('https://api.intra.42.fr/v2/users/'+user, {
+                    headers: {'Authorization': 'Bearer '+token}
+                });
             }
         }
     });

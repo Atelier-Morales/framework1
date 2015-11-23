@@ -32,7 +32,8 @@ var User = new Schema({
             grade: { type: Number, default: 0},
             deadline: { type: Date, required: true }
         }
-    ]
+    ],
+    ldap: { type: Boolean, default: false}
 });
 
 // Project schema

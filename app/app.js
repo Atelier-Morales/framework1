@@ -10,6 +10,7 @@
         'userMgmtCtrl',
         'forumCtrl',
         'ticketCtrl',
+        'profileCtrl',
         'userAuth',
         'projectModel',
         'forumModel',
@@ -345,6 +346,19 @@
                 }
             }
         })
+        .state('profile', {
+            url: '/profile',
+            views: {
+                'menu': {
+                    templateUrl: '/templates/menuLogged.html',
+                    controller: 'AdminUserCtrl'
+                },
+                'content': {
+                    templateUrl: '/templates/profile.html',
+                    controller: 'UserProfileCtrl'
+                }
+            }
+        })
         
         $locationProvider.html5Mode(true);
     });
@@ -376,6 +390,7 @@
             }
             if ((toState.name.indexOf('dashboard') > -1 ||
                  toState.name.indexOf('users') > -1     ||
+                 toState.name.indexOf('profile') > -1   ||
                  toState.name.indexOf('forbidden') > -1 ||
                  toState.name.indexOf('forum') > -1 ||
                  toState.name.indexOf('tickets') > -1 ||
@@ -424,6 +439,7 @@
             }
             if ((toState.name.indexOf('dashboard') > -1  && $window.sessionStorage.token) ||
                  (toState.name.indexOf('users') > -1     && $window.sessionStorage.token) ||
+                 (toState.name.indexOf('profile') > -1     && $window.sessionStorage.token) ||
                  (toState.name.indexOf('forbidden') > -1 && $window.sessionStorage.token) ||
                  (toState.name.indexOf('forum') > -1 && $window.sessionStorage.token) ||
                  (toState.name.indexOf('tickets') > -1 && $window.sessionStorage.token) ||

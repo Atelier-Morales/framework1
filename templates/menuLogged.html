@@ -8,5 +8,5 @@
     <a style="float:left; margin-left:20px; margin-right:3px;" ng-click="changeLanguage(userInfo.username, 'fr')">fr</a>
     <a style="float:left; margin-left:3px; margin-right:10px;" ng-click="changeLanguage(userInfo.username, 'en')">en</a>
     <a style="float:right" ng-click="logOut()">logout</a>
-    <a style="float:right; margin-right:10px;">{{ userInfo.username }}</a>
+    <a style="float:right; margin-right:10px;" ui-sref="profile">{{ userInfo.username }}</a>
 </nav>

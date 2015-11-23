@@ -43,7 +43,7 @@ app.all('*', function(req, res, next) {
 
 app.post('/user/verifyToken', routes.users.verifyToken);
 
-app.post('/user/verifyTokenLDAP', routes.users.verifyTokenLDAP);
+//app.post('/user/verifyTokenLDAP', routes.users.verifyTokenLDAP);
 
 app.get('/user/fetchUsers', routes.users.fetchUsers);
 

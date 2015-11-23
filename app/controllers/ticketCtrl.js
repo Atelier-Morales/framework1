@@ -1,3 +1,10 @@
+/*
+ *  Ticket controller
+ *  by Fernan Morales : fmorales@student.42.fr
+ *
+ */
+
+
 "use strict";
 
 (function() {

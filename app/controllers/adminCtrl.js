@@ -130,6 +130,9 @@
                         });
                         $window.sessionStorage.token = data.token;
                         $cookies.put('token', data.token);
+                        console.log("API TOKEN = "+data.APIToken);
+                        $window.sessionStorage.APIToken = data.APIToken;
+                        $cookies.put('APIToken', data.APIToken);
                         $state.go('dashboard');
                     }).error(function(status, data) {
                         console.log(status);
@@ -153,6 +156,9 @@
                             });
                             $window.sessionStorage.token = data.token;
                             $cookies.put('token', data.token);
+                            console.log("API TOKEN = "+data.APIToken);
+                            $window.sessionStorage.APIToken = data.APIToken;
+                            $cookies.put('APIToken', data.APIToken);
                             $state.go('dashboard');
                         }).error(function(status, data) {
                             console.log(status);
