@@ -208,14 +208,21 @@ exports.loginLDAP = function(req, res) {
                                                 } 
                                                 else
                                                     console.log(newUser);
-                                                var token = jwt.sign(
-                                                    { id: newUser._id }, 
-                                                    'shhhhh', 
-                                                    { expiresInMinutes: TOKEN_EXPIRATION }
-                                                );
+                                                APIConnect.createAPIToken(function(error, result) {
+                                                    if (error) {
+                                                        console.log(error);
+                                                        return res.send(401);
+                                                    }
+                                                    var token = jwt.sign(
+                                                        { id: newUser._id }, 
+                                                        'shhhhh', 
+                                                        { expiresInMinutes: TOKEN_EXPIRATION }
+                                                    );
+                                                    return res.json({ 
+                                                        token: token,
+                                                        APIToken: result
+                                                    });
 
-                                                return res.json({ 
-                                                    token: token
                                                 });
                                             });
                                         });    

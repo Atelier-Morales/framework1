@@ -13,12 +13,16 @@
                 </div>
             </div>
         </div>
+        
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet">
           
         <!-- this adds Foundation Icon Fonts!! -->
-        <link href="http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet">
-        <img src="http://localhost:3000/assets/img/eye.gif" ng-hide="isLoaded">
-        <br>
-        <div class="shake-slow shake-constant stuff" ng-hide="isLoaded">You cannot hide from me</div>
+        <div class="loading-eye" ng-hide="isLoaded">
+            
+            <img src="http://localhost:3000/assets/img/eye.gif">
+            <br>
+            <div class="shake-slow shake-constant stuff" >You cannot hide from me</div>
+        </div>
 
     <div class="row" ng-if="!ldap" ng-show="isLoaded">
       <div class="medium-4 columns">

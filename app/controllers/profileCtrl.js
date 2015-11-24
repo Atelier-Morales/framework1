@@ -61,7 +61,8 @@
             }
 
             $rootScope.$watch('userInfo', function () {
-                if ($rootScope.userInfo === undefined || $rootScope.userInfo === null || $rootScope.userInfo === "")
+                if ($rootScope.userInfo === undefined || $rootScope.userInfo === null || $rootScope.userInfo === ""
+                   || $scope.profile != undefined || $scope.profile != null)
                     return;
                 fetchAPIinfo($rootScope.userInfo.username);
             })

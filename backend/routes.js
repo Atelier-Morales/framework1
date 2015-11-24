@@ -25,6 +25,7 @@ routes.projects = require('./project');
 routes.forum = require('./forum');
 routes.tickets = require('./tickets');
 routes.mailer = require('./mailer');
+routes.ldap = require('./ldap');
 
 app.all('*', function(req, res, next) {
     if (req.protocol === "https")
@@ -43,7 +44,7 @@ app.all('*', function(req, res, next) {
 
 app.post('/user/verifyToken', routes.users.verifyToken);
 
-//app.post('/user/verifyTokenLDAP', routes.users.verifyTokenLDAP);
+app.get('/user/fetchUsersLdap', routes.ldap.fetchUsersLdap);
 
 app.get('/user/fetchUsers', routes.users.fetchUsers);
 

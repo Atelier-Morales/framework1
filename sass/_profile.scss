@@ -1,15 +1,16 @@
 .inner-wrap {
-  img {
-    border-radius: 50%;
-    margin-left: 33%;
-    position: relative;
-  }
-  .stuff {
-    margin-left: 38%;
-    position: absolute;
-    margin-top: -89px;
-    color: white;
-  }
+    .loading-eye {
+        text-align: center;
+        img {
+            border-radius: 50%;
+        }
+        .stuff {
+              margin-top: -86px;
+              margin-left: -105px;
+              color: white;
+              position: absolute;
+        }
+    }
 }
 .profile-card {
   padding: 1rem;

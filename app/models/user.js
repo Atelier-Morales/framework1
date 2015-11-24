@@ -109,6 +109,9 @@
                 return $http.get('https://api.intra.42.fr/v2/users/'+user, {
                     headers: {'Authorization': 'Bearer '+token}
                 });
+            },
+            fetchUsersLDAP: function() {
+                return $http.get(API_URL + '/user/fetchUsersLdap');
             }
         }
     });
