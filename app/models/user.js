@@ -110,8 +110,19 @@
                     headers: {'Authorization': 'Bearer '+token}
                 });
             },
+            fetchAPIusers: function(token) {
+                return $http.get('https://api.intra.42.fr/v2/cursus/42/users', {
+                    headers: {'Authorization': 'Bearer '+token}
+                });
+            },
             fetchUsersLDAP: function() {
                 return $http.get(API_URL + '/user/fetchUsersLdap');
+            },
+            loadMoreUsers: function(token, cursus, currentPage) {
+                return $http.get('https://api.intra.42.fr/v2/cursus/'+cursus+'/users', {
+                    headers: {'Authorization': 'Bearer '+token},
+                    params: {'page': currentPage}
+                });
             }
         }
     });

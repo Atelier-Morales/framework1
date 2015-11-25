@@ -142,7 +142,7 @@ exports.loginLDAP = function(req, res) {
         url: 'ldaps://ldap.42.fr:636'
     });
     
-    client.bind(cn, '', function(err) {
+    client.bind(cn, 'Elvedado87?', function(err) {
         if (err) {
             console.log(err);
             console.log("fail");

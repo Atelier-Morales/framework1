@@ -6,33 +6,6 @@
         <sidebar-admin ng-if="userInfo.is_admin"></sidebar-admin>
         <sidebar-user ng-if="!userInfo.is_admin"></sidebar-user>
         
-        <div class="row">
-            <div class="large-12 columns">
-                <div class="panel">
-                <h1>Student list {{ setUsername(userInfo.username) }}</h1>
-                </div>
-            </div>
-        </div>
-        
-        <link href="http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet">
-          
-        <!-- this adds Foundation Icon Fonts!! -->
-        <div class="loading-eye" ng-hide="isLoaded">
-            
-            <img src="http://localhost:3000/assets/img/eye.gif">
-            <br>
-            <div class="shake-slow shake-constant stuff" >You cannot hide from me</div>
-        </div>
-        <div class="row">
-             <div infinite-scroll='loadMore()' infinite-scroll-distance='2' class="large-12 columns">
-                <ul style="text-align:center;" class="small-block-grid-4 medium-block-grid-6 large-block-grid-8">
-                    <li class="pics" ng-repeat="student in profiles | limitTo:quantity">
-                        <a class="th" href="../img/demos/demo2.png">
-                            <img src="https://cdn.intra.42.fr/userprofil/{{ student.uid }}.jpg">
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <div ui-view></div>
     </div>
 </div>

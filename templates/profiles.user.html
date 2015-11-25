@@ -1,0 +1,105 @@
+<link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
+
+<div class="off-canvas-wrap move-right" style="overflow: visible;" data-offcanvas>
+    <div class="inner-wrap">
+
+        <sidebar-admin ng-if="userInfo.is_admin"></sidebar-admin>
+        <sidebar-user ng-if="!userInfo.is_admin"></sidebar-user>
+        
+        <div class="row">
+            <div class="large-12 columns">
+                <div class="panel">
+                <h1>User information {{ fetchUser() }}</h1>
+                </div>
+            </div>
+        </div>
+        
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet">
+          
+        <!-- this adds Foundation Icon Fonts!! -->
+        <div class="loading-eye" ng-if="!isLoaded2 || isLoaded2 === undefined">
+            
+            <img src="http://localhost:3000/assets/img/eye.gif">
+            <br>
+            <div class="shake-slow shake-constant stuff" >You cannot hide from me</div>
+        </div> 
+        
+    <div class="row" ng-if="isLoaded2 === true && profile != undefined">
+        
+      <div class="medium-4 columns">
+        <div class="profile-card">
+          <img ng-src="{{ picture }}">
+          <div class="profile-info">
+            <h4 class="subheader">{{ profile.displayname }}</h4>
+            <p><strong>email :</strong> {{ profile.email }}</p>
+            <p><strong>login :</strong> {{ profile.login }}</p>
+            <p><strong>phone :</strong> {{ profile.mobile }}</p>
+            <p><strong>location :</strong> <pan ng-if="profile.location != null">{{ profile.location }}</pan><span ng-if="profile.location  === null">unavailable</span></p>
+            <p><strong>correction points :</strong> {{ profile.correction_point }}</p>
+            <p><strong>wallet :</strong> {{ profile.wallet}} <span class="fi-dollar-bill"></span></p>
+            <p><strong>campus :</strong> {{ profile.campus.name }}</p>
+            <ul class="inline-list" ng-repeat="curs in profile.cursus">
+                <li><strong>cursus {{ curs.cursus.name }}</strong></li>
+                <li>grade : {{ curs.grade }} | level : {{ curs.level }}
+                </li>
+            </ul>
+            <br>
+            <p><strong>skills</strong></p>
+            <hr>
+            <div ng-repeat="skill in profile.cursus[0].skills">
+                <p><strong>{{ skill.name }}</strong> : {{ skill.level }}</p>
+                <hr>
+            </div>
+          </div>
+        </div>
+      </div>
+          
+      <div class="medium-4 columns">
+        <div class="profile-card">
+          <img src="http://zurb.com/ink/images/inky-computer.svg" alt="Inky">
+          <div class="profile-info">
+            <h4 class="subheader">Projects</h4>
+            <br>
+            <div style="text-align: center;">
+                <ul class="button-group round toggle" data-toggle="buttons-radio">
+                  <li>
+                    <input type="radio" id="r1" name="r-group" data-toggle="button" ng-click="setGrade(0)">
+                    <label class="button" for="r1">All</label>
+                  </li>
+                  <li>
+                    <input type="radio" id="r2" name="r-group" data-toggle="button" ng-click="setGrade(80)">
+                    <label class="button" for="r2">Success</label>
+                  </li>
+                  <li>
+                    <input type="radio" id="r3" name="r-group" data-toggle="button" ng-click="setGrade('fail')">
+                    <label class="button" for="r3">Fail</label>
+                  </li>
+                </ul>
+            </div>
+              <br>
+            <div ng-repeat="proj in profile.cursus[0].projects | filter: greaterThan('final_mark')">
+                <p><strong>{{ proj.slug }}</strong></p>
+                <p><strong>final mark :</strong> {{ proj.final_mark }}</p>
+                <hr>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      <div class="medium-4 columns">
+        <div class="profile-card">
+          <img src="http://www.demacmedia.com/wp-content/uploads/2014/04/330x330xYeti-Feature-Small-2.png.pagespeed.ic.ASS9EY8apS.png" alt="Yeti">
+          <div class="profile-info">
+            <h4 class="subheader">Achievements</h4>
+              <br>
+            <div ng-repeat="ach in profile.achievements">
+                <p><strong>{{ ach.name }}</strong></p>
+                <p>{{ ach.description }}</p>
+                <hr>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>    
+</div>

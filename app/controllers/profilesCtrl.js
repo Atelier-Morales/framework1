@@ -7,7 +7,9 @@
 (function() {
     var profilesCtrl = angular.module('profilesCtrl', [
         'userAuth',
-        'ngCookies'
+        'ngCookies',
+        'angular-advanced-searchbox',
+        'infinite-scroll'
     ]);
     
     profilesCtrl.controller('ProfilesCtrl', [
@@ -20,35 +22,72 @@
         '$cookies',
         '$timeout',
         '$translate',
+        '$stateParams',
+        '$q',
         'userService', 
         'authService',
-        function ProfilesCtrl($rootScope, $scope, $location, $window, $state, $log, $cookies, $timeout, $translate, userService, authService) {
-            
-            $scope.grade = 0;
-            $scope.isLoaded = false;
+        function ProfilesCtrl($rootScope, $scope, $location, $window, $state, $log, $cookies, $timeout, $translate, $stateParams, $q, userService, authService) {
 
-            function fetchUsersLDAP() {
-                userService.fetchUsersLDAP()
+            $scope.grade = 0;
+            $scope.currentPage  = 1;
+            $scope.search = "";
+            function fetchAPIusers() {
+                var token = $cookies.get('APIToken');
+                $scope.token = token;
+                if ($scope.isLoaded === false) {
+                    userService.fetchAPIusers(token)
+                    .success(function(data) {
+                        console.log("success");
+                        $scope.profiles = data;
+                        $scope.isLoaded = true;
+                        $scope.cursus = '42'
+                        $scope.currentPage = 1;
+                    })
+                    .error(function(status, data) {
+                        $log.log(status);
+                        $log.log(data);
+                        $scope.profiles = $rootScope.userInfo;
+                        $scope.isLoaded = true;
+                    });
+                }
+            }
+            
+            $scope.availableSearchParams = [
+              { key: "login", name: "login", placeholder: "login..." },
+              { key: "campus", name: "campus", placeholder: "campus..." },
+              { key: "cursus", name: "cursus", placeholder: "cursus..." }
+            ];
+            
+            function fetchCursus() {
+                var token = $cookies.get('APIToken');
+                $scope.token = token;
+                userService.fetchAPIusers(token)
                 .success(function(data) {
                     console.log("success");
                     $scope.profiles = data;
                     $scope.isLoaded = true;
-                    len = $scope.profiles.length;
-                    $log.log(len);
-                    $scope.quantity = 10;
-                    $scope.loadMore = function() {
-                            var last = $scope.profiles[$scope.profiles.length - 1];
-                            for(var i = 1; i <= 10; i++) {
-                                    $scope.profiles.push(last + i);
-                                    $scope.quantity += 1;
-                            }
+                    $scope.cursus = '42'
+                    $scope.currentPage = 1;
+                })
+                .error(function(status, data) {
+                    $log.log(status);
+                    $log.log(data);
+                });
+            }
+            
+            $scope.loadMore = function() {
+                $scope.currentPage += 1;
+                console.log($scope.currentPage);
+                userService.loadMoreUsers($scope.token, $scope.cursus, $scope.currentPage)
+                .success(function(data) {
+                    console.log("success");
+                    for (var i = 0; i < data.length; i++) {
+                        $scope.profiles.push(data[i]);
                     }
                 })
                 .error(function(status, data) {
                     $log.log(status);
                     $log.log(data);
-                    $scope.profiles = $rootScope.userInfo;
-                    $scope.isLoaded = true;
                 });
             }
 
@@ -65,15 +104,43 @@
                 $scope.grade = grade;
             }
             
-            
-
             $rootScope.$watch('userInfo', function () {
                 if ($rootScope.userInfo === undefined || $rootScope.userInfo === null || $rootScope.userInfo === ""
-                   || $scope.profiles != undefined || $scope.profiles != null)
+                   || $state.is('profiles.user'))
                     return;
-                fetchUsersLDAP();
+                if ($scope.isLoaded === undefined) {
+                    $scope.isLoaded = false;
+                    fetchAPIusers();
+                    //fetchCursus();
+                }
             });
-
+            
+            
+            $rootScope.$on("$stateChangeStart", function(e, toState, toParams, fromState, fromParams) {
+                if ($scope.isLoaded2 === true && fromState.name === "profiles.user") {
+                    $scope.isLoaded2 = undefined;
+                    $scope.profile = undefined;
+                }
+                var username = toParams.id;
+                if (toState.name === 'profiles.user' &&  $scope.isLoaded2 === undefined) {
+                    $scope.isLoaded2 = false;
+                    userService.fetchAPIinfo($scope.token, username)
+                    .success(function(data) {
+                        console.log("success1");
+                        $scope.isLoaded2 = true;
+                        $scope.profile = data;
+                        $scope.picture = "https://cdn.intra.42.fr/userprofil/"+data.login+".jpg";
+                        $scope.ldap = true;      
+                    })
+                    .error(function(status, data) {
+                        $log.log(status);
+                        $log.log(data);
+                        $scope.profile = $rootScope.userInfo;
+                        $scope.ldap = false;
+                        $scope.isLoaded2 = true;
+                    });
+                }
+            });
         }
     ]);
 })();

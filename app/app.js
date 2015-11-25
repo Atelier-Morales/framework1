@@ -204,6 +204,7 @@
         $urlRouterProvider.when("/users", "/users/administration");
         $urlRouterProvider.when("/users/tickets", "/users/tickets/all");
         $urlRouterProvider.when("/tickets", "/tickets/all");
+        $urlRouterProvider.when("/profiles", "/profiles/all");
         
         $stateProvider
         .state('home',{
@@ -372,6 +373,16 @@
                     controller: 'ProfilesCtrl'
                 }
             }
+        })
+        .state('profiles.all', {
+            url: '/all',
+            templateUrl: '/templates/profiles.all.html',
+            controller: 'ProfilesCtrl'
+        })
+        .state('profiles.user', {
+            url: '/user/:id',
+            templateUrl: '/templates/profiles.user.html',
+            controller: 'ProfilesCtrl'
         })
         
         $locationProvider.html5Mode(true);

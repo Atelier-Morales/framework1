@@ -1,0 +1,42 @@
+<!-- this adds Foundation Icon Fonts!! -->
+     <div class="row">
+            <div class="large-12 columns">
+                <div class="panel">
+                <h1>Student list {{ setUsername(userInfo.username) }}</h1>
+                </div>
+            </div>
+        </div>
+        
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet">
+
+<div class="loading-eye" ng-hide="isLoaded">
+            
+    <img src="http://localhost:3000/assets/img/eye.gif">
+    <br>
+    <div class="shake-slow shake-constant stuff" >You cannot hide from me</div>
+</div>
+
+<div class="row" ng-show="isLoaded">
+    
+    <nit-advanced-searchbox
+    ng-model="search"
+    parameters="availableSearchParams"
+    placeholder="Search...">
+</nit-advanced-searchbox>
+    
+    {{ search }}
+     <div class="large-12 columns">
+        <ul style="text-align:center;" class="small-block-grid-4 medium-block-grid-6 large-block-grid-8" infinite-scroll='loadMore()' infinite-scroll-distance='2'>
+            <li class="pics" ng-repeat="student in profiles">
+                <a ng-href="profiles/user/{{student.login}}">
+                <div class="service" >
+                  <div class="service-icon-box">
+                    <img src="https://cdn.intra.42.fr/userprofil/{{ student.login }}.jpg" alt="" class="service-icon">
+                  </div>
+                  <h4 class="service-heading">{{ student.login }}</h4>
+                </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
