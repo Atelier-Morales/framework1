@@ -68,6 +68,8 @@ app.post('/user/changeLanguage', routes.users.changeLanguage);
 
 app.post('/user/getAndSetLanguage', routes.users.getLanguage);
 
+app.post('/user/logAction', routes.users.logAction);
+
 // Project functions
 
 app.post('/project/fetchProjects', routes.projects.fetchProjects);

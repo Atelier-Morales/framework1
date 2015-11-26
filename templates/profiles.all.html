@@ -9,6 +9,25 @@
         
         <link href="http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet">
 
+
+
+	<div class="row">
+  <div class="small-6 small-centered columns">
+    
+
+    <div class="alert-box alert radius">
+      <strong>Error</strong> - no results found.
+      <a ng-click="closeAlert()">&times;</a>
+    </div>
+  </div>
+	</div>
+
+    <nit-advanced-searchbox
+    ng-model="search"
+    placeholder="Search...">
+        
+</nit-advanced-searchbox>
+
 <div class="loading-eye" ng-hide="isLoaded">
             
     <img src="http://localhost:3000/assets/img/eye.gif">
@@ -16,19 +35,16 @@
     <div class="shake-slow shake-constant stuff" >You cannot hide from me</div>
 </div>
 
-<div class="row" ng-show="isLoaded">
-<span data-tooltip aria-haspopup="true" class="has-tip" data-options="show_on:large" title="available campuses : <br>Paris, Cluj, Johannesburg<br>Available cursus : <br>">Need help?</span>
-    <nit-advanced-searchbox
-    ng-model="search"
-    parameters="availableSearchParams"
-    placeholder="Search...">
-        
-</nit-advanced-searchbox>
-    
-    {{ campus }} 
-    
-    <p ng-repeat="curs in cursus">{{ curs.slug }}</p>
-    {{ search }}
+<div class="row corpus" ng-show="isLoaded">
+    <div class="large-12 columns" style="text-align:center;">
+        <ul class="button-group toggle" data-toggle="buttons-radio">
+          <li ng-repeat="curs in cursus">
+            <input type="radio" id="r{{$index+1}}" name="r-group" data-toggle="button">
+            <label ng-click="getCursusUsers(curs.slug)" class="button secondary" for="r{{$index+1}}">{{ curs.slug }}</label>
+          </li>
+        </ul>
+
+    </div>
      <div class="large-12 columns">
         <ul style="text-align:center;" class="small-block-grid-4 medium-block-grid-6 large-block-grid-8" infinite-scroll='loadMore()' infinite-scroll-distance='2'>
             <li class="pics" ng-repeat="student in profiles">

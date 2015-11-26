@@ -10192,6 +10192,17 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/data\/log.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/data\/log.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/data\/log-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
 	"\/data\/pics.json": {
 		"fileType": 524288,
 		"ignore": 1,

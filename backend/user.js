@@ -1,6 +1,8 @@
 "use strict";
 
 var db = require('./db');
+var fs = require('fs');
+var moment = require("moment");
 var ldap = require('ldapjs-hotfix');
 var jwt = require('jsonwebtoken');
 var redis = require('redis');
@@ -8,6 +10,7 @@ var APIConnect = require('./oauth42');
 var redisClient = redis.createClient();
 var TOKEN_EXPIRATION = 60;
 var API_TOKEN_EXPIRATION = 7200;
+
 
 //Initialize Redis
 
@@ -448,4 +451,19 @@ exports.getLanguage = function(req, res) {
         var lang = user.lang;
         return res.send(lang);
     });
+}
+
+exports.logAction = function(req, res) {
+    var log = req.body.log || ''; 
+    var action = req.body.action || '';
+    var user = req.body.user || '';
+    if (log == '' || action == '' || user == '')
+        return res.sendStatus(400);
+    var CurrentDate = moment().format('MMMM Do YYYY, h:mm:ss a');
+    var configFile = fs.readFileSync('../data/log.json');
+    var config = JSON.parse(configFile);
+    config.push({current_date:CurrentDate, });
+    var configJSON = JSON.stringify(config);
+    fs.writeFileSync('../data/config.json', configJSON);
+    return res.sendStatus(200);
 }

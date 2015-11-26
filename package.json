@@ -7,31 +7,31 @@
     "email": "fmorales@student.42.fr"
   },
   "devDependencies": {
-    "load-grunt-tasks"      : "*",
-    "grunt-browser-sync"    : "*",
-    "grunt-contrib-watch"   : "*",
-    "grunt-contrib-cssmin"  : "*",
-
-    "grunt-sass"            : "*",
-    "grunt-contrib-sass"    : "*",
-
-    "grunt-autoprefixer"    : "*",
-    "grunt-contrib-connect" : "*",
-    "grunt-template-html"   : "*",
-    "underscore"            : "*",
-    "grunt-contrib-uglify"  : "*",
-    "ejs"                   : "*",
-      
-    "mongoose"              : "*",
-    "bcrypt"                : "*",
-    "express"               : "*",
-    "morgan"                : "*",
-    "body-parser"           : "*",
-    "jsonwebtoken"          : "*",
-    "redis"                 : "*",
-    "https"                 : "*",
-    "nodemailer"            : "*",
-    "ldapjs-hotfix"         : "*"
+    "load-grunt-tasks": "*",
+    "grunt-browser-sync": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-contrib-cssmin": "*",
+    "grunt-sass": "*",
+    "grunt-contrib-sass": "*",
+    "grunt-autoprefixer": "*",
+    "grunt-contrib-connect": "*",
+    "grunt-template-html": "*",
+    "underscore": "*",
+    "grunt-contrib-uglify": "*",
+    "ejs": "*",
+    "mongoose": "*",
+    "bcrypt": "*",
+    "express": "*",
+    "morgan": "*",
+    "body-parser": "*",
+    "jsonwebtoken": "*",
+    "redis": "*",
+    "https": "*",
+    "nodemailer": "*",
+    "ldapjs-hotfix": "*"
   },
-  "keywords": []
+  "keywords": [],
+  "dependencies": {
+    "moment": "^2.10.6"
+  }
 }

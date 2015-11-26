@@ -391,7 +391,6 @@
     app.run(function($rootScope, $state, $window, $cookies, $timeout, authService, userService, $translate) {
         $rootScope.$on("$stateChangeStart", function(e, toState, toParams, fromState, fromParams) {
             var token = $cookies.get('token');
-            
             if (toState.name.indexOf('home') > -1 && !$window.sessionStorage.token && fromState.name === "") {
                 if (token === undefined)
                     console.log('Welcome to the intranet!');
@@ -404,7 +403,6 @@
                         console.log('1: User already logged in. Redirecting...');
                         $window.sessionStorage.token = token;
                         e.preventDefault();
-                        
                         $state.go('dashboard');
                     })
                     .error(function(status, data) {
@@ -432,9 +430,13 @@
                     .success(function(data) {
                         $timeout(function() {
                             $rootScope.userInfo = data;
+                            var route = toState.name.replace('.', '/') + '/' + toParams.id;
+                            console.log('page visited '+route+' '+$rootScope.userInfo.username);
+                            userService.logAction(route, 'visited', $rootScope.userInfo.username)
+                                .error(function(status,data){ console.log(status+' '+data)});
                         });
-                        console.log($rootScope.userInfo);
                         console.log('2: User already logged in...');
+                        
                         $window.sessionStorage.token = token;
                     })
                     .error(function(status, data) {
@@ -472,14 +474,17 @@
                  (toState.name.indexOf('tickets') > -1 && $window.sessionStorage.token) ||
                  (toState.name.indexOf('projects') > -1  && $window.sessionStorage.token)) {
                     // If logged in and no user info:
-                    console.log($rootScope.userInfo);
                     userService.verifyToken(token)
                     .success(function(data) {
                         $timeout(function() {
                             $rootScope.userInfo = data;
+                            var route = toState.name.replace('.', '/') + '/' + toParams.id;
+                            console.log('page visited '+route+' '+$rootScope.userInfo.username);
+                            userService.logAction(route, 'visited', $rootScope.userInfo.username)
+                                .error(function(status,data){ console.log(status+' '+data)});
                         });
-                        console.log($rootScope.userInfo);
                         authService.isLogged = true;
+                        
                         console.log('4: User already logged in...');
                     })
                     .error(function(status, data) {
@@ -496,14 +501,18 @@
                     .success(function(data) {
                         $timeout(function() {
                             $rootScope.userInfo = data;
+                            var route = toState.name.replace('.', '/') + '/' + toParams.id;
+                            console.log('page visited '+route+' '+$rootScope.userInfo.username);
+                            userService.logAction(route, 'visited', $rootScope.userInfo.username)
+                                .error(function(status,data){ console.log(status+' '+data)});
                         });
-                        console.log(data);
                         authService.isLogged = true;
                         if (data.is_admin === false) {
                             console.log('You are not allowed to access this page');
                             e.preventDefault();
                             $state.go('forbidden');
                         }
+                        
                     })
                     .error(function(status, data) {
                         console.log(status);
