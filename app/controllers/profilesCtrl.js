@@ -29,7 +29,6 @@
         function ProfilesCtrl($rootScope, $scope, $location, $window, $state, $log, $cookies, $timeout, $translate, $stateParams, $q, userService, authService) {
 
             $scope.grade = 0;
-            $scope.currentPage  = 1;
             $scope.search = "";
             function fetchAPIusers() {
                 var token = $cookies.get('APIToken');
@@ -40,8 +39,7 @@
                         console.log("success");
                         $scope.profiles = data;
                         $scope.isLoaded = true;
-                        $scope.cursus = '42'
-                        $scope.currentPage = 1;
+                        $scope.currentCursus = '42';
                     })
                     .error(function(status, data) {
                         $log.log(status);
@@ -50,6 +48,20 @@
                         $scope.isLoaded = true;
                     });
                 }
+            }
+            
+            function fetchCampus() {
+                var token = $cookies.get('APIToken');
+                $scope.token = token;
+                userService.fetchCampus(token)
+                .success(function(data) {
+                    console.log("campus success");
+                    $scope.campus = data;
+                })
+                .error(function(status, data) {
+                    $log.log(status);
+                    $log.log(data);
+                });
             }
             
             $scope.availableSearchParams = [
@@ -61,13 +73,10 @@
             function fetchCursus() {
                 var token = $cookies.get('APIToken');
                 $scope.token = token;
-                userService.fetchAPIusers(token)
+                userService.fetchCursus(token)
                 .success(function(data) {
-                    console.log("success");
-                    $scope.profiles = data;
-                    $scope.isLoaded = true;
-                    $scope.cursus = '42'
-                    $scope.currentPage = 1;
+                    console.log("cursus success");
+                    $scope.cursus = data;
                 })
                 .error(function(status, data) {
                     $log.log(status);
@@ -76,9 +85,11 @@
             }
             
             $scope.loadMore = function() {
+                if ($scope.currentPage === undefined)
+                    $scope.currentPage = 1;
                 $scope.currentPage += 1;
                 console.log($scope.currentPage);
-                userService.loadMoreUsers($scope.token, $scope.cursus, $scope.currentPage)
+                userService.loadMoreUsers($scope.token, $scope.currentCursus, $scope.currentPage)
                 .success(function(data) {
                     console.log("success");
                     for (var i = 0; i < data.length; i++) {
@@ -111,7 +122,8 @@
                 if ($scope.isLoaded === undefined) {
                     $scope.isLoaded = false;
                     fetchAPIusers();
-                    //fetchCursus();
+                    fetchCampus();
+                    fetchCursus();
                 }
             });
             

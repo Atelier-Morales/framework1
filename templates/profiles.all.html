@@ -17,13 +17,17 @@
 </div>
 
 <div class="row" ng-show="isLoaded">
-    
+<span data-tooltip aria-haspopup="true" class="has-tip" data-options="show_on:large" title="available campuses : <br>Paris, Cluj, Johannesburg<br>Available cursus : <br>">Need help?</span>
     <nit-advanced-searchbox
     ng-model="search"
     parameters="availableSearchParams"
     placeholder="Search...">
+        
 </nit-advanced-searchbox>
     
+    {{ campus }} 
+    
+    <p ng-repeat="curs in cursus">{{ curs.slug }}</p>
     {{ search }}
      <div class="large-12 columns">
         <ul style="text-align:center;" class="small-block-grid-4 medium-block-grid-6 large-block-grid-8" infinite-scroll='loadMore()' infinite-scroll-distance='2'>
@@ -40,3 +44,6 @@
         </ul>
     </div>
 </div>
+<script type="text/javascript"> 
+            $(document).foundation();
+</script>
