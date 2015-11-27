@@ -1,46 +1,95 @@
 "use strict";
 
 var mongoose = require('mongoose');
-var bcrypt   = require('bcrypt');
+var bcrypt = require('bcrypt');
 var SALT = 10;
 
 var db_url = 'mongodb://localhost/fuckingshit';
 
-mongoose.connect(db_url, function(err, res) {
+mongoose.connect(db_url, function (err, res) {
     if (err) {
-        console.log("connection refused to "+db_url);
+        console.log("connection refused to " + db_url);
         console.log(err);
-    }
-    else
-        console.log("connection successful to "+db_url);
+    } else
+        console.log("connection successful to " + db_url);
 });
 
 var Schema = mongoose.Schema;
 
 // User schema
 var User = new Schema({
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    email:    { type: String, required: true },
-    is_admin: { type: Boolean, default: false },
-    created: { type: Date, default: Date.now },
-    lang: { type: String, required: true, default: "en" },
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    is_admin: {
+        type: Boolean,
+        default: false
+    },
+    created: {
+        type: Date,
+        default: Date.now
+    },
+    lang: {
+        type: String,
+        required: true,
+        default: "en"
+    },
     projects: [
         {
-            name: { type: String, required: true },
-            status: { type: String, default: "ongoing" },
-            grade: { type: Number, default: 0},
-            deadline: { type: Date, required: true }
+            name: {
+                type: String,
+                required: true
+            },
+            status: {
+                type: String,
+                default: "ongoing"
+            },
+            grade: {
+                type: Number,
+                default: 0
+            },
+            deadline: {
+                type: Date,
+                required: true
+            }
         }
     ],
-    ldap: { type: Boolean, default: false}
+    ldap: {
+        type: Boolean,
+        default: false
+    },
+    logAs: {
+        type: Boolean,
+        default: false
+    }
 });
 
 // Project schema
 var Projects = new Schema({
-    name: { type: String, required: true, unique: true },
-    deadline: { type: Date, required: true },
-    description: { type: String, required: true, unique: true }
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    deadline: {
+        type: Date,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true,
+        unique: true
+    }
 });
 
 //Forum schema
@@ -60,46 +109,114 @@ localhost/forum/:id/:id/threads
 var Forum = new Schema({
     categories: [
         {
-            name: { type: String, required: true, unique: true },
-            id: { type: Number, required: true, unique: true },
+            name: {
+                type: String,
+                required: true,
+                unique: true
+            },
+            id: {
+                type: Number,
+                required: true,
+                unique: true
+            },
             subCategories: [
                 {
-                    name : { type: String, required: true, unique: true },
-                    id: { type: Number, required: true, unique: true }
+                    name: {
+                        type: String,
+                        required: true,
+                        unique: true
+                    },
+                    id: {
+                        type: Number,
+                        required: true,
+                        unique: true
+                    }
                 }
             ]
         }
     ],
     threads: [
         {
-            title: { type: String, required: true, unique: true },
-            id: { type: Number,  required: true, unique: true },
-            created: { type: Date, default: Date.now },
-            creator: { type: String, required: true},
+            title: {
+                type: String,
+                required: true,
+                unique: true
+            },
+            id: {
+                type: Number,
+                required: true,
+                unique: true
+            },
+            created: {
+                type: Date,
+                default: Date.now
+            },
+            creator: {
+                type: String,
+                required: true
+            },
             category: [
-                { 
-                    name: { type: String, required: true, unique: true }
+                {
+                    name: {
+                        type: String,
+                        required: true,
+                        unique: true
+                    }
                 }
             ],
-            body: { type: String, required: true },
+            body: {
+                type: String,
+                required: true
+            },
             bodyComments: [
                 {
-                    author : { type: String, required: true },
-                    created: { type: Date, default: Date.now },
-                    replyBody: { type: String, required: true },
+                    author: {
+                        type: String,
+                        required: true
+                    },
+                    created: {
+                        type: Date,
+                        default: Date.now
+                    },
+                    replyBody: {
+                        type: String,
+                        required: true
+                    },
                 }
             ],
             comments: [
                 {
-                    author: { type: String, required: true },
-                    id: { type: Number,  required: true, unique: true },
-                    created: { type: Date, default: Date.now },
-                    commentBody: { type: String, required: true },
+                    author: {
+                        type: String,
+                        required: true
+                    },
+                    id: {
+                        type: Number,
+                        required: true,
+                        unique: true
+                    },
+                    created: {
+                        type: Date,
+                        default: Date.now
+                    },
+                    commentBody: {
+                        type: String,
+                        required: true
+                    },
                     replies: [
                         {
-                            author : { type: String, required: true },
-                            created: { type: Date, default: Date.now },
-                            replyBody: { type: String, required: true },
+                            author: {
+                                type: String,
+                                required: true
+                            },
+                            created: {
+                                type: Date,
+                                default: Date.now
+                            },
+                            replyBody: {
+                                type: String,
+                                required: true
+                            },
                         }
                     ]
                 }
@@ -110,52 +227,90 @@ var Forum = new Schema({
 
 // Tickets Schema
 var Tickets = new Schema({
-    title: { type: String, required: true },
-    author: { type: String, required: true },
-    id: { type: Number, unique: true },
-    assignTo: { type: String, required: true, default: "unassigned" },
-    category: { type: String, required: true },
-    date: { type: Date, default: Date.now },
-    body: { type: String, required: true },
+    title: {
+        type: String,
+        required: true
+    },
+    author: {
+        type: String,
+        required: true
+    },
+    id: {
+        type: Number,
+        unique: true
+    },
+    assignTo: {
+        type: String,
+        required: true,
+        default: "unassigned"
+    },
+    category: {
+        type: String,
+        required: true
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
+    body: {
+        type: String,
+        required: true
+    },
     replies: [
         {
-            author: { type: String, required: true },
-            body: { type: String, required: true },
-            date: { type: Date, default: Date.now }
+            author: {
+                type: String,
+                required: true
+            },
+            body: {
+                type: String,
+                required: true
+            },
+            date: {
+                type: Date,
+                default: Date.now
+            }
         }
     ],
-    status: { type: String, default: "open" }
+    status: {
+        type: String,
+        default: "open"
+    }
 });
 
 //Tickets categories
 var ticketCategories = new Schema({
-    title: { type: String, required: true, unique: true }
+    title: {
+        type: String,
+        required: true,
+        unique: true
+    }
 });
 
 // Bcrypt middleware on UserSchema
-User.pre('save', function(next) {
-  var user = this;
+User.pre('save', function (next) {
+    var user = this;
 
-  if (!user.isModified('password')) 
-      return next();
+    if (!user.isModified('password'))
+        return next();
 
-  bcrypt.genSalt(SALT, function(err, salt) {
-    if (err) 
-        return next(err);
-
-    bcrypt.hash(user.password, salt, function(err, hash) {
-        if (err) 
+    bcrypt.genSalt(SALT, function (err, salt) {
+        if (err)
             return next(err);
-        user.password = hash;
-        next();
+
+        bcrypt.hash(user.password, salt, function (err, hash) {
+            if (err)
+                return next(err);
+            user.password = hash;
+            next();
+        });
     });
-  });
 });
 
 //Password verification
-User.methods.comparePassword = function(password, cb) {
-    bcrypt.compare(password, this.password, function(err, isMatch) {
-        if (err) 
+User.methods.comparePassword = function (password, cb) {
+    bcrypt.compare(password, this.password, function (err, isMatch) {
+        if (err)
             return cb(err);
         cb(isMatch);
     });

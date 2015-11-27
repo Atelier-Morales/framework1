@@ -1,99 +1,158 @@
 <div class="row">
-          <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
-            <br>
-            <h2 style="padding-left:15px;">{{ 'USERSLIST' | translate }} {{ setUsername(userInfo.username) }}</h2>
-            <br>
-            
-            <table class="responsive" style="width:100%">
-              <thead>
-                <tr>
-                  <th width="150">{{ 'USERNAME' | translate }}</th>
-                  <th width="150">Role</th>
-                  <th width="150">Email</th>
-                  <th width="150">{{ 'REGDATE' | translate }}</th>
-                  <th width="150">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="user in users">
-                  <td>{{ user.username }}</td>
-                  <td><span ng-switch on="user.is_admin">
+
+    <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
+        <div class="large-2 columns">
+            <ul class="side-nav">
+                <li><a ng-click="changeElement(0)">User list</a></li>
+                <li><a ng-click="changeElement(1)">Logs</a></li>
+            </ul>
+        </div>
+        <div class="large-10 columns" ng-if="subElem === 0">
+            <h2 class="tableTitle">{{ 'USERSLIST' | translate }} {{ setUsername(userInfo.username) }}  <a href="#" class="button info small" data-reveal-id="LogAsModal" style="vertical-align:-webkit-baseline-middle;">Log As</a></h2>
+            <table class="responsive tableBody">
+                <thead>
+                    <tr>
+                        <th width="150">{{ 'USERNAME' | translate }}</th>
+                        <th width="150">Role</th>
+                        <th width="150">Email</th>
+                        <th width="150">{{ 'REGDATE' | translate }}</th>
+                        <th width="150">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="user in users">
+                        <td>{{ user.username }}</td>
+                        <td><span ng-switch on="user.is_admin">
                         <span ng-switch-when="true">Admin</span>
-                        <span ng-switch-when="false">User</span>
-                      </span>
-                  </td>
-                  <td>{{ user.email }}</td>
-                  <td>{{ user.created | date:'yyyy-MM-dd | HH:mm:ss ' }}</td>
-                  <td><button href="#" ng-click="setIndex($index)" data-reveal-id="updateModal">{{ 'UPDATE' | translate }}</button>
-                      <a ng-if="!user.is_admin" ng-click="removeUser(user.username, user.is_admin)" class="button alert">{{ 'REMOVE' | translate }}</a></td>   
-                </tr>
-              </tbody>
+                            <span ng-switch-when="false">User</span>
+                            </span>
+                        </td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.created | date:'yyyy-MM-dd | HH:mm:ss ' }}</td>
+                        <td>
+                            <button href="#" ng-click="setIndex($index)" data-reveal-id="updateModal">{{ 'UPDATE' | translate }}</button>
+                            <a ng-if="!user.is_admin" ng-click="removeUser(user.username, user.is_admin)" class="button alert">{{ 'REMOVE' | translate }}</a></td>
+                    </tr>
+                </tbody>
             </table>
-              
-          </div>
+        </div>
+
+        <div class="large-10 columns" ng-if="subElem === 1">
+            <h2 class="tableTitle">Logs</h2>
+            <table class="responsive tableBody">
+                <thead>
+                    <tr>
+                        <th width="150">{{ 'USERNAME' | translate }}</th>
+                        <th width="150">action</th>
+                        <th width="150">route</th>
+                        <th width="150">date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="log in logs">
+                        <td>{{ log.user }}</td>
+                        <td>{{ log.action }}</td>
+                        <td>{{ log.log }}</td>
+                        <td>{{ log.current_date }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
-<div id="updateModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
+<div id="LogAsModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
     <div class="section-container tabs" data-section="tabs">
         <section class="active">
-          <div class="content" data-section-content>
-            <p>
-              <div class="row">
-                <div class="large-12 columns">
-                  <div class="signup-panel">
-                    <p class="welcome">Update user {{ usersCopy[index].username }}</p>
-                    <form name="updateForm" novalidate>
-                      <div class="row collapse">
-                        <div class="small-2  columns">
-                          <span class="prefix"><i class="fi-torso"></i></span>
-                        </div>
-                        <div class="small-10  columns">     
-                          <input type="text" name="username" ng-model="usersCopy[index].username" required>   
-                        </div>
-                      </div>
-                      <div class="row collapse">
-                        <div class="small-2 columns">
-                          <span class="prefix"><i class="fi-mail"></i></span>
-                        </div>
-                        <div class="small-10  columns">
-                          <input type="email" name="email" ng-model="usersCopy[index].email" required>
-                        </div>
-                      </div>
-                      <div class="row collapse">
+            <div class="content" data-section-content>
+                <p>
+                    <div class="row">
                         <div class="large-12 columns">
-                            <label>Choose Role</label>
-                            <input type="radio" 
-                                   name="isAdmin" 
-                                   ng-model="isAdmin" 
-                                   value="true" 
-                                   id="true" required>
-                            <label for="true">Admin</label>
-                            <input type="radio" 
-                                   name="isAdmin" 
-                                   ng-model="isAdmin" 
-                                   value="false" 
-                                   id="false" required>
-                            <label for="false">User</label>
+                            <div class="signup-panel">
+                                <p class="welcome">Log as :</p>
+                                <form name="logAsForm" novalidate>
+                                    <div class="row collapse">
+                                        <div class="small-2  columns">
+                                            <span class="prefix"><i class="fi-torso"></i></span>
+                                        </div>
+                                        <div class="small-10  columns">
+                                            <input type="text" name="username" ng-model="username" required>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <button ng-disabled="logAsForm.username.$error.required" ng-click="logAs(username)" class="button">Update</button>
+                                </form>
+                                <span style="color:red" ng-show="regError">User Doesn't Exist!</span>
+                            </div>
                         </div>
-                      </div><br><br>
-                        <button ng-disabled="updateForm.isAdmin.$error.required ||
-                                             updateForm.email.$error.required ||
-                                             updateForm.username.$error.required"
-                                ng-click="updateUser(
-                                          usersCopy[index].username,
-                                          users[index].username,
-                                          usersCopy[index].email, 
-                                          isAdmin)" class="button">
-                            Update</button>
-                    </form>
-                    <span style="color:red" ng-show="regError">
-                        Update error!
-                    </span>
-                  </div>
-                </div>
-               </div></p>
-          </div>
+                    </div>
+                </p>
+            </div>
         </section>
     </div>
     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
+
+<div id="updateModal" style="width:30%"  class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
+    <div class="section-container tabs" data-section="tabs">
+        <section class="active">
+            <div class="content" data-section-content>
+                <p>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <div class="signup-panel">
+                                <p class="welcome">Update user {{ usersCopy[index].username }}</p>
+                                <form name="updateForm" novalidate>
+                                    <div class="row collapse">
+                                        <div class="small-2  columns">
+                                            <span class="prefix"><i class="fi-torso"></i></span>
+                                        </div>
+                                        <div class="small-10  columns">
+                                            <input type="text" name="username" ng-model="usersCopy[index].username" required>
+                                        </div>
+                                    </div>
+                                    <div class="row collapse">
+                                        <div class="small-2 columns">
+                                            <span class="prefix"><i class="fi-mail"></i></span>
+                                        </div>
+                                        <div class="small-10  columns">
+                                            <input type="email" name="email" ng-model="usersCopy[index].email" required>
+                                        </div>
+                                    </div>
+                                    <div class="row collapse">
+                                        <div class="large-12 columns">
+                                            <label>Choose Role</label>
+                                            <input type="radio" name="isAdmin" ng-model="isAdmin" value="true" id="true" required>
+                                            <label for="true">Admin</label>
+                                            <input type="radio" name="isAdmin" ng-model="isAdmin" value="false" id="false" required>
+                                            <label for="false">User</label>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <button ng-disabled="updateForm.isAdmin.$error.required ||
+                                             updateForm.email.$error.required ||
+                                             updateForm.username.$error.required" ng-click="updateUser(
+                                          usersCopy[index].username,
+                                          users[index].username,
+                                          usersCopy[index].email, 
+                                          isAdmin)" class="button">
+                                        Update</button>
+                                </form>
+                                <span style="color:red" ng-show="regError">
+                        Update error!
+                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </p>
+            </div>
+        </section>
+    </div>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
+
+<script type="text/javascript"> 
+    $(document).foundation();
+</script>

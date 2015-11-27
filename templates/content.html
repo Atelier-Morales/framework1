@@ -47,9 +47,9 @@
                         </form>
                         <button ng-disabled="loginForm.username.$error.required || loginForm.password.$error.required" 
                                 ng-click="logIn(username, password)" class="button ">{{ 'CONNECTION' | translate }}</button>
-                          <span style="color:red" ng-show="authError">
+                          <div style="color:red; text-align:center; width:100%" ng-show="authError">
                             <span>{{ 'INCORRECT' | translate }}</span>
-                          </span>
+                          </div>
                       </div>
                     </div>
                    </div></p>

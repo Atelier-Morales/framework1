@@ -3,137 +3,138 @@
 <div class="off-canvas-wrap move-right" data-offcanvas>
     <div class="inner-wrap">
 
-    <sidebar-admin ng-if="userInfo.is_admin"></sidebar-admin>
-    <sidebar-user ng-if="!userInfo.is_admin"></sidebar-user>
+        <sidebar-admin ng-if="userInfo.is_admin"></sidebar-admin>
+        <sidebar-user ng-if="!userInfo.is_admin"></sidebar-user>
 
-    <!-- main content goes here -->
-        
-    <div class="row">
+        <!-- main content goes here -->
+
+        <div class="row">
             <div class="large-12 columns">
                 <div class="panel">
                     <h1>{{ 'WELCOME' | translate }}, {{ userInfo.username }}{{ API_URL }}</h1>
                 </div>
             </div>
+        </div>
+
+        <div class="row">
+            <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
+                <br>
+                <h2 style="padding-left:15px;">{{ 'YOURPROJECTS' | translate }}</h2>
+                <br>
+
+
+                <div class="medium-4 large-4 small-12 columns">
+
+                    <h3>{{ 'PROGRESS' | translate }}</h3>
+
+                    <div class="callout-card warning radius" ng-repeat="project in userInfo.projects | filter: { status: 'ongoing' }">
+
+                        <div class="card-label">
+                            <div class="label-text">
+                                ...
+                            </div>
+                        </div>
+                        <div class="callout-card-content">
+                            <h3 class="lead">{{ project.name }}</h3>
+                            <p ng-if="project.status === 'ongoing'">{{ 'ONGOING' | translate }}</p>
+                            <p>{{ 'NOGRADE' | translate }}</p>
+                            <p>Deadline : {{ project.deadline | date:'yyyy-MM-dd' }}</p>
+
+                            <button ng-click="setIndex(project.name)" href="#" data-reveal-id="finishProjectModal" class="button success">{{ 'FINISH' | translate }}</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="medium-4 large-4 small-12 columns">
+
+                    <h3>{{ 'SUCCESS' | translate }}</h3>
+
+
+                    <div class="callout-card success radius" ng-repeat="project in userInfo.projects | filter: { status: 'finished' }" ng-if="!isFailed(project.grade)">
+                        <div class="card-label">
+                            <div class="label-text">
+                                {{ 'DONE' | translate }}
+                            </div>
+                        </div>
+                        <div class="callout-card-content">
+                            <h3 class="lead">{{ project.name }}</h3>
+                            <p>{{ 'PROJECTDONE' | translate }}</p>
+                            <p>{{ 'GRADE' | translate }} : {{ project.grade }}% (passed)</p>
+                            <p>{{ 'SUBMITTED' | translate }} : 22/05/2014</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="medium-4 large-4 small-12 columns">
+
+                    <h3>{{ 'FAILED' | translate }}</h3>
+
+                    <div class="callout-card alert radius" ng-repeat="project in userInfo.projects | filter: { status: 'finished' }" ng-if="isFailed(project.grade)">
+                        <div class="card-label">
+                            <div class="label-text">
+                                {{ 'DONE' | translate }}
+                            </div>
+                        </div>
+                        <div class="callout-card-content">
+                            <h3 class="lead">{{ project.name }}</h3>
+                            <p>{{ 'PROJECTDONE' | translate }}</p>
+                            <p>{{ 'GRADE' | translate }} : {{ project.grade }} (failed)</p>
+                            <p>{{ 'SUBMITTED' | translate }} : 14/01/2014</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- close the off-canvas menu -->
+        <a class="exit-off-canvas"></a>
+
     </div>
-    
-    <div class="row">
-      <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
-        <br>
-        <h2 style="padding-left:15px;">{{ 'YOURPROJECTS' | translate }}</h2>
-        <br>
-        
-        
-        <div class="medium-4 large-4 small-12 columns">
-            
-            <h3>{{ 'PROGRESS' | translate }}</h3>
-            
-            <div class="callout-card warning radius" ng-repeat="project in userInfo.projects | filter: { status: 'ongoing' }">
-
-              <div class="card-label">
-                <div class="label-text">
-                  ...
-                </div>
-              </div>
-              <div class="callout-card-content">
-                <h3 class="lead">{{ project.name }}</h3>
-                <p ng-if="project.status === 'ongoing'">{{ 'ONGOING' | translate }}</p>
-                <p>{{ 'NOGRADE' | translate }}</p>
-                <p>Deadline : {{ project.deadline | date:'yyyy-MM-dd' }}</p>
-
-                <button ng-click="setIndex(project.name)" href="#" data-reveal-id="finishProjectModal" class="button success">{{ 'FINISH' | translate }}</button>
-              </div>
-            </div>
-            
-        </div>
-          
-        <div class="medium-4 large-4 small-12 columns">
-            
-            <h3>{{ 'SUCCESS' | translate }}</h3>
-             
-            
-            <div class="callout-card success radius" ng-repeat="project in userInfo.projects | filter: { status: 'finished' }" ng-if="!isFailed(project.grade)">
-              <div class="card-label">
-                <div class="label-text">
-                  {{ 'DONE' | translate }}
-                </div>
-              </div>
-              <div class="callout-card-content">
-                <h3 class="lead">{{ project.name }}</h3>
-                <p>{{ 'PROJECTDONE' | translate }}</p>
-                <p>{{ 'GRADE' | translate }} : {{ project.grade }}% (passed)</p>
-                <p>{{ 'SUBMITTED' | translate }} : 22/05/2014</p>
-              </div>
-            </div>
-            
-        </div>
-          
-        <div class="medium-4 large-4 small-12 columns">
-            
-            <h3>{{ 'FAILED' | translate }}</h3>
-            
-            <div class="callout-card alert radius" ng-repeat="project in userInfo.projects | filter: { status: 'finished' }" ng-if="isFailed(project.grade)">
-              <div class="card-label">
-                <div class="label-text">
-                  {{ 'DONE' | translate }}
-                </div>
-              </div>
-              <div class="callout-card-content">
-                <h3 class="lead">{{ project.name }}</h3>
-                <p>{{ 'PROJECTDONE' | translate }}</p>
-                <p>{{ 'GRADE' | translate }} : {{ project.grade }} (failed)</p>
-                <p>{{ 'SUBMITTED' | translate }} : 14/01/2014</p>
-              </div>
-            </div>
-            
-        </div>
-
-      </div>
-    </div> 
-
-    <!-- close the off-canvas menu -->
-    <a class="exit-off-canvas"></a>
-
-  </div>
 </div>
 
 <div id="finishProjectModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
     <div class="section-container tabs" data-section="tabs">
         <section class="active">
-          <div class="content" data-section-content>
-            <p>
-              <div class="row">
-                <div class="large-12 columns">
-                  <div class="signup-panel">
-                    <form name="gradeForm" novalidate>
-                      
-                      <div class="row collapse">
-                        <p>Please give a grade between 0 and 100 for the project {{ project }}</p>
-                        <div class="small-10  columns">     
-                          <input type="number" name="grade" ng-model="grade" required>   
-                        </div>
-                      </div>
-                        
-                      <span style="color:red" ng-show="grade_is_valid(grade) === false">
+            <div class="content" data-section-content>
+                <p>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <div class="signup-panel">
+                                <form name="gradeForm" novalidate>
+
+                                    <div class="row collapse">
+                                        <p>Please give a grade between 0 and 100 for the project {{ project }}</p>
+                                        <div class="small-10  columns">
+                                            <input type="number" name="grade" ng-model="grade" required>
+                                        </div>
+                                    </div>
+
+                                    <span style="color:red" ng-show="grade_is_valid(grade) === false">
                         Please choose a grade between 0 and 100</span>
-                      </span>
-                        <br><br>
-                        <button ng-disabled="gradeForm.description.$error.required ||
-                                             grade_is_valid(grade) === false"
-                                ng-click="setAsFinished(project, userInfo.username, grade)" class="button">
-                            Confirm</button>
-                    </form>
-                    <span style="color:red" ng-show="regError">
+                                    </span>
+                                    <br>
+                                    <br>
+                                    <button ng-disabled="gradeForm.description.$error.required ||
+                                             grade_is_valid(grade) === false" ng-click="setAsFinished(project, userInfo.username, grade)" class="button">
+                                        Confirm</button>
+                                </form>
+                                <span style="color:red" ng-show="regError">
                         Project creation error!
                     </span>
-                  </div>
-                </div>
-               </div></p>
-          </div>
+                            </div>
+                        </div>
+                    </div>
+                </p>
+            </div>
         </section>
     </div>
     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
 
-<script type="text/javascript"> 
-            $(document).foundation();
+<script type="text/javascript">
+    $(document).foundation();
 </script>

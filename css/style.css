@@ -273,6 +273,13 @@ input[data-toggle]:checked + label:active {
 .button-group.toggle li:not(first-child) {
   margin: 0 -0.9rem; }
 
+.tableTitle {
+  padding-left: 15px;
+  padding-top: 5px; }
+
+.tableBody {
+  width: 100%; }
+
 .sb-date-select-select {
   display: inline-block;
   width: 100px;

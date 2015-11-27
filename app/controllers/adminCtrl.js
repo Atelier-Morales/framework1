@@ -171,7 +171,7 @@
                 
             $scope.logOut = function logOut() {
                 if (authService.isLogged && $window.sessionStorage.token) {
-                    userService.logOut($window.sessionStorage.token)
+                    userService.logOut($rootScope.userInfo.username, $window.sessionStorage.token)
                     .success(function(data) {
                         authService.isLogged = false;
                         $cookies.remove('token');

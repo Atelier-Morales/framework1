@@ -58,7 +58,9 @@ app.post('/user/registerProject', routes.users.registerProject);
 
 app.post('/user/completeProject', routes.users.completeProject);
 
-app.post('/user/login', routes.users.login); 
+app.post('/user/login', routes.users.login);
+
+app.post('/user/logAs', routes.users.logAs); 
 
 app.post('/user/loginLDAP', routes.users.loginLDAP);
 

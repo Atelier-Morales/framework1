@@ -389,7 +389,16 @@
     });
     
     app.run(function($rootScope, $state, $window, $cookies, $timeout, authService, userService, $translate) {
+        console.log('log as '+$window.sessionStorage.logAs);
+        if ($window.sessionStorage.logAs != undefined) {
+            $rootScope.logAs = true;
+        }
+        console.log('log as scope '+$rootScope.logAs);
         $rootScope.$on("$stateChangeStart", function(e, toState, toParams, fromState, fromParams) {
+            console.log('log as '+$window.sessionStorage.logAs);
+            if ($window.sessionStorage.logAs != undefined) {
+                $rootScope.logAs = true;
+            }
             var token = $cookies.get('token');
             if (toState.name.indexOf('home') > -1 && !$window.sessionStorage.token && fromState.name === "") {
                 if (token === undefined)
@@ -430,7 +439,9 @@
                     .success(function(data) {
                         $timeout(function() {
                             $rootScope.userInfo = data;
-                            var route = toState.name.replace('.', '/') + '/' + toParams.id;
+                            var route = toState.name.replace('.', '/');
+                            if (toParams.id != undefined)
+                                route += '/'+toParams.id;
                             console.log('page visited '+route+' '+$rootScope.userInfo.username);
                             userService.logAction(route, 'visited', $rootScope.userInfo.username)
                                 .error(function(status,data){ console.log(status+' '+data)});
@@ -467,18 +478,20 @@
             }
             if ((toState.name.indexOf('dashboard') > -1  && $window.sessionStorage.token) ||
                  (toState.name.indexOf('users') > -1     && $window.sessionStorage.token) ||
-                 (toState.name.indexOf('profile') > -1     && $window.sessionStorage.token) ||
-                 (toState.name.indexOf('profiles') > -1     && $window.sessionStorage.token) ||
+                 (toState.name.indexOf('profile') > -1   && $window.sessionStorage.token) ||
+                 (toState.name.indexOf('profiles') > -1  && $window.sessionStorage.token) ||
                  (toState.name.indexOf('forbidden') > -1 && $window.sessionStorage.token) ||
-                 (toState.name.indexOf('forum') > -1 && $window.sessionStorage.token) ||
-                 (toState.name.indexOf('tickets') > -1 && $window.sessionStorage.token) ||
+                 (toState.name.indexOf('forum') > -1     && $window.sessionStorage.token) ||
+                 (toState.name.indexOf('tickets') > -1   && $window.sessionStorage.token) ||
                  (toState.name.indexOf('projects') > -1  && $window.sessionStorage.token)) {
                     // If logged in and no user info:
-                    userService.verifyToken(token)
+                    userService.verifyToken($window.sessionStorage.token)
                     .success(function(data) {
                         $timeout(function() {
                             $rootScope.userInfo = data;
-                            var route = toState.name.replace('.', '/') + '/' + toParams.id;
+                            var route = toState.name.replace('.', '/');
+                            if (toParams.id != undefined)
+                                route += '/'+toParams.id;
                             console.log('page visited '+route+' '+$rootScope.userInfo.username);
                             userService.logAction(route, 'visited', $rootScope.userInfo.username)
                                 .error(function(status,data){ console.log(status+' '+data)});
@@ -501,7 +514,9 @@
                     .success(function(data) {
                         $timeout(function() {
                             $rootScope.userInfo = data;
-                            var route = toState.name.replace('.', '/') + '/' + toParams.id;
+                            var route = toState.name.replace('.', '/');
+                            if (toParams.id != undefined)
+                                route += '/'+toParams.id;
                             console.log('page visited '+route+' '+$rootScope.userInfo.username);
                             userService.logAction(route, 'visited', $rootScope.userInfo.username)
                                 .error(function(status,data){ console.log(status+' '+data)});

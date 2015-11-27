@@ -14,16 +14,16 @@ var SECRET = "09c55b37aa09ffbc15b651b7f193c16438ebb9e0f7a9d42170a8a8ebbb421148";
 var URL = "https://api.intra.42.fr/oauth/token";
 
 // OAuth1.0 - simple server-side flow (for 42 API)
-exports.createAPIToken = function(next) {
+exports.createAPIToken = function (next) {
     request.post({
-        url:     URL,
-        body:    "grant_type=client_credentials&client_id="+UID+"&client_secret="+SECRET
-    }, function(e, response, body){
+        url: URL,
+        body: "grant_type=client_credentials&client_id=" + UID + "&client_secret=" + SECRET
+    }, function (e, response, body) {
         if (e)
             next(new Error("Cannot create token"));
         console.log(body);
         var token = body.substr(17, 64);
-        console.log("API token = "+token);
+        console.log("API token = " + token);
         next(null, token);
     });
 }

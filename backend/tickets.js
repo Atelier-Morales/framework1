@@ -2,54 +2,54 @@
 
 var db = require('./db');
 
-exports.fetchCategories = function(req, res) {
-    db.ticketCategoriesModel.find({}, function(err, categories) {
+exports.fetchCategories = function (req, res) {
+    db.ticketCategoriesModel.find({}, function (err, categories) {
         if (err) {
-			console.log(err);
-			return res.send(401);
-		}
-        return res.send(categories);       
+            console.log(err);
+            return res.send(401);
+        }
+        return res.send(categories);
     });
 }
 
-exports.fetchTickets = function(req, res) {
-    db.ticketModel.find({}, function(err, tickets) {
+exports.fetchTickets = function (req, res) {
+    db.ticketModel.find({}, function (err, tickets) {
         if (err) {
-			console.log(err);
-			return res.send(401);
-		}
-        return res.send(tickets);       
+            console.log(err);
+            return res.send(401);
+        }
+        return res.send(tickets);
     });
 }
 
-exports.createCategory = function(req, res) {
-	var name = req.body.name || '';
+exports.createCategory = function (req, res) {
+    var name = req.body.name || '';
 
-	if (name == '')
+    if (name == '')
         return res.sendStatus(400);
-    
-    console.log('creating category '+name);
+
+    console.log('creating category ' + name);
     var ticketCategory = new db.ticketCategoriesModel();
     ticketCategory.title = name;
-    ticketCategory.save(function(err) {
+    ticketCategory.save(function (err) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);
         }
-        console.log("category "+name+" created!");
+        console.log("category " + name + " created!");
         return res.sendStatus(200);
     });
 }
 
-exports.createTicket = function(req, res) {
-	var title = req.body.title || '';
+exports.createTicket = function (req, res) {
+    var title = req.body.title || '';
     var description = req.body.description || '';
     var category = req.body.category || '';
     var author = req.body.author || '';
 
-	if (title === '' || description === '' || category === '' || author === '')
+    if (title === '' || description === '' || category === '' || author === '')
         return res.sendStatus(400);
-    
+
     var ticket = new db.ticketModel();
     ticket.title = title;
     ticket.author = author;
@@ -57,35 +57,41 @@ exports.createTicket = function(req, res) {
     ticket.body = description;
     ticket.replies = [];
     ticket.assignTo = "unassigned";
-    ticket.save(function(err) {
+    ticket.save(function (err) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);
         }
-        db.ticketModel.count(function(err, counter) {
-			if (err) {
-				console.log(err);
-				return res.sendStatus(500);
-			}
-			db.ticketModel.update({ title: ticket.title }, { id: counter }, function(err, nbRow) {
+        db.ticketModel.count(function (err, counter) {
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+            db.ticketModel.update({
+                title: ticket.title
+            }, {
+                id: counter
+            }, function (err, nbRow) {
                 if (err) {
                     console.log(err);
                     return res.sendStatus(500);
-				}
-				console.log('Ticket number '+counter+' created');
-				return res.sendStatus(200);
+                }
+                console.log('Ticket number ' + counter + ' created');
+                return res.sendStatus(200);
             });
         });
-    });   
+    });
 }
 
-exports.fetchUserTickets= function(req, res) {
+exports.fetchUserTickets = function (req, res) {
     var author = req.body.author || '';
-    
+
     if (author === '')
         return res.sendStatus(400);
-    
-    db.ticketModel.find({author: author}, function(err, tickets) {
+
+    db.ticketModel.find({
+        author: author
+    }, function (err, tickets) {
         if (err) {
             console.log(err);
             return res.sendStatus(401);
@@ -94,15 +100,17 @@ exports.fetchUserTickets= function(req, res) {
     });
 }
 
-exports.updateTicket = function(req, res) {
+exports.updateTicket = function (req, res) {
     var assigner = req.body.assigner || '';
     var id = req.body.ticketId || '';
     var status = req.body.status || '';
-    console.log(assigner+' '+id+' '+status);
+    console.log(assigner + ' ' + id + ' ' + status);
     if (assigner === '' || id === '' || status === '')
         return res.sendStatus(400);
-    
-    db.ticketModel.findOne({id: id}, function(err, ticket) {
+
+    db.ticketModel.findOne({
+        id: id
+    }, function (err, ticket) {
         if (err) {
             console.log(err);
             return res.sendStatus(401);
@@ -110,21 +118,23 @@ exports.updateTicket = function(req, res) {
         ticket.status = status;
         ticket.assignTo = assigner;
         ticket.save();
-        console.log("Ticket "+id+" updated");
+        console.log("Ticket " + id + " updated");
         res.sendStatus(200);
     });
 }
 
-exports.postTicketReply = function(req, res) {
+exports.postTicketReply = function (req, res) {
     var author = req.body.author || '';
     var body = req.body.body || '';
     var id = req.body.id || '';
-    
+
     if (author === '' || id === '' || body === '')
         return res.sendStatus(400);
-    
-    console.log(author+' '+body+' '+id);
-    db.ticketModel.findOne({id: id}, function(err, ticket) {
+
+    console.log(author + ' ' + body + ' ' + id);
+    db.ticketModel.findOne({
+        id: id
+    }, function (err, ticket) {
         if (err) {
             console.log(err);
             res.sendStatus(401);
@@ -134,20 +144,22 @@ exports.postTicketReply = function(req, res) {
             body: body
         });
         ticket.save();
-        res.sendStatus(200); 
+        res.sendStatus(200);
     });
 }
 
-exports.reopenTicket = function(req, res) {
+exports.reopenTicket = function (req, res) {
     var id = req.body.id || '';
     var status = req.body.status || '';
-    
+
     if (id === '' || status === '')
         return res.sendStatus(400);
     if (status === 'open')
         return res.sendStatus(200);
-    
-    db.ticketModel.findOne({id: id}, function(err, ticket) {
+
+    db.ticketModel.findOne({
+        id: id
+    }, function (err, ticket) {
         if (err) {
             console.log(err);
             res.sendStatus(401);
@@ -159,16 +171,18 @@ exports.reopenTicket = function(req, res) {
     });
 }
 
-exports.closeTicket = function(req, res) {
+exports.closeTicket = function (req, res) {
     var id = req.body.id || '';
     var status = req.body.status || '';
-    
+
     if (id === '' || status === '')
         return res.sendStatus(400);
     if (status === 'closed')
         return res.sendStatus(200);
-    
-    db.ticketModel.findOne({id: id}, function(err, ticket) {
+
+    db.ticketModel.findOne({
+        id: id
+    }, function (err, ticket) {
         if (err) {
             console.log(err);
             res.sendStatus(401);
