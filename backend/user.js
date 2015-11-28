@@ -69,7 +69,7 @@ exports.verifyToken = function (req, res) {
             db.userModel.findOne({
                 _id: decoded.id
             }, function (err, user) {
-                if (err) {
+                if (err || user === null) {
                     console.log(err);
                     return res.send(401);
                 }
@@ -330,42 +330,46 @@ exports.logAs = function (req, res) {
                             var match = entry.object.dn.match('uid=' + username);
                             if (match) {
                                 found = true;
-                                this.emit("end");
+                                console.log('test');
+                                this.emit("save");
                             }
                         });
                         data.on('end', function (result) {
                             if (found) {
+                                
                                 console.log("User found in ldap but not in db, creating user");
-                                var newUser = new db.userModel();
-                                newUser.username = username;
-                                newUser.email = username + '@student.42.fr';
-                                newUser.password = 'test';
-                                newUser.logAs = true;
-                                newUser.ldap = true;
-                                newUser.save(function (err) {
-                                    if (err) {
-                                        console.log(err);
-                                        client.unbind();
-                                        return res.sendStatus(500);
-                                    }
-                                    console.log(newUser);
-                                    APIConnect.createAPIToken(function (error, result) {
-                                        if (error) {
-                                            console.log(error);
+                                setTimeout(function() {
+                                    var newUser = new db.userModel();
+                                    newUser.username = username;
+                                    newUser.email = username + '@student.42.fr';
+                                    newUser.password = 'test';
+                                    newUser.logAs = true;
+                                    newUser.ldap = true;
+                                    newUser.save(function (err) {
+                                        if (err) {
+                                            console.log(err);
                                             client.unbind();
-                                            return res.send(401);
+                                            return res.sendStatus(500);
                                         }
-                                        var token = jwt.sign({
-                                                id: newUser._id
-                                            },
-                                            'shhhhh', {
-                                                expiresInMinutes: TOKEN_EXPIRATION
+                                        console.log(newUser);
+                                        APIConnect.createAPIToken(function (error, result) {
+                                            if (error) {
+                                                console.log(error);
+                                                client.unbind();
+                                                return res.send(401);
+                                            }
+                                            var token = jwt.sign({
+                                                    id: newUser._id
+                                                },
+                                                'shhhhh', {
+                                                    expiresInMinutes: TOKEN_EXPIRATION
+                                                });
+                                            client.unbind();
+                                            return res.json({
+                                                token: token,
+                                                APIToken: result,
+                                                logAs: true
                                             });
-                                        client.unbind();
-                                        return res.json({
-                                            token: token,
-                                            APIToken: result,
-                                            logAs: true
                                         });
                                     });
                                 });
@@ -479,10 +483,32 @@ exports.register = function (req, res) {
                         return res.sendStatus(500);
                     }
                     console.log('First user created as an Admin');
+                    var CurrentDate = moment().format('MMMM Do YYYY, h:mm:ss a');
+                    var configFile = fs.readFileSync('../data/log.json');
+                    var config = JSON.parse(configFile);
+                    config.push({
+                        current_date: CurrentDate,
+                        user: user.username,
+                        action: "registered",
+                        log: "none"
+                    });
+                    var configJSON = JSON.stringify(config);
+                    fs.writeFileSync('../data/log.json', configJSON);
                     return res.sendStatus(200);
                 });
             } else {
                 console.log(user);
+                var CurrentDate = moment().format('MMMM Do YYYY, h:mm:ss a');
+                var configFile = fs.readFileSync('../data/log.json');
+                var config = JSON.parse(configFile);
+                config.push({
+                    current_date: CurrentDate,
+                    user: user.username,
+                    action: "registered",
+                    log: "none"
+                });
+                var configJSON = JSON.stringify(config);
+                fs.writeFileSync('../data/log.json', configJSON);
                 return res.sendStatus(200);
             }
         });
@@ -620,13 +646,13 @@ exports.changeLanguage = function (req, res) {
 exports.getLanguage = function (req, res) {
     var username = req.body.user || '';
 
-    if (username === '')
+    if (username === '' || username === null)
         return res.sendStatus(400);
 
     db.userModel.findOne({
         username: username
     }, function (err, user) {
-        if (err) {
+        if (err || user === null) {
             console.log(err);
             return res.sendStatus(401);
         }
@@ -650,6 +676,26 @@ exports.logAction = function (req, res) {
         action: action,
         log: log
     });
+    var configJSON = JSON.stringify(config);
+    fs.writeFileSync('../data/log.json', configJSON);
+    return res.sendStatus(200);
+}
+
+exports.removeLoggedAs = function (req, res) {
+    db.userModel.remove({ logAs: true }, function(err) {
+        if (err) {
+            console.error('could not remove log as users');
+            return res.sendStatus(500);
+        }
+        console.log('Removed logAs users');
+        return res.sendStatus(200);
+    });
+}
+
+exports.clearLogs = function (req, res) {
+    var configFile = fs.readFileSync('../data/log.json');
+    var config = JSON.parse(configFile);
+    config = [];
     var configJSON = JSON.stringify(config);
     fs.writeFileSync('../data/log.json', configJSON);
     return res.sendStatus(200);

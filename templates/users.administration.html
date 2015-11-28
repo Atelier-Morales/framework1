@@ -38,7 +38,7 @@
         </div>
 
         <div class="large-10 columns" ng-if="subElem === 1">
-            <h2 class="tableTitle">Logs</h2>
+            <h2 class="tableTitle">Logs  <a ng-click="clearLogs()" class="button info small" style="vertical-align:-webkit-baseline-middle;">clear logs</a></h2>
             <table class="responsive tableBody">
                 <thead>
                     <tr>
@@ -81,9 +81,9 @@
                                     </div>
                                     <br>
                                     <br>
-                                    <button ng-disabled="logAsForm.username.$error.required" ng-click="logAs(username)" class="button">Update</button>
+                                    <button ng-disabled="logAsForm.username.$error.required" ng-click="logAs(username)" class="button">Log as {{ username }}</button>
                                 </form>
-                                <span style="color:red" ng-show="regError">User Doesn't Exist!</span>
+                                <div style="text-align:center; color:red" ng-show="regError">User Doesn't Exist!</div>
                             </div>
                         </div>
                     </div>

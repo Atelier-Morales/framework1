@@ -51,6 +51,21 @@
             $scope.setIndex = function (index) {
                 $scope.index = index;
             }
+            
+            $scope.clearLogs = function (index) {
+                userService.clearLogs()
+                .success(function(data) {
+                    console.log('success');
+                    $http.get('data/log.json').success(function (data) {
+                        $rootScope.logs = data;
+                    }); 
+                })
+                .error(function(status, data) {
+                    console.log(status);
+                    console.log(data);
+                    console.log('Could not clear logs');
+                });
+            }
 
             $scope.logAs = function logAs(username) {
                 if (username !== undefined) {
@@ -73,11 +88,13 @@
                                     console.log('Could not fetch info');
                                 });
                             $window.sessionStorage.token = data.token;
-                            $window.sessionStorage.logAs = data.logAs;
+                            $rootScope.logAs = true;
+                            $cookies.put('logAs', true);
+                            $window.sessionStorage.logAs = true;
                             console.log("API TOKEN = " + data.APIToken);
                             $window.sessionStorage.APIToken = data.APIToken;
                             $cookies.put('APIToken', data.APIToken);
-                            $state.go('dashboard');
+                            $state.go('profile');
                         }).error(function (status, data) {
                             console.log(status);
                             console.log(data);

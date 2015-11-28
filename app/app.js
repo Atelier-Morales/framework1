@@ -389,16 +389,16 @@
     });
     
     app.run(function($rootScope, $state, $window, $cookies, $timeout, authService, userService, $translate) {
-        console.log('log as '+$window.sessionStorage.logAs);
-        if ($window.sessionStorage.logAs != undefined) {
+        var logAs = $cookies.get('logAs');
+        if (logAs === true)
             $rootScope.logAs = true;
+        else {
+            $rootScope.logAs = false;
+            $window.sessionStorage.logAs = false;
+            $window.sessionStorage.token = $cookies.get('token');
         }
-        console.log('log as scope '+$rootScope.logAs);
+        //console.log('log as scope '+$rootScope.logAs+' '+$window.sessionStorage.logAs);
         $rootScope.$on("$stateChangeStart", function(e, toState, toParams, fromState, fromParams) {
-            console.log('log as '+$window.sessionStorage.logAs);
-            if ($window.sessionStorage.logAs != undefined) {
-                $rootScope.logAs = true;
-            }
             var token = $cookies.get('token');
             if (toState.name.indexOf('home') > -1 && !$window.sessionStorage.token && fromState.name === "") {
                 if (token === undefined)
@@ -498,7 +498,7 @@
                         });
                         authService.isLogged = true;
                         
-                        console.log('4: User already logged in...');
+                        //console.log('4: User already logged in...');
                     })
                     .error(function(status, data) {
                         console.log(status);
@@ -517,9 +517,9 @@
                             var route = toState.name.replace('.', '/');
                             if (toParams.id != undefined)
                                 route += '/'+toParams.id;
-                            console.log('page visited '+route+' '+$rootScope.userInfo.username);
-                            userService.logAction(route, 'visited', $rootScope.userInfo.username)
-                                .error(function(status,data){ console.log(status+' '+data)});
+//                            console.log('page visited '+route+' '+$rootScope.userInfo.username);
+//                            userService.logAction(route, 'visited', $rootScope.userInfo.username)
+//                                .error(function(status,data){ console.log(status+' '+data)});
                         });
                         authService.isLogged = true;
                         if (data.is_admin === false) {
@@ -538,7 +538,7 @@
                 }
                 else {
                     console.log($rootScope.userInfo.is_admin);
-                    console.log('fail');
+                    console.log('userinfo available');
                 }
             }
         });

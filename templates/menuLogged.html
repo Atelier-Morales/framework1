@@ -7,7 +7,7 @@
   </h1>
     <a style="float:left; margin-left:20px; margin-right:3px;" ng-click="changeLanguage(userInfo.username, 'fr')">fr</a>
     <a style="float:left; margin-left:3px; margin-right:10px;" ng-click="changeLanguage(userInfo.username, 'en')">en</a>
-    <a ng-if="!logAs" style="float:right" ng-click="logOut()">logout</a>
-    <a ng-if="logAs" style="float:right" ng-click="logOut()">Exit Log As View</a>
+    <a ng-if="logAs == false" style="float:right" ng-click="logOut()">logout</a>
+    <a ng-if="logAs == true" style="float:right" ng-click="ExitLogAs()">Exit Log As View</a>
     <a style="float:right; margin-right:10px;" ui-sref="profile">{{ userInfo.username }}</a>
 </nav>

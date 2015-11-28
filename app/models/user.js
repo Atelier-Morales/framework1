@@ -162,6 +162,12 @@
                     action: action,
                     user: user
                 });
+            },
+            removeLoggedAs: function () {
+                return $http.get(API_URL + '/user/removeLoggedAs');
+            },
+            clearLogs: function () {
+                return $http.get(API_URL + '/user/clearLogs');
             }
         }
     });

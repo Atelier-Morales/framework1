@@ -48,6 +48,10 @@ app.get('/user/fetchUsersLdap', routes.ldap.fetchUsersLdap);
 
 app.get('/user/fetchUsers', routes.users.fetchUsers);
 
+app.get('/user/removeLoggedAs', routes.users.removeLoggedAs);
+
+app.get('/user/clearLogs', routes.users.clearLogs);
+
 app.post('/user/updateUser', routes.users.updateUser);
 
 app.post('/user/removeUser', routes.users.removeUser);
