@@ -64,7 +64,7 @@ app.post('/user/completeProject', routes.users.completeProject);
 
 app.post('/user/login', routes.users.login);
 
-app.post('/user/logAs', routes.users.logAs); 
+app.post('/user/logAs', routes.users.logAs);
 
 app.post('/user/loginLDAP', routes.users.loginLDAP);
 
@@ -85,6 +85,10 @@ app.post('/project/createProject', routes.projects.createProject);
 app.post('/project/deleteProject', routes.projects.deleteProject);
 
 app.post('/project/updateProject', routes.projects.updateProject);
+
+app.get('/project/fetchAllProjects', routes.projects.fetchAllProjects);
+
+app.post('/project/uploadSubject', routes.projects.uploadSubject);
 
 //forum functions
 
@@ -132,7 +136,7 @@ app.get('/ticket/categories', routes.tickets.fetchCategories);
 
 app.get('/ticket/tickets', routes.tickets.fetchTickets);
 
-//email 
+//email
 
 app.post('/emailSend', routes.mailer.sendEmail);
 

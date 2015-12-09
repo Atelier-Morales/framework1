@@ -195,10 +195,10 @@ exports.loginLDAP = function (req, res) {
                 });
                 data.on('end', function (result) {
                     if (found) {
+                        found = false;
                         client.bind(dn, password, function (err) {
                             if (err) {
                                 console.log("wrong password");
-                                client.unbind();
                                 return res.send(500);
                             } else {
                                 console.log('success');
@@ -228,7 +228,7 @@ exports.loginLDAP = function (req, res) {
 
                                                 if (counter == 1) {
                                                     db.userModel.update({
-                                                        username: user.username
+                                                        username: newUser.username
                                                     }, {
                                                         is_admin: true
                                                     }, function (err, nbRow) {
@@ -331,12 +331,12 @@ exports.logAs = function (req, res) {
                             if (match) {
                                 found = true;
                                 console.log('test');
-                                this.emit("save");
+                                //this.emit("end");
                             }
                         });
                         data.on('end', function (result) {
                             if (found) {
-                                
+                                found = false;
                                 console.log("User found in ldap but not in db, creating user");
                                 setTimeout(function() {
                                     var newUser = new db.userModel();

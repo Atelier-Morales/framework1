@@ -2,8 +2,8 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
   var _ = require('underscore');
-  
-  
+
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     sass: {                              // Task
@@ -18,8 +18,8 @@ module.exports = function(grunt) {
     },
     watch: {
       scss : {
-	      files: ['sass/*.scss'],
-	      tasks: ['sass'],
+          files: ['sass/*.scss'],
+          tasks: ['sass'],
       }
     },
     browserSync: {
@@ -38,11 +38,11 @@ module.exports = function(grunt) {
         }
     }
   });
-    
+
   grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.loadNpmTasks('grunt-contrib-watch');    
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-browser-sync');
-    
+
   grunt.registerTask('default', [
     'browserSync',
     'watch'

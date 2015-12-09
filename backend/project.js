@@ -1,5 +1,7 @@
 "use strict";
 
+var path = require('path'),
+    fs = require('fs');
 var db = require('./db');
 
 exports.fetchProjects = function (req, res) {
@@ -30,19 +32,39 @@ exports.fetchProjects = function (req, res) {
     });
 }
 
+exports.fetchAllProjects = function (req, res) {
+    db.projectModel.find({}, function (err, projects) {
+        if (err) {
+            console.log(err);
+            return res.send(401);
+        }
+        return res.send(projects);
+    });
+}
+
 exports.createProject = function (req, res) {
     var name = req.body.name || '';
+    var credits = req.body.credits || '';
+    var size = req.body.size || '';
+    var regStart = req.body.regStart || '';
+    var regClose = req.body.regClose || '';
+    var start = req.body.start || '';
     var deadline = req.body.deadline || '';
     var description = req.body.description || '';
 
-    if (name == '' || deadline == '' || description == '')
+    if (name == '' || deadline == '' || description == '' || credits == '' || size == '' || regStart == '' || regClose == '' || start == '')
         return res.sendStatus(400);
 
     var project = new db.projectModel();
     project.name = name;
     project.deadline = deadline;
     project.description = description;
-
+    project.start = start;
+    project.registration_start = regStart;
+    project.registration_end = regClose;
+    project.credits = credits;
+    project.max_size = size;
+    project.activities = [];
     project.save(function (err) {
         if (err) {
             console.log(err);
@@ -96,4 +118,22 @@ exports.updateProject = function (req, res) {
 
         return res.sendStatus(200);
     });
+}
+
+exports.uploadSubject = function (req, res) {
+    console.log(req.body);
+//    var tempPath = req.files.file.path,
+//        targetPath = path.resolve('./assets/subjects');
+//    if (path.extname(req.files.file.name).toLowerCase() === '.pdf') {
+//        fs.rename(tempPath, targetPath, function(err) {
+//            if (err) throw err;
+//            console.log("Upload completed!");
+//        });
+//    } else {
+//        fs.unlink(tempPath, function () {
+//            if (err) throw err;
+//            console.error("Only .pdf files are allowed!");
+//        });
+//    }
+    // ...
 }

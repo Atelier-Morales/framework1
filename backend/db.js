@@ -81,7 +81,19 @@ var Projects = new Schema({
         required: true,
         unique: true
     },
+    start: {
+        type: Date,
+        required: true
+    },
     deadline: {
+        type: Date,
+        required: true
+    },
+    registration_start: {
+        type: Date,
+        required: true
+    },
+    registration_end: {
         type: Date,
         required: true
     },
@@ -89,7 +101,78 @@ var Projects = new Schema({
         type: String,
         required: true,
         unique: true
-    }
+    },
+    credits : {
+        type: Number,
+        required: true,
+        unique: true
+    },
+    max_size: {
+        type: Number,
+        required: true,
+    },
+    activities: [
+        {
+            name: {
+                type: String,
+                required: true,
+                unique: true
+            },
+            start: {
+                type: Date,
+                required: true
+            },
+            deadline: {
+                type: Date,
+                required: true
+            },
+            registration_start: {
+                type: Date,
+                required: true
+            },
+            registration_end: {
+                type: Date,
+                required: true
+            },
+            description: {
+                type: String,
+                required: true,
+                unique: true
+            },
+            subject: {
+                type: String,
+                required: true,
+                unique: true
+            },
+            group_size: {
+                type: Number,
+                required: true
+            },
+            max_size: {
+                type: Number,
+                required: true,
+            },
+            nb_peers: {
+                type: Number,
+                required: true
+            },
+            automatic_group: {
+                type: Boolean,
+                required: true,
+                default: false
+            },
+            activity_type: {
+                type: String,
+                required: true,
+                unique: true
+            },
+            bareme: {
+                type: String,
+                required: true,
+                default: ""
+            }
+        }
+    ]
 });
 
 //Forum schema
@@ -102,7 +185,7 @@ localhost/forum/thread/:id/messages
 >> list all messages from thread id
 
 localhost/forum/:id/:id/threads
->> list all threads from subcategory id 
+>> list all threads from subcategory id
 
 */
 

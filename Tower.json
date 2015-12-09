@@ -1,0 +1,23 @@
+{
+    "name": "fmorales",
+    "dependencies": {
+        "angular-advanced-searchbox": "1.1.1",
+        "angular": "~1.5.0-build.4406+sha.7ffb2d3",
+        "angular-bootstrap": "~0.14.3",
+        "bootstrap": "~4.0.0-alpha",
+        "jquery": "~3.0.0-alpha1+compat",
+        "angular-cookies": "1.5.0-rc.0",
+        "angular-moment": "~1.0.0-beta.3",
+        "moment": "2.10.6",
+        "angular-translate": "~2.8.1",
+        "angular-ui-router": "0.2.15",
+        "csshake": null,
+        "foundation": "~5.5.3",
+        "fastclick": "1.0.6",
+        "jquery-placeholder": "~2.3.0",
+        "jquery.cookie": "1.4.1",
+        "modernizr": "~3.2.0",
+        "moment-range": "2.0.3",
+        "ngInfiniteScroll": "1.2.1"
+    }
+}
