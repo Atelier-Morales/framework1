@@ -305,6 +305,82 @@ form .progress {
   background: orange;
   width: 0; }
 
+.switch-on {
+  position: absolute;
+  left: -55px;
+  top: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 9px; }
+
+.switch-off {
+  position: absolute;
+  left: -25px;
+  top: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 9px; }
+
+.button-groups {
+  position: relative;
+  display: inline-block;
+  margin: 1rem 0; }
+  .button-groups:before {
+    content: attr(data-grouptype);
+    z-index: 99999;
+    color: #999;
+    display: block;
+    font-size: 1rem;
+    padding: 0.25em;
+    border-radius: 50%;
+    background: #fff;
+    position: absolute;
+    left: 40.5%;
+    top: 0.35rem; }
+  .button-groups button + button {
+    margin-left: 5px; }
+
+.progress {
+  margin: 0 auto 2rem auto;
+  padding: 0;
+  border: none !important;
+  width: 90%;
+  height: 30px;
+  overflow: hidden;
+  background: #e5e5e5;
+  border-radius: 6px; }
+
+.meter {
+  position: relative;
+  float: left;
+  min-width: 1%;
+  height: 100%; }
+
+.percent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  font-family: tahoma,arial,helvetica;
+  font-size: 12px;
+  color: white; }
+
+.meter.blue {
+  background: cornflowerblue; }
+
+.meter.red {
+  background: #e74c3c; }
+
+.meter.orange {
+  background: #e67e22; }
+
+.meter.green {
+  background: #2ecc71; }
+
+.meter.purple {
+  background: #9b59b6; }
+
 .weather {
   border: 1px solid #eee;
   box-shadow: 0 2px 0 rgba(204, 204, 204, 0.15);

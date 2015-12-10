@@ -39,6 +39,16 @@
 
             $scope.acc = [];
 
+            $('.clickable').bind('click', function (ev) {
+                var $div = $(ev.target);
+                var $display = $div.find('.display');
+
+                var offset = $div.offset();
+                var x = ev.clientX - offset.left;
+
+                $('.meter').width(x);
+            });
+
             $scope.date.by('days', function (moment) {
                 $scope.acc.push(moment.format('YYYY-MM-DD'));
             });
@@ -104,6 +114,21 @@
 
             $scope.setCategory = function (name) {
                 $scope.moduleName = name;
+            }
+
+            $scope.setProject = function (name) {
+                $scope.projectName = name;
+            }
+
+            $scope.setPreview = function(name) {
+                $http.get('data/baremes/bareme.json').success(function(data) {
+
+                    $timeout(function() {
+                        $scope.preview = angular.copy(data);
+                        $scope.preview.project_name = name;
+                        console.log($scope.preview);
+                    });
+                });
             }
 
             $scope.date_is_invalid = function (regStart, regClose, start, deadline) {
@@ -183,39 +208,49 @@
                     });
             }
 
-            function uploadFileToUrl(file, uploadUrl){
-                var fd = new FormData();
-                fd.append('file', file);
-                $http.post(uploadUrl, fd, {
-                    transformRequest: angular.identity,
-                    headers: {'Content-Type': undefined}
-                })
-                    .success(function(){
-                })
-                    .error(function(){
-                });
+            $scope.uploadFiles = function(file, errFiles) {
+                $scope.f = file;
+                $scope.errFile = errFiles && errFiles[0];
+//                if (file) {
+//                    file.upload = Upload.upload({
+//                        url: API_URL + '/project/uploadSubject',
+//                        method: 'POST',
+//                        file: file
+//                    });
+//
+//                    file.upload.then(function (response) {
+//                        $timeout(function () {
+//                            file.result = response.data;
+//                        });
+//                    }, function (response) {
+//                        if (response.status > 0)
+//                            $scope.errorMsg = response.status + ': ' + response.data;
+//                    }, function (evt) {
+//                        file.progress = Math.min(100, parseInt(100.0 *
+//                                                               evt.loaded / evt.total));
+//                    });
+//                }
             }
 
-            $scope.uploadFile = function(){
-                var file = $scope.myFile;
-                console.log('file is ' );
-                console.dir(file);
-                var uploadUrl = API_URL + "/project/uploadSubject";
-                uploadFileToUrl(file, uploadUrl);
-            };
-
-            $scope.createActivity = function createActivity(name, size, groupSize, peerSize, category, automatic, regStart, regClose, start, deadline, description, moduleName) {
+            $scope.createActivity = function createActivity(name, size, groupSize, peerSize, category, automatic, regStart, regClose, start, deadline, description, moduleName, file) {
                 var date_regStart = regStart.year + "-" + regStart.month + "-" + regStart.day;
                 var date_regClose = regClose.year + "-" + regClose.month + "-" + regClose.day;
                 var date_start = start.year + "-" + start.month + "-" + start.day;
                 var date_deadline = deadline.year + "-" + deadline.month + "-" + deadline.day;
+                if (automatic == undefined)
+                    automatic = false;
                 //console.log(date_regStart+' '+date_regClose+' '+date_start+' '+date_deadline+' '+name+' '+size+' '+groupSize+' '+peerSize+' '+category+' '+automatic+' '+description+' '+moduleName);
-                projectService.createActivity(name, size, groupSize, peerSize, category, automatic, date_regStart, date_regClose, date_start, date_deadline, description, moduleName)
+                projectService.createActivity(name, size, groupSize, peerSize, category, automatic, date_regStart, date_regClose, date_start, date_deadline, description, moduleName, file.name)
                     .success(function (data) {
                         console.log(data);
                         forumService.createSubTopic(name, moduleName)
                             .success(function (data) {
                                 console.log("subtopic crée");
+                                file.upload = Upload.upload({
+                                    url: API_URL + '/project/uploadSubject',
+                                    method: 'POST',
+                                    file: file
+                                });
                             })
                             .error(function (status, data) {
                                 console.log(status);
@@ -232,6 +267,24 @@
                         console.log('Could not fetch info');
                         $scope.regError = true;
                     });
+            }
+
+            $scope.deleteActivity = function removeActivity(name, moduleName) {
+                var confirm = window.confirm("Are you sure you want to delete the project " + name + "?");
+                if (confirm) {
+                    projectService.deleteActivity(name, moduleName)
+                        .success(function (data) {
+                        fetchAllProjects();
+                        console.log('Project ' + name + ' deleted');
+                        window.alert('Project ' + name + ' deleted');
+                    })
+                        .error(function (status, data) {
+                        $log.log(status);
+                        $log.log(data);
+                        window.alert('Failed at deleting project ' + name);
+                    });
+                } else
+                    console.log('nope');
             }
 
             $scope.setIndex = function (index) {

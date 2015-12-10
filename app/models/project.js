@@ -23,7 +23,7 @@
                     description: description
                 });
             },
-            createActivity: function(name, size, groupSize, peerSize, category, automatic, date_regStart, date_regClose, date_start, date_deadline, description, moduleName) {
+            createActivity: function(name, size, groupSize, peerSize, category, automatic, date_regStart, date_regClose, date_start, date_deadline, description, moduleName, file) {
                 return $http.post(API_URL + '/project/createActivity', {
                     name: name,
                     start: date_start,
@@ -31,38 +31,13 @@
                     registration_start: date_regStart,
                     registration_end: date_regClose,
                     description: description,
-                    subject: {
-                        type: String,
-                        required: true,
-                        unique: true
-                    },
-                    group_size: {
-                        type: Number,
-                        required: true
-                    },
-                    max_size: {
-                        type: Number,
-                        required: true,
-                    },
-                    nb_peers: {
-                        type: Number,
-                        required: true
-                    },
-                    automatic_group: {
-                        type: Boolean,
-                        required: true,
-                        default: false
-                    },
-                    activity_type: {
-                        type: String,
-                        required: true,
-                        unique: true
-                    },
-                    bareme: {
-                        type: String,
-                        required: true,
-                        default: ""
-                    }
+                    subject: file,
+                    group_size: groupSize,
+                    max_size: size,
+                    nb_peers: peerSize,
+                    automatic_group: automatic,
+                    activity_type: category,
+                    moduleName: moduleName
                 });
             },
             fetchProjects: function(username) {
@@ -73,6 +48,12 @@
             deleteProject: function(name) {
                 return $http.post(API_URL + '/project/deleteProject', {
                     name: name
+                });
+            },
+            deleteActivity: function(name, moduleName) {
+                return $http.post(API_URL + '/project/deleteActivity', {
+                    name: name,
+                    moduleName: moduleName
                 });
             },
             registerProject: function(name, username, deadline) {

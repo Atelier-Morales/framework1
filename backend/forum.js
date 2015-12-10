@@ -201,38 +201,32 @@ exports.removeCategory = function (req, res) {
         return res.sendStatus(400);
 
     db.forumModel.find({}, function (err, category) {
-        for (var i = 0; i < category[0].categories.length; ++i) {
-            if (category[0].categories[i].name === categoria) {
-                var index = i;
-                if (index > 0) {
-                    if (category[0].categories.length === 1)
-                        category[0].categories.shift();
-                    else
-                        category[0].categories.splice(index, 1);
-                    for (var k = 0; k < category[0].threads.length; ++k) {
-                        if (category[0].threads[k].category[0].name === categoria) {
-                            category[0].threads.splice(k, 1);
-                            k = 0;
-                            console.log('test');
-                        }
-                    }
-                    category[0].save(function (err) {
-                        if (err) {
-                            console.log(err);
-                            return res.sendStatus(500);
-                        }
-                        db.forumModel.find({}, function (err, forum) {
-                            if (err) {
-                                console.log(err);
-                                return res.sendStatus(500);
-                            }
-                            console.log(categoria + " deleted");
-                            return res.send(forum);
-                        });
-                    });
-                }
-            }
+        var i = 0;
+        for (; i < category[0].categories.length; ++i) {
+            if (category[0].categories[i].name === categoria)
+                break ;
         }
+        category[0].categories.splice(i, 1);
+        var k = 0;
+        for (; k < category[0].threads.length; ++k) {
+            if (category[0].threads[k].category[0].name === categoria)
+                break ;
+        }
+        category[0].threads.splice(k, 1);
+        category[0].save(function (err) {
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+            db.forumModel.find({}, function (err, forum) {
+                if (err) {
+                    console.log(err);
+                    return res.sendStatus(500);
+                }
+                console.log(categoria + " deleted");
+                return res.send(forum);
+            });
+        });
     });
 }
 
@@ -244,42 +238,36 @@ exports.removeSubCategory = function (req, res) {
         return res.sendStatus(400);
 
     db.forumModel.find({}, function (err, category) {
-        for (var i = 0; i < category[0].categories.length; ++i) {
-            if (category[0].categories[i].name === categoria) {
-                var index = 0;
-                var pos = i;
-                for (var j = 0; j < category[0].categories[pos].subCategories.length; ++j) {
-                    if (category[0].categories[pos].subCategories[j].name === subcategoria)
-                        index = j;
-                }
-                if (index >= 0) {
-                    if (category[0].categories[i].subCategories.length === 1) {
-
-                        category[0].categories[i].subCategories.shift();
-                    } else
-                        category[0].categories[i].subCategories.splice(index, 1);
-                    for (var k = 0; k < category[0].threads.length; ++k) {
-                        if (category[0].threads[k].category[1].name === subcategoria) {
-                            category[0].threads.splice(k, 1);
-                        }
-                    }
-                    category[0].save(function (err) {
-                        if (err) {
-                            console.log(err);
-                            return res.sendStatus(500);
-                        }
-                        db.forumModel.find({}, function (err, forum) {
-                            if (err) {
-                                console.log(err);
-                                return res.sendStatus(500);
-                            }
-                            console.log(subcategoria + " deleted");
-                            return res.send(forum);
-                        });
-                    });
-                }
+        var i = 0;
+        for (; i < category[0].categories.length; ++i) {
+            if (category[0].categories[i].name === categoria)
+                break ;
+        }
+        var j = 0;
+        for (; j < category[0].categories[i].subCategories.length; ++j) {
+            if (category[0].categories[i].subCategories[j].name === subcategoria)
+                break ;
+        }
+        category[0].categories[i].subCategories.splice(j, 1);
+        for (var k = 0; k < category[0].threads.length; ++k) {
+            if (category[0].threads[k].category[1].name === subcategoria) {
+                category[0].threads.splice(k, 1);
             }
         }
+        category[0].save(function (err) {
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+            db.forumModel.find({}, function (err, forum) {
+                if (err) {
+                    console.log(err);
+                    return res.sendStatus(500);
+                }
+                console.log(subcategoria + " deleted");
+                return res.send(forum);
+            });
+        });
     });
 }
 

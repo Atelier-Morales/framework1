@@ -115,60 +115,46 @@ var Projects = new Schema({
         {
             name: {
                 type: String,
-                required: true,
                 unique: true
             },
             start: {
-                type: Date,
-                required: true
+                type: Date
             },
             deadline: {
-                type: Date,
-                required: true
+                type: Date
             },
             registration_start: {
-                type: Date,
-                required: true
+                type: Date
             },
             registration_end: {
-                type: Date,
-                required: true
+                type: Date
             },
             description: {
                 type: String,
-                required: true,
                 unique: true
             },
             subject: {
                 type: String,
-                required: true,
                 unique: true
             },
             group_size: {
-                type: Number,
-                required: true
+                type: Number
             },
             max_size: {
-                type: Number,
-                required: true,
+                type: Number
             },
             nb_peers: {
-                type: Number,
-                required: true
+                type: Number
             },
             automatic_group: {
                 type: Boolean,
-                required: true,
                 default: false
             },
             activity_type: {
                 type: String,
-                required: true,
-                unique: true
             },
             bareme: {
                 type: String,
-                required: true,
                 default: ""
             }
         }

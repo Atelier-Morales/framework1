@@ -6,7 +6,7 @@
         <br>
 
         <div class="large-12 medium-12 small-12 columns">
-            <div class="panel callout radius large-12 medium-12 small-12 columns end" ng-repeat="project in allProjects">
+            <div class="panel callout large-12 medium-12 small-12 columns end" ng-repeat="project in allProjects">
                 <div class="callout-card-content">
                     <h3 class="lead">{{ project.name }}</h3>
                     <p>Registration opens : {{ project.registration_start | date:'medium'}} and closes : {{ project.registration_end | date:'medium'}}</p>
@@ -14,20 +14,23 @@
                     <p>Max students : {{ project.max_size }} | Credits : {{ project.credits }}</p>
                     <p>Description : {{ project.description }}</p>
                 </div>
-                <button ng-if="userInfo.is_admin" ng-click="setIndex($index)" href="#" data-reveal-id="updateProjectModal">{{ 'UPDATE' | translate }}</button>
+                <button class="button info" ng-if="userInfo.is_admin" ng-click="setIndex($index)" href="#" data-reveal-id="updateProjectModal">{{ 'UPDATE' | translate }}</button>
                 <a ng-if="userInfo.is_admin" ng-click="deleteProject(project.name)" class="button alert">{{ 'REMOVE' | translate }}</a>
                 <button ng-if="userInfo.is_admin" href="#" ng-click="setCategory(project.name)" data-reveal-id="activityModal">Create project in {{ project.name }}</button>
                 <br>
-                <div class="callout-card radius large-4 medium-4 small-4 columns end" ng-repeat="project in allProjects.activities">
+                <div class="callout-card radius large-4 medium-4 small-4 columns end" ng-repeat="proj in project.activities">
                     <div class="callout-card-content">
-                        <h3 class="lead">{{ project.name }}</h3>
-                        <p>Registration opens : {{ project.registration_start | date:'medium'}} and closes : {{ project.registration_end | date:'medium'}}</p>
-                        <p>Module begins : {{ project.start | date:'medium'}} and ends : {{ project.deadline | date:'medium'}}</p>
-                        <p>Max students : {{ project.max_size }} | Credits : {{ project.credits }}</p>
-                        <p>Description : {{ project.description }}</p>
+                        <h3 class="lead">{{ proj.name }}</h3>
+                        <p>Registration opens : {{ proj.registration_start | date:'medium'}} and closes : {{ proj.registration_end | date:'medium'}}</p>
+                        <p>Module begins : {{ proj.start | date:'medium'}} and ends : {{ proj.deadline | date:'medium'}}</p>
+                        <p>Max students : {{ proj.max_size }} | Credits : {{ proj.credits }}</p>
+                        <p>Description : {{ proj.description }}</p>
+                        <p>Subject : <a target="_blank" href="http://localhost:3000/assets/subjects/{{proj.subject}}">{{ proj.subject }}</a></p>
                     </div>
-                    <button ng-if="userInfo.is_admin" ng-click="setIndex($index)" href="#" data-reveal-id="updateProjectModal">{{ 'UPDATE' | translate }}</button>
-                    <a ng-if="userInfo.is_admin" ng-click="deleteProject(project.name)" class="button alert">{{ 'REMOVE' | translate }}</a>
+                    <button class="button small info" ng-if="userInfo.is_admin" ng-click="setIndex($index)" href="#" data-reveal-id="updateProjectModal">{{ 'UPDATE' | translate }}</button>
+                    <a ng-if="userInfo.is_admin" ng-click="deleteActivity(proj.name, project.name)" class="button small alert">{{ 'REMOVE' | translate }}</a>
+                    <a ng-if="proj.bareme.length == 0" ng-click="setProject(proj.name); setPreview(proj.name);" class="button small" data-reveal-id="baremeModal">Create Bareme</a>
+                    <a ng-if="proj.bareme.length > 0" ng-click="setProject(proj.name)" class="button small success">Update Bareme</a>
                 </div>
             </div>
         </div>
@@ -264,17 +267,19 @@
 
                                     <div class="row collapse">
                                         <div class="large-10 columns">
-                                            <p>Automatic groups?</p>
-                                            <input ng-disabled="size < 2 || activityForm.size.$error.required" name="automatic" ng-model="automatic" uid="checkbox1" type="checkbox" required>
+                                            <p style="vertical-align: -webkit-baseline-middle;">Automatic groups?
+                                                <input style="vertical-align: -webkit-baseline-middle;" ng-disabled="size < 2 || activityForm.size.$error.required" name="automatic" ng-model="automatic" uid="checkbox1" type="checkbox" required>
+                                            </p>
+
                                         </div>
                                     </div>
 
                                     <div class="row collapse">
-                                        <div class="large-10 columns">
-                                            <p>Upload subject</p>
-                                            <input type="file" file-model="myFile"/>
-                                            <button tiny ng-click="uploadFile()">upload subject</button>
-                                        </div>
+                                        <p>Upload subject</p>
+                                        <button style="margin-left:0px" class="button tiny" type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept="application/pdf" ngf-max-height="1000" ngf-max-size="10MB">
+                                            Select File</button>
+                                        <p>{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}</p>
+                                        {{errorMsg}}
                                     </div>
 
                                     <div class="row">
@@ -397,8 +402,9 @@
                                                  groupSize <= 0 ||
                                                  peerSize <= 0 ||
                                                  size <= 0 ||
+                                                 f == undefined ||
                                                  date_is_invalid(regStart, regClose, start, deadline) === false ||
-                                                 deadline.day == undefined || deadline.year == undefined || deadline.month == undefined" ng-click="createActivity(name, size, groupSize, peerSize, category, automatic, regStart, regClose, start, deadline, description, moduleName)" class="button">
+                                                 deadline.day == undefined || deadline.year == undefined || deadline.month == undefined" ng-click="createActivity(name, size, groupSize, peerSize, category, automatic, regStart, regClose, start, deadline, description, moduleName, f)" class="button">
                                         {{ 'CREATE' | translate }}</button>
                                 </form>
                                 <span style="color:red" ng-show="regError">
@@ -491,3 +497,83 @@
     </div>
     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
+
+<div id="baremeModal" style="width:80%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
+    <div class="section-container tabs" data-section="tabs">
+        <section class="active">
+            <div class="content" data-section-content>
+                <p>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <div class="signup-panel">
+                                <p class="welcome">Create a Bareme for {{ projectName }}</p>
+
+                                <div class="row collapse">
+                                    <p>Bareme Preview</p>
+                                    <div class="small-12  columns">
+                                        <h3>Bareme for {{ preview.project_name }}</h3>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <div class="small-12 columns" ng-if="preview.preliminary_show == true">
+                                        <p>Preliminaries :
+                                            <br> Is there a working and functionnal project in the directory that passes all the basic error checks without crashing or stopping unexpectedly?</p>
+                                        <div class="button-groups" data-grouptype="OR">
+                                            <button style="margin-left:0px" href="#" class="small button success radius">OK</button>
+                                            <button style="margin-left:0px" href="#" class="small button alert radius">KO</button>
+                                        </div>
+                                    </div>
+                                    <div class="small-12 columns">
+                                        <p>Bonus :
+                                            <br> Please rate any bonus that you find interesting or relevant to the project.
+                                        </p>
+                                        <div class="clickable">
+                                            <div class="progress">
+                                                <span class="meter blue display" style="width:65%">
+                                                <p class="percent">65%</p>
+                                            </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{ preview }}
+                                </div>
+                                <br>
+                                <hr />
+                                <div class="switch round">
+                                    <p>Preliminary tests?</p>
+                                    <input id="on-off" type="checkbox" ng-model="preview.preliminary_show">
+                                    <label for="on-off">
+                                        <span class="switch-on">Yes</span>
+                                        <span class="switch-off">No</span>
+                                    </label>
+                                </div>
+
+                                test = {{ preview.bonus }}
+                                <div class="switch round">
+                                    <p>Bonus?</p>
+                                    <input id="yes-no" type="checkbox" ng-model="preview.bonus">
+                                    <label for="yes-no">
+                                        <span class="switch-on">Yes</span>
+                                        <span class="switch-off">No</span>
+                                    </label>
+                                </div>
+                                <br>
+                                <div style="text-align:center" class="row collapse">
+                                    <button style="margin-left:0px" ng-click="createProject(name, credits, size, regStart, regClose, start, deadline, description)" class="button">
+                                        Create bareme</button>
+                                    <span style="color:red" ng-show="regError">{{ 'PROJECTERROR' | translate }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p>
+            </div>
+        </section>
+    </div>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
+
+<script type="text/javascript">
+    $(document).foundation();
+</script>

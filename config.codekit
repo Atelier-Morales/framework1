@@ -9961,6 +9961,17 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/data\/baremes\/bareme.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/data\/baremes\/bareme.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/data\/baremes\/bareme-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
 	"\/data\/config.json": {
 		"fileType": 524288,
 		"ignore": 1,

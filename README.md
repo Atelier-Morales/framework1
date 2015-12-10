@@ -36,15 +36,15 @@ Activités
 
 Il y'a des activités avec les caractéristiques décrites dans le sujet
 
-- nom/description/sujet(.pdf) [+0.5pt]
-- nombre de place [+0.5pt]
-- date de début et fin d'inscription [+0.5pt]
-- date de début et fin de l'activité [+0.5pt]
-- inscription par groupe de taille variable [+1pt]
-- choix du nombre de pairs (peer correcting) pour les projets [+0.5pt]
-- génération des groupes ou inscription manuelle [+0.5pt]
-- une activité appartient forcément à un module [+0.5pt]
-- un type (projet, exam ou TD) [+0.5pt]
+- nom/description/sujet(.pdf) [+0.5pt] DONE
+- nombre de place [+0.5pt] DONE
+- date de début et fin d'inscription [+0.5pt] DONE
+- date de début et fin de l'activité [+0.5pt] DONE
+- inscription par groupe de taille variable [+1pt] DONE
+- choix du nombre de pairs (peer correcting) pour les projets [+0.5pt] DONE
+- génération des groupes ou inscription manuelle [+0.5pt] DONE
+- une activité appartient forcément à un module [+0.5pt] DONE
+- un type (projet, exam ou TD) [+0.5pt] DONE
 
 Arrondissez à la graduation supérieure au besoin.
 

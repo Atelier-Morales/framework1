@@ -7,6 +7,8 @@ var morgan  = require('morgan'); // logger
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
+var multiparty = require('connect-multiparty');
+var multipartyMiddleware = multiparty();
 
 var privateKey  = fs.readFileSync('../nginx/ssl/nginx.key', 'utf8');
 var certificate = fs.readFileSync('../nginx/ssl/nginx.crt', 'utf8');
@@ -84,11 +86,15 @@ app.post('/project/createProject', routes.projects.createProject);
 
 app.post('/project/deleteProject', routes.projects.deleteProject);
 
+app.post('/project/deleteActivity', routes.projects.deleteActivity);
+
 app.post('/project/updateProject', routes.projects.updateProject);
 
 app.get('/project/fetchAllProjects', routes.projects.fetchAllProjects);
 
-app.post('/project/uploadSubject', routes.projects.uploadSubject);
+app.post('/project/createActivity', multipartyMiddleware, routes.projects.createActivity);
+
+app.post('/project/uploadSubject', multipartyMiddleware, routes.projects.uploadSubject);
 
 //forum functions
 
