@@ -39,15 +39,102 @@
 
             $scope.acc = [];
 
+            $scope.newValue = 0;
+            $scope.questions = [];
+            $scope.displayQuestionBox = false;
+
             $('.clickable').bind('click', function (ev) {
                 var $div = $(ev.target);
-                var $display = $div.find('.display');
-
                 var offset = $div.offset();
                 var x = ev.clientX - offset.left;
+                $scope.$apply(function() {
+                    // every changes goes here
+                    var Value = (x/($('div.large-12').width()*0.66))*100;
+                    console.log(Value);
+                    if (Value < 10)
+                        $scope.newValue = 0;
+                    else if (Value > 10 && Value < 20)
+                        $scope.newValue = 20;
+                    else if (Value > 20 && Value < 40)
+                        $scope.newValue = 40;
+                    else if (Value > 40 && Value < 60)
+                        $scope.newValue = 60;
+                    else if (Value > 60 && Value < 80)
+                        $scope.newValue = 80;
+                    else if (Value > 80)
+                        $scope.newValue = 100;
+                });
 
-                $('.meter').width(x);
+                $('.meter').width($scope.newValue+'%');
             });
+
+            $scope.openQuestionBox = function (value) {
+                $scope.displayQuestionBox = value;
+            }
+
+            $scope.addQuestion = function (title, body, notation) {
+                $scope.questions.push({
+                    title:title,
+                    body:body,
+                    notation:notation,
+                    value: 0
+                });
+            }
+
+            $scope.setWidth = function (index) {
+                var $div = $(event.target);
+                var offset = $div.offset();
+                var x = event.clientX - offset.left;
+                var Value = (x/($('div.large-12').width()*0.66))*100;
+                if (Value < 10)
+                    Value = 0;
+                else if (Value > 10 && Value < 20)
+                    Value = 20;
+                else if (Value > 20 && Value < 40)
+                    Value = 40;
+                else if (Value > 40 && Value < 60)
+                    Value = 60;
+                else if (Value > 60 && Value < 80)
+                    Value = 80;
+                else if (Value > 80)
+                    Value = 100;
+                $scope.questions[index].value = Value;
+                console.log($scope.questions[index].value)
+                $('.elem'+index).width(Value+'%');
+
+            }
+
+            $scope.createBareme = function (module, project_name, questions, preliminary_show, bonus) {
+                projectService.createBareme(module, project_name, questions, preliminary_show, bonus)
+                .success(function(){
+                    console.log("yes");
+                    $('#baremeModal').foundation('reveal', 'close');
+                    $scope.questions = [];
+                    $scope.preview = null;
+                    $scope.newValue = 0;
+                    $scope.displayQuestionBox = false;
+                    fetchAllProjects();
+                })
+                .error(function(status, data) {
+                    console.log(status+' '+data);
+                })
+            }
+
+            $scope.updateBareme = function (module, project_name, questions, preliminary_show, bonus) {
+                projectService.updateBareme(module, project_name, questions, preliminary_show, bonus)
+                    .success(function(){
+                    console.log("yes");
+                    $('#baremeModal').foundation('reveal', 'close');
+                    $scope.questions = [];
+                    $scope.preview = null;
+                    $scope.newValue = 0;
+                    $scope.displayQuestionBox = false;
+                    fetchAllProjects();
+                })
+                    .error(function(status, data) {
+                    console.log(status+' '+data);
+                })
+            }
 
             $scope.date.by('days', function (moment) {
                 $scope.acc.push(moment.format('YYYY-MM-DD'));
@@ -68,6 +155,22 @@
             //console.log($scope.days);
 
             $scope.years = ['2015', '2016'];
+
+            $scope.checkIfRegistered = function (project, userProjects) {
+                for (var i = 0; i < userProjects.length; i++) {
+                    if (userProjects[i].name == project.name)
+                        return true;
+                }
+                return false;
+            }
+
+            $scope.checkIfRegisteredActivity = function (project, activities) {
+                for (var i = 0; i < activities.length; i++) {
+                    if (activities[i].name == project)
+                        return true;
+                }
+                return false;
+            }
 
             function fetchProjects(username) {
                 projectService.fetchProjects(username)
@@ -105,30 +208,49 @@
                     if (count2 === 0) {
                         $scope.username = angular.copy(name);
                         fetchProjects($scope.username);
+                        fetchAllProjects()
                         count2++
                     }
-
                 }
-
             }
 
             $scope.setCategory = function (name) {
                 $scope.moduleName = name;
             }
 
-            $scope.setProject = function (name) {
+            $scope.setProject = function (name, moduleName) {
                 $scope.projectName = name;
+                $scope.moduleName = moduleName
             }
 
             $scope.setPreview = function(name) {
                 $http.get('data/baremes/bareme.json').success(function(data) {
-
                     $timeout(function() {
-                        $scope.preview = angular.copy(data);
+                        $scope.newValue = 0;
+                        $scope.questions = [];
+                        $scope.displayQuestionBox = false;
+                        $scope.preview = data;
                         $scope.preview.project_name = name;
+                        $scope.bonus = $scope.preliminary_show = false;
                         console.log($scope.preview);
                     });
                 });
+            }
+
+            $scope.setView = function(name) {
+                $http.get(name).success(function(data) {
+                    $scope.preview = data[0];
+                    $scope.questions = $scope.preview.questions;
+                    $scope.bonus = $scope.preview.bonus;
+                    $scope.preliminary_show = $scope.preview.preliminary_show;
+                });
+            }
+
+            $scope.setShow = function (value) {
+                console.log(value);
+                if (value == 'false')
+                    return false;
+                return true;
             }
 
             $scope.date_is_invalid = function (regStart, regClose, start, deadline) {
@@ -327,12 +449,13 @@
             }
 
             $scope.registerProject = function registerProject(name, username, deadline) {
-                var confirm = window.confirm("Are you sure you want to do the project " + name + "?");
+                var confirm = window.confirm("Are you sure you want to do the module " + name + "?");
                 if (confirm) {
                     console.log('yes');
                     projectService.registerProject(name, username, deadline)
                         .success(function (data) {
                             fetchProjects($scope.username);
+                            fetchAllProjects();
                             console.log('Registered to project ' + name);
                             window.alert('Registered to project ' + name);
                         })
@@ -341,6 +464,26 @@
                             $log.log(data);
                             window.alert('Could not register to project ' + name);
                         });
+                } else
+                    console.log('nope');
+            }
+
+            $scope.registerActivity = function registerActivity(name, username, project) {
+                var confirm = window.confirm("Are you sure you want to do the project " + project.name + "?");
+                if (confirm) {
+                    console.log('yes');
+                    projectService.registerActivity(name, username, project)
+                        .success(function (data) {
+                        fetchProjects($scope.username);
+                        fetchAllProjects();
+                        console.log('Registered to project ' + project.name);
+                        window.alert('Registered to project ' + project.name);
+                    })
+                        .error(function (status, data) {
+                        $log.log(status);
+                        $log.log(data);
+                        window.alert('Could not register to project ' + name);
+                    });
                 } else
                     console.log('nope');
             }

@@ -54,6 +54,30 @@ var User = new Schema({
                 type: String,
                 default: "ongoing"
             },
+            credits: {
+                type: Number,
+                default: 0
+            },
+            deadline: {
+                type: Date,
+                required: true
+            }
+        }
+    ],
+    activities: [
+        {
+            name: {
+                type: String,
+                required: true
+            },
+            parentModule: {
+                type: String,
+                required: true
+            },
+            status: {
+                type: String,
+                default: "ongoing"
+            },
             grade: {
                 type: Number,
                 default: 0
@@ -61,6 +85,57 @@ var User = new Schema({
             deadline: {
                 type: Date,
                 required: true
+            },
+            peerCorrections: {
+                type: Number
+            },
+            neededCorrections: {
+                type: Number
+            },
+            correctors: [
+                {
+                    name: {
+                        type: String,
+                        required: true
+                    },
+                    completed: {
+                        type: Boolean,
+                        default: false
+                    },
+                    grade: {
+                        type: Number
+                    },
+                    date: {
+                        type: Date
+                    }
+                }
+            ]
+        }
+    ],
+    corrections: [
+        {
+            project: {
+                type: String,
+                required: true
+            },
+            module: {
+                type: String,
+                required: true
+            },
+            user: {
+                type: String,
+                required: true
+            },
+            completed: {
+                type: Boolean,
+                default: false
+            },
+            grade: {
+                type: Number,
+                default: 0
+            },
+            feedback: {
+                type: String
             }
         }
     ],

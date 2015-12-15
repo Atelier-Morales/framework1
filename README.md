@@ -55,7 +55,7 @@ Barèmes
 
 Il y a des barèmes avec les caractéristiques décrites dans le sujet:
 
-- association entre un barème et une activité
+- association entre un barème et une activité DONE
 - une note est attribuée à la fin du barème en fonction du contenu du barème
 
 

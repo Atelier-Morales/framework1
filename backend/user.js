@@ -37,20 +37,20 @@ var expireToken = function (token) {
 ////verify if user is logged via LDAP function
 //
 //exports.verifyTokenLDAP = function(req, res) {
-//	var token = req.body.token || '';
-//	console.log(token);
-//	if (token == '')
+//    var token = req.body.token || '';
+//    console.log(token);
+//    if (token == '')
 //        return res.send(401);
-//    
+//
 //    jwt.verify(token, 'shhhhh', function(err, decoded) {
 //        if (err)
 //            return res.send(401);
 //        else {
 //            console.log(decoded.id);
-//            return res.json({ 
+//            return res.json({
 //                    username: decoded.id
 //            });
-//        }       
+//        }
 //    });
 //}
 
@@ -79,6 +79,7 @@ exports.verifyToken = function (req, res) {
                     is_admin: user.is_admin,
                     created: user.created,
                     projects: user.projects,
+                    activities: user.activities,
                     lang: user.lang
                 });
             });
@@ -594,6 +595,33 @@ exports.registerProject = function (req, res) {
         doc.projects.push(project);
         doc.save();
         console.log("registered to project " + name);
+        return res.sendStatus(200);
+    });
+}
+
+exports.registerActivity = function (req, res) {
+    var name = req.body.name || '';
+    var username = req.body.username || '';
+    var project = req.body.project || '';
+
+    if (name == '' || username == '' || project == '')
+        return res.sendStatus(400);
+    db.userModel.findOne({
+        username: username
+    }, function (err, doc) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(401);
+        }
+        var activity = {
+            name: project.name,
+            parentModule: name,
+            deadline: project.deadline,
+            neededCorrections: project.nb_peers
+        }
+        doc.activities.push(activity);
+        doc.save();
+        console.log("registered to project " + project.name);
         return res.sendStatus(200);
     });
 }

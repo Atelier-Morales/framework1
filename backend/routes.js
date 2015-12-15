@@ -62,6 +62,8 @@ app.post('/user/register', routes.users.register);
 
 app.post('/user/registerProject', routes.users.registerProject);
 
+app.post('/user/registerActivity', routes.users.registerActivity);
+
 app.post('/user/completeProject', routes.users.completeProject);
 
 app.post('/user/login', routes.users.login);
@@ -93,6 +95,10 @@ app.post('/project/updateProject', routes.projects.updateProject);
 app.get('/project/fetchAllProjects', routes.projects.fetchAllProjects);
 
 app.post('/project/createActivity', multipartyMiddleware, routes.projects.createActivity);
+
+app.post('/project/createBareme', routes.projects.createBareme);
+
+app.post('/project/updateBareme', routes.projects.updateBareme);
 
 app.post('/project/uploadSubject', multipartyMiddleware, routes.projects.uploadSubject);
 

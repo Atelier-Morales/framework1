@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+<h1 id="framework1">framework1</h1>
+
+<p>Big Web Project for 42</p>
+
+<p>Installation:</p>
+
+<ul>
+<li>installer node.js (soit avec NVM soit avec Managed software centre)</li>
+<li>installer redis, mongodb et nginx avec brew</li>
+<li>changer la config de nginx avec la config incluse dans le dossier /nginx</li>
+<li>lancer les commandes &#8220;mongod &#8211;dbpath /goinfre/nom_du_dossier_bdd&#8221; (il faut juste faire un mkdir dans goinfre pour creer la bdd, sinon on peut y mettre un copie d&#8217;une base existante), nginx et redis-server</li>
+<li>faire npm install bcrypt dans le dossier de rendu.</li>
+<li>aller dans le dossier /backend et lancer node routes.js.</li>
+<li>localhost:3000</li>
+<li>Pour le css, c&#8217;est du SASS, donc il faut modifier uniquement les fichier .scss et compiler le tout avec codekit ou lancer la commande grunt à la racine du dépot.</li>
+</ul>
+
+<h1 id="modules:">Modules :</h1>
+
+<p>Modules</p>
+
+<p>Il y&#8217;a une notion de module avec les caractéristiques décrites dans le sujet</p>
+
+<ul>
+<li>nom/description [+0.5pt] DONE</li>
+<li>restriction du nombre de place [+0.5pt] DONE</li>
+<li>date de début et fin d&#8217;inscription [+0.5pt] DONE</li>
+<li>date de début et fin du module [+0.5pt] DONE</li>
+<li>valeur du module en crédits [+1pt] DONE</li>
+<li>création automatique de la catégorie dans le forum à la création du module <a href="RIDA">+1pt</a> DONE</li>
+<li>crédits attribués à la fin [+0.5pt] DONE</li>
+<li>notion de grade [+0.5pt]</li>
+</ul>
+
+<p>Arrondissez à la graduation supérieure au besoin.</p>
+
+<h1 id="activites:">Activites :</h1>
+
+<p>Activités</p>
+
+<p>Il y&#8217;a des activités avec les caractéristiques décrites dans le sujet</p>
+
+<ul>
+<li>nom/description/sujet(.pdf) [+0.5pt] DONE</li>
+<li>nombre de place [+0.5pt] DONE</li>
+<li>date de début et fin d&#8217;inscription [+0.5pt] DONE</li>
+<li>date de début et fin de l&#8217;activité [+0.5pt] DONE</li>
+<li>inscription par groupe de taille variable [+1pt] DONE</li>
+<li>choix du nombre de pairs (peer correcting) pour les projets [+0.5pt] DONE</li>
+<li>génération des groupes ou inscription manuelle [+0.5pt] DONE</li>
+<li>une activité appartient forcément à un module [+0.5pt] DONE</li>
+<li>un type (projet, exam ou TD) [+0.5pt] DONE</li>
+</ul>
+
+<p>Arrondissez à la graduation supérieure au besoin.</p>
+
+<h1 id="baremes:">Baremes :</h1>
+
+<p>Barèmes</p>
+
+<p>Il y a des barèmes avec les caractéristiques décrites dans le sujet:</p>
+
+<ul>
+<li>association entre un barème et une activité DONE</li>
+<li>une note est attribuée à la fin du barème en fonction du contenu du barème</li>
+</ul>
+
+<h1 id="admin:">Admin :</h1>
+
+<p>Admin</p>
+
+<p>Les 3 entités Modules / Activités / Barèmes sont administrables via une zone admin.</p>
+
+<h1 id="notescorrection:">Notes / Correction :</h1>
+
+<ul>
+<li>Génération de pairs pour les activité de type &#8216;projet&#8217; lorsque la date de fin de projet est atteinte [+1pt]</li>
+<li>Un utilisateur peut noter un projet d&#8217;un de ses pairs via un barème [+2pt]</li>
+<li>À la fin d&#8217;un exam on upload un fichier .csv pour attribuer une note pour chaque inscrits. [+2pt]</li>
+</ul>
+
+<h1 id="autologin:">Autologin :</h1>
+
+<p>L&#8217;autologin est fonctionnel pour les utilisateurs (à éviter pour les comptes admin qui sont plus sensibles)</p>
+
+<h1 id="e-learning:">E-learning :</h1>
+
+<ul>
+<li>À chaque création de module et de projet, les catégories sont créées dans une zone E-learning [+2pt]</li>
+<li>On peut ajouter un cours au module, sous la forme de .pdf ou de vidéo [+3pts]</li>
+</ul>
+
+</body>
+</html>

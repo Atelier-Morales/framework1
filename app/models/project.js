@@ -63,6 +63,13 @@
                     deadline: deadline
                 });
             },
+            registerActivity: function(name, username, project) {
+                return $http.post(API_URL + '/user/registerActivity', {
+                    name: name,
+                    username: username,
+                    project: project
+                });
+            },
             updateProject: function(name, oldname, deadline, description) {
                 return $http.post(API_URL + '/project/updateProject', {
                     name: name,
@@ -73,6 +80,24 @@
             },
             fetchAllProjects: function() {
                 return $http.get(API_URL + '/project/fetchAllProjects')
+            },
+            createBareme: function(module, project_name, questions, preliminary_show, bonus) {
+                return $http.post(API_URL + '/project/CreateBareme', {
+                    module: module,
+                    project_name: project_name,
+                    questions: questions,
+                    preliminary_show: preliminary_show,
+                    bonus: bonus
+                })
+            },
+            updateBareme: function(module, project_name, questions, preliminary_show, bonus) {
+                return $http.post(API_URL + '/project/updateBareme', {
+                    module: module,
+                    project_name: project_name,
+                    questions: questions,
+                    preliminary_show: preliminary_show,
+                    bonus: bonus
+                })
             }
         }
     });

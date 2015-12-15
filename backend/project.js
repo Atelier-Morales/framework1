@@ -139,6 +139,13 @@ exports.deleteActivity = function (req, res) {
         fs.unlink("/nfs/zfs-student-3/users/fmorales/Documents/rendu/bgw/assets/subjects/" + doc.activities[i].subject, function (err) {
             console.log("subject deleted")
         });
+        fs.unlink("/nfs/zfs-student-3/users/fmorales/Documents/rendu/bgw/"+doc.activities[i].bareme, function (err) {
+            if (err)
+                console.log(err);
+            else
+                console.log("bareme deleted")
+        });
+
         doc.activities.splice(i, 1);
 
         db.forumModel.find({}, function (err, category) {
@@ -236,7 +243,6 @@ exports.createActivity = function (req, res) {
 
 }
 
-
 exports.uploadSubject = function (req, res) {
     // We are able to access req.files.file thanks to
     // the multiparty middleware
@@ -252,4 +258,63 @@ exports.uploadSubject = function (req, res) {
             console.log("success");
         });
     });
+}
+
+exports.createBareme = function (req, res) {
+    var module = req.body.module;
+    var project_name = req.body.project_name;
+    var questions = req.body.questions;
+    var bonus = req.body.bonus;
+    var preliminary_show = req.body.preliminary_show;
+
+    var config = [];
+    config.push({
+        module: module,
+        project_name: project_name,
+        questions: questions,
+        bonus: bonus,
+        preliminary_show: preliminary_show
+    });
+    var configJSON = JSON.stringify(config);
+    fs.writeFileSync('../data/baremes/'+project_name+'.json', configJSON);
+    db.projectModel.findOne({ name: module }, function(err, result) {
+        var i = 0;
+        for (; i < result.activities.length; i++) {
+            if (result.activities[i].name == project_name)
+                break ;
+        }
+        result.activities[i].bareme = 'data/baremes/'+project_name+'.json';
+        result.save(function (err) {
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+            console.log("success");
+            return res.sendStatus(200);
+        });
+    })
+}
+
+exports.updateBareme = function (req, res) {
+    var module = req.body.module;
+    var project_name = req.body.project_name;
+    var questions = req.body.questions;
+    var bonus = req.body.bonus;
+    var preliminary_show = req.body.preliminary_show;
+
+    var configFile = fs.readFileSync('../data/baremes/'+project_name+'.json');
+    var config = JSON.parse(configFile);
+    config = [];
+    var configJSON = JSON.stringify(config);
+    fs.writeFileSync('../data/log.json', configJSON);
+    config.push({
+        module: module,
+        project_name: project_name,
+        questions: questions,
+        bonus: bonus,
+        preliminary_show: preliminary_show
+    });
+    var configJSON = JSON.stringify(config);
+    fs.writeFileSync('../data/baremes/'+project_name+'.json', configJSON);
+    return res.sendStatus(200);
 }

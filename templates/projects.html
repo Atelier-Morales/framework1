@@ -24,7 +24,7 @@
                 <br>
 
                 <div class="large-12 medium-12 small-12 columns">
-                    <div class="panel callout radius large-12 medium-12 small-12 columns end" ng-repeat="project in projects">
+                    <div class="panel callout radius large-12 medium-12 small-12 columns end" ng-repeat="project in allProjects">
                         <div class="callout-card-content">
                             <h3 class="lead">{{ project.name }}</h3>
                             <p>Registration opens : {{ project.registration_start | date:'medium'}} and closes : {{ project.registration_end | date:'medium'}}</p>
@@ -36,7 +36,22 @@
                 <button ng-if="userInfo.is_admin" ng-click="setIndex($index)" href="#" data-reveal-id="updateProjectModal">Update</button>
                 <a ng-if="userInfo.is_admin" ng-click="deleteProject(project.name)" class="button alert">Remove</a>
 -->
-                        <a href="#" ng-click="registerProject(project.name, username, project.deadline)" class="button success">Register</a>
+                        <a href="#" ng-click="registerProject(project.name, username, project.deadline)" class="button success" ng-show="checkIfRegistered(project, userInfo.projects) == false">Register</a>
+                        <h4 class="subheader" ng-show="checkIfRegistered(project, userInfo.projects) == true">Already Registered</h4>
+
+                        <br>
+                        <div ng-disabled="project.registered == false" class="callout-card radius large-4 medium-4 small-4 columns end" ng-repeat="proj in project.activities">
+                            <div class="callout-card-content">
+                                <h3 class="lead">{{ proj.name }}</h3>
+                                <p>Registration opens : {{ proj.registration_start | date:'medium'}} and closes : {{ proj.registration_end | date:'medium'}}</p>
+                                <p>Module begins : {{ proj.start | date:'medium'}} and ends : {{ proj.deadline | date:'medium'}}</p>
+                                <p>Max students : {{ proj.max_size }} | Credits : {{ proj.credits }}</p>
+                                <p>Description : {{ proj.description }}</p>
+                                <p>Subject : <a target="_blank" href="http://localhost:3000/assets/subjects/{{proj.subject}}">{{ proj.subject }}</a></p>
+                            </div>
+                            <a href="#" ng-click="registerActivity(project.name, username, proj)" class="button small success" ng-show="checkIfRegisteredActivity(proj.name, userInfo.activities) == false">Register</a>
+                            <h4 class="subheader" ng-show="checkIfRegisteredActivity(proj.name, userInfo.activities) == true">Already Registered</h4>
+                        </div>
                     </div>
                 </div>
             </div>
