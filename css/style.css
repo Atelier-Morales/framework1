@@ -391,6 +391,9 @@ form .progress {
 .meter.purple {
   background: #9b59b6; }
 
+.activeButton {
+  background: #000000 !important; }
+
 .weather {
   border: 1px solid #eee;
   box-shadow: 0 2px 0 rgba(204, 204, 204, 0.15);

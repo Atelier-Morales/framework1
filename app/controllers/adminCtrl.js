@@ -12,6 +12,18 @@
         'pascalprecht.translate'
     ]);
 
+    adminCtrl.filter('completed', function() {
+        return function(input) {
+            var total = 0;
+
+            for (var i = 0; i < input.length; i++) {
+                if (input[i].completed == true)
+                    total += 1;
+            }
+            return total;
+        };
+    });
+
     adminCtrl.controller('AdminUserCtrl', [
         '$rootScope',
         '$scope',
@@ -27,7 +39,7 @@
         'authService',
         function AdminUserCtrl($rootScope, $scope, $location, $window, $state, $log, $cookies, $timeout, $translate, $http, userService, authService) {
             //Admin User Controller (login, logout)
-            
+
             if ($window.sessionStorage.logAs === 'true') {
                 console.log($window.sessionStorage.logAs);
                 $rootScope.logAs = true;
@@ -44,11 +56,12 @@
             $scope.setIndex = function (index) {
                 $scope.project = index;
             }
-            
+
             $scope.getBareme = function (correction) {
                 $http.get('data/baremes/'+correction.project+'.json').success(function(data) {
                     $timeout(function() {
                         $scope.bareme = data;
+                        $scope.correctee = correction.user;
                         $scope.notation = [];
                         if (data[0].preliminary_show == true)
                             $scope.notation.push({question: "preliminary", grade:"none"});
@@ -56,29 +69,67 @@
                             $scope.notation.push({question: i, grade:"none"});
                         if (data[0].bonus == true)
                             $scope.notation.push({question: "bonus", grade:0});
+                        $scope.correctError = false;
                     });
                 });
             }
-            
+
             $scope.setGrade = function (grade, index) {
                 for (var i = 0; i < $scope.notation.length; i++) {
                     if ($scope.notation[i].question == index)
                         $scope.notation[i].grade = grade;
                 }
             }
-            
+
             $scope.verifyNotation = function () {
                 if ($scope.notation != undefined) {
                     console.log($scope.notation.length);
                     for (var i = 0; i < $scope.notation.length; i++) {
-                        if ($scope.notation[i].grade == "none") {
-                            console.log("nope");
+                        if ($scope.notation[i].question == "preliminary" && $scope.notation[i].grade == 0)
+                            return true;
+                        else if ($scope.notation[i].grade == "none")
                             return false;
-                        }
                     }
-                    return true
+                    return true;
                 }
                 return false;
+            }
+
+            $scope.correctProject = function (username, correctee, project, notation) {
+                $scope.grade = 0;
+                var totalGrade = (notation.length - 2) * 100;
+                for (var i = 0; i < notation.length; i++) {
+                    console.log(notation[i].question);
+                    if (notation[i].question == "preliminary" && notation[i].grade == 0)
+                        break ;
+                    else if (notation[i].question != "preliminary" && notation[i].question != "bonus")
+                        $scope.grade += notation[i].grade;
+                    else if (notation[i].question == "bonus") {
+                        console.log(notation[i].grade / 100);
+                        $scope.grade += ((10 * notation[i].grade / 100) / 100) * totalGrade;
+                    }
+                }
+                $scope.grade = ($scope.grade * 100) / totalGrade;
+                userService.correctProject(username, correctee, project, $scope.grade)
+                .success(function () {
+                    console.log('success');
+                    userService.verifyToken($window.sessionStorage.token)
+                        .success(function (data) {
+                        console.log('Fetched user info');
+                        $rootScope.userInfo = data;
+                    })
+                        .error(function (status, data) {
+                        console.log(status);
+                        console.log(data);
+                        console.log('Could not fetch info');
+                    });
+                    $('#finishProjectModal').foundation('reveal', 'close');
+
+                })
+                .error(function (status, data) {
+                    console.log(status+' '+data);
+                    $scope.correctError = true;
+                });
             }
 
             $scope.isFailed = function (grade) {
@@ -104,14 +155,14 @@
                         console.log('cannot set language');
                     });
             }
-            
+
             $('.clickable').bind('click', function (ev) {
                 var $div = $(ev.target);
                 var offset = $div.offset();
                 var x = ev.clientX - offset.left;
                 $scope.$apply(function() {
                     // every changes goes here
-                    var Value = (x/($('div.large-12').width()*0.66))*100;
+                    var Value = (x/($('div.large-12').width()*0.55))*100;
                     console.log(Value);
                     if (Value < 10)
                         $scope.newValue = 0;
@@ -125,16 +176,16 @@
                         $scope.newValue = 80;
                     else if (Value > 80)
                         $scope.newValue = 100;
+                    $scope.notation[$scope.notation.length - 1].grade = $scope.newValue;
+                    $('.meter').width($scope.newValue+'%');
                 });
-
-                $('.meter').width($scope.newValue+'%');
             });
-            
+
             $scope.setWidth = function (index) {
                 var $div = $(event.target);
                 var offset = $div.offset();
                 var x = event.clientX - offset.left;
-                var Value = (x/($('div.large-12').width()*0.66))*100;
+                var Value = (x/($('div.large-12').width()*0.55))*100;
                 if (Value < 10)
                     Value = 0;
                 else if (Value > 10 && Value < 20)
@@ -147,11 +198,11 @@
                     Value = 80;
                 else if (Value > 80)
                     Value = 100;
-                $scope.questions[index].value = Value;
-                console.log($scope.questions[index].value)
+                $scope.notation[index + 1].grade = Value;
+                console.log($scope.notation[index + 1].grade);
                 $('.elem'+index).width(Value+'%');
             }
-            
+
             $rootScope.$watch('userInfo', function () {
                 if ($rootScope.userInfo === undefined || $rootScope.userInfo === null || $rootScope.userInfo === "")
                     return;
@@ -300,7 +351,7 @@
                             console.log(status);
                             console.log(data);
                             console.log('could not remove logged as users');
-                            
+
                         });
                         $state.go('users');
                     })

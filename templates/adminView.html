@@ -46,13 +46,16 @@
                                 <p>{{ 'NOGRADE' | translate }}</p>
                                 <p>Deadline : {{ project.deadline | date:'yyyy-MM-dd' }}</p>
 
-                                <button 
-                                        ng-click="setAsFinished(project.name, userInfo.username)" 
-                                        href="#" 
+                                <button
+                                        ng-click="setAsFinished(project.name, userInfo.username)"
+                                        href="#"
                                         class="button success"
                                         ng-if="project.correctors.length == 0">{{ 'FINISH' | translate }}
                                 </button>
-                                <p ng-if="project.correctors.length > 0">Waiting corrections</p>
+                                <p ng-if="project.correctors.length > 0">Waiting corrections - {{ project.correctors | completed }}/{{ project.correctors.length }}</p>
+                                <small ng-repeat="correct in project.correctors | filter: { completed : true }">
+                                    {{ correct.name }} gave you {{ correct.grade }}
+                                    <br></small>
                             </div>
                         </div>
                     </div>
@@ -124,11 +127,11 @@
                 <div class="medium-6 large-6 small-12 columns">
 
                     <h3>Projects to correct</h3>
-                    
-                    <div class="panel callout radius large-12 medium-12 small-12 columns end" ng-repeat="correction in userInfo.corrections">
-                        
+
+                    <div class="panel callout radius large-12 medium-12 small-12 columns end" ng-repeat="correction in userInfo.corrections | filter: { completed: false}">
+
                         <div class="callout-card-content">
-                            <p>you will correct {{ correction.user }} on project {{ correction.project }} 
+                            <p>you will correct {{ correction.user }} on {{ correction.project }}
                                  <button ng-click="getBareme(correction)" href="#" data-reveal-id="finishProjectModal" style="float:right" class="button small success">Begin correction</button></p>
                         </div>
                     </div>
@@ -146,11 +149,10 @@
      <div class="section-container tabs" data-section="tabs">
         <section class="active">
             <div class="content" data-section-content>
-                {{ bareme }}
                 <div class="row">
                     <div class="large-12 columns">
                         <div class="signup-panel">
-                            <p class="welcome">{{ bareme[0].project_name }}</p>
+                            <p class="welcome">Correction of {{ bareme[0].project_name }} for {{ correctee }}</p>
                                 <div class="row collapse">
                                     <div class="small-12  columns">
                                         <h3>Bareme for {{ bareme[0].project_name }}</h3>
@@ -162,14 +164,16 @@
                                         <p><strong>Preliminaries</strong>
                                             <br> Is there a working and functionnal project in the directory that passes all the basic error checks without crashing or stopping unexpectedly?</p>
                                         <div class="button-groups" data-grouptype="OR">
-                                            <button style="margin-left:0px" 
+                                            <button style="margin-left:0px"
                                                     href="#"
-                                                    class="small button success radius"
-                                                    ng-click="setGrade(1, 'preliminary')">OK</button>
-                                            <button style="margin-left:0px" 
-                                                    href="#" 
+                                                    class="uibutton0 small button success radius"
+                                                    ng-click="setGrade(100, 'preliminary')"
+                                                    ng-class="{activeButton: notation[0].grade > 0}">OK</button>
+                                            <button style="margin-left:0px"
+                                                    href="#"
                                                     class="small button alert radius"
-                                                    ng-click="setGrade(0, 'preliminary')">KO</button>
+                                                    ng-click="setGrade(0, 'preliminary')"
+                                                    ng-class="{activeButton: notation[0].grade == 0}">KO</button>
                                         </div>
                                     </div>
                                     <div class="small-12 columns" ng-repeat="question in bareme[0].questions">
@@ -178,13 +182,21 @@
                                         </p>
                                         <div ng-switch on="question.notation">
                                             <div class="button-groups" data-grouptype="OR" ng-switch-when="Red">
-                                                <button style="margin-left:0px" href="#" class="small button success radius">OK</button>
-                                                <button style="margin-left:0px" href="#" class="small button alert radius">KO</button>
+                                                <button style="margin-left:0px"
+                                                        href="#"
+                                                        class="small button success radius"
+                                                        ng-click="setGrade(100, $index)"
+                                                        ng-class="{activeButton: notation[$index + 1].grade > 0}">OK</button>
+                                                <button style="margin-left:0px"
+                                                        href="#"
+                                                        class="small button alert radius"
+                                                        ng-click="setGrade(0, $index)"
+                                                        ng-class="{activeButton: notation[$index + 1].grade == 0}">KO</button>
                                             </div>
                                             <div ng-click="setWidth($index)" ng-switch-when="Blue">
                                                 <div class="progress prog{{$index}}">
-                                                    <span class="meter1 blue display elem{{$index}} " style="width:{{ question.value }}%">
-                                                        <p class="percent">{{ question.value }}%</p>
+                                                    <span class="meter1 blue display elem{{$index}} " style="width:{{ notation[$index + 1].grade }}%">
+                                                        <p class="percent">{{ notation[$index + 1].grade }}%</p>
                                                     </span>
                                                 </div>
                                             </div>
@@ -204,16 +216,16 @@
                                     </div>
                                 </div>
                                 <br>
-                                {{ notation }}
                                 <hr />
                                 <br>
                                 <div style="text-align:center" class="row collapse">
-                                    <button style="margin-left:0px" 
-                                            ng-click="correctProject(bareme, notation)" class="button"
+                                    <button style="margin-left:0px"
+                                            ng-click="correctProject(userInfo.username, correctee, bareme[0].project_name, notation)" class="button"
                                             ng-disabled="verifyNotation() == false">
                                         Finish</button>
                                     <span style="color:red" ng-show="correctError">{{ 'PROJECTERROR' | translate }}</span>
                                 </div>
+                                {{ grade }}
                         </div>
                     </div>
                 </div>

@@ -667,7 +667,67 @@ exports.completeProject = function (req, res) {
             user.save();
             return res.sendStatus(200);
         });
-        
+
+    });
+}
+
+exports.correctProject = function (req, res) {
+    var username = req.body.username || '';
+    var correctee = req.body.correctee || '';
+    var project = req.body.project || '';
+    var grade = req.body.grade || '';
+
+    if (username === '' || correctee === '' || project === '' || grade === '')
+        return res.sendstatus(400);
+
+    db.userModel.findOne({username: username}, function(err, user) {
+        if (err) {
+            console.log(err);
+            return res.sendstatus(500);
+        }
+        var i = 0;
+        for (; i < user.corrections.length; i++) {
+            if (user.corrections[i].project === project && user.corrections[i].user === correctee)
+                break ;
+        }
+        user.corrections[i].grade = grade;
+        user.corrections[i].completed = true;
+        user.save();
+        db.userModel.findOne({ username: correctee }, function (err, result) {
+            if (err) {
+                console.log(err);
+                return res.sendstatus(500);
+            }
+            var j = 0;
+            var check = true;
+            var finalGrade = 0;
+            for (; j < result.activities.length; j++) {
+                if (result.activities[j].name === project) {
+                    for (var k = 0; k < result.activities[j].correctors.length; k++) {
+                        if (result.activities[j].correctors[k].name === username) {
+                            result.activities[j].correctors[k].completed = true;
+                            result.activities[j].correctors[k].grade = grade;
+                        }
+                        if (result.activities[j].correctors[k].completed == false)
+                            check = false;
+                        else
+                            finalGrade += result.activities[j].correctors[k].grade;
+                    }
+                    if (check == true) {
+                        result.activities[j].status = "finished";
+                        result.activities[j].grade = finalGrade / result.activities[j].neededCorrections;
+                    }
+                    result.save(function (err) {
+                        if (err) {
+                            console.log(err);
+                            res.sendstatus(401);
+                        }
+                        res.sendStatus(200);
+                    });
+
+                }
+            }
+        });
     });
 }
 

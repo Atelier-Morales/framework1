@@ -66,6 +66,8 @@ app.post('/user/registerActivity', routes.users.registerActivity);
 
 app.post('/user/completeProject', routes.users.completeProject);
 
+app.post('/user/correctProject', routes.users.correctProject);
+
 app.post('/user/login', routes.users.login);
 
 app.post('/user/logAs', routes.users.logAs);

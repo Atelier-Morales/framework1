@@ -84,6 +84,14 @@
                     username: username
                 });
             },
+            correctProject: function (username, correctee, project, grade) {
+                return $http.post(API_URL + '/user/correctProject', {
+                    username: username,
+                    correctee: correctee,
+                    project: project,
+                    grade: grade
+                });
+            },
             sendEmail: function (sender, subject, text) {
                 return $http.post(API_URL + '/emailSend', {
                     sender: sender,

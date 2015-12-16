@@ -1,1 +1,17 @@
-[{"module":"test","project_name":"project 1","questions":[],"bonus":true,"preliminary_show":true}]
+[{
+    "module": "test",
+    "project_name": "project 1",
+    "questions": [{
+        "title": "quesstion1",
+        "body": "question",
+        "notation": "Blue",
+        "value": 40
+    }, {
+        "title": "quesstion2",
+        "body": "question2",
+        "notation": "Red",
+        "value": 0
+    }],
+    "bonus": true,
+    "preliminary_show": true
+}]
