@@ -22,9 +22,10 @@
         '$cookies',
         '$timeout',
         '$translate',
+        '$http',
         'userService',
         'authService',
-        function AdminUserCtrl($rootScope, $scope, $location, $window, $state, $log, $cookies, $timeout, $translate, userService, authService) {
+        function AdminUserCtrl($rootScope, $scope, $location, $window, $state, $log, $cookies, $timeout, $translate, $http, userService, authService) {
             //Admin User Controller (login, logout)
             
             if ($window.sessionStorage.logAs === 'true') {
@@ -42,6 +43,42 @@
 
             $scope.setIndex = function (index) {
                 $scope.project = index;
+            }
+            
+            $scope.getBareme = function (correction) {
+                $http.get('data/baremes/'+correction.project+'.json').success(function(data) {
+                    $timeout(function() {
+                        $scope.bareme = data;
+                        $scope.notation = [];
+                        if (data[0].preliminary_show == true)
+                            $scope.notation.push({question: "preliminary", grade:"none"});
+                        for (var i = 0; i < data[0].questions.length; i++)
+                            $scope.notation.push({question: i, grade:"none"});
+                        if (data[0].bonus == true)
+                            $scope.notation.push({question: "bonus", grade:0});
+                    });
+                });
+            }
+            
+            $scope.setGrade = function (grade, index) {
+                for (var i = 0; i < $scope.notation.length; i++) {
+                    if ($scope.notation[i].question == index)
+                        $scope.notation[i].grade = grade;
+                }
+            }
+            
+            $scope.verifyNotation = function () {
+                if ($scope.notation != undefined) {
+                    console.log($scope.notation.length);
+                    for (var i = 0; i < $scope.notation.length; i++) {
+                        if ($scope.notation[i].grade == "none") {
+                            console.log("nope");
+                            return false;
+                        }
+                    }
+                    return true
+                }
+                return false;
             }
 
             $scope.isFailed = function (grade) {
@@ -67,7 +104,54 @@
                         console.log('cannot set language');
                     });
             }
+            
+            $('.clickable').bind('click', function (ev) {
+                var $div = $(ev.target);
+                var offset = $div.offset();
+                var x = ev.clientX - offset.left;
+                $scope.$apply(function() {
+                    // every changes goes here
+                    var Value = (x/($('div.large-12').width()*0.66))*100;
+                    console.log(Value);
+                    if (Value < 10)
+                        $scope.newValue = 0;
+                    else if (Value > 10 && Value < 20)
+                        $scope.newValue = 20;
+                    else if (Value > 20 && Value < 40)
+                        $scope.newValue = 40;
+                    else if (Value > 40 && Value < 60)
+                        $scope.newValue = 60;
+                    else if (Value > 60 && Value < 80)
+                        $scope.newValue = 80;
+                    else if (Value > 80)
+                        $scope.newValue = 100;
+                });
 
+                $('.meter').width($scope.newValue+'%');
+            });
+            
+            $scope.setWidth = function (index) {
+                var $div = $(event.target);
+                var offset = $div.offset();
+                var x = event.clientX - offset.left;
+                var Value = (x/($('div.large-12').width()*0.66))*100;
+                if (Value < 10)
+                    Value = 0;
+                else if (Value > 10 && Value < 20)
+                    Value = 20;
+                else if (Value > 20 && Value < 40)
+                    Value = 40;
+                else if (Value > 40 && Value < 60)
+                    Value = 60;
+                else if (Value > 60 && Value < 80)
+                    Value = 80;
+                else if (Value > 80)
+                    Value = 100;
+                $scope.questions[index].value = Value;
+                console.log($scope.questions[index].value)
+                $('.elem'+index).width(Value+'%');
+            }
+            
             $rootScope.$watch('userInfo', function () {
                 if ($rootScope.userInfo === undefined || $rootScope.userInfo === null || $rootScope.userInfo === "")
                     return;
@@ -246,16 +330,13 @@
                 }
             }
 
-            $scope.setAsFinished = function setAsFinished(name, username, grade) {
+            $scope.setAsFinished = function setAsFinished(name, username) {
                 var confirm = window.confirm("Are you sure you've finished the project " + name + "?");
                 if (confirm) {
                     console.log('yes');
-                    userService.completeProject(name, username, grade)
+                    userService.completeProject(name, username)
                         .success(function (data) {
-                            $log.log(data);
-                            $('#finishProjectModal').foundation('reveal', 'close');
                             window.alert('Project Finished!');
-                            console.log($window.sessionStorage.token);
                             userService.verifyToken($cookies.get('token'))
                                 .success(function (data) {
                                     $timeout(function () {
@@ -271,7 +352,6 @@
                             $log.log(status);
                             $log.log(data);
                             window.alert('Error: Could not set project as finished');
-                            $('#finishProjectModal').foundation('reveal', 'close');
                         });
                 } else
                     console.log('nope');

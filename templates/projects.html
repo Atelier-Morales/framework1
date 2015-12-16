@@ -49,7 +49,10 @@
                                 <p>Description : {{ proj.description }}</p>
                                 <p>Subject : <a target="_blank" href="http://localhost:3000/assets/subjects/{{proj.subject}}">{{ proj.subject }}</a></p>
                             </div>
-                            <a href="#" ng-click="registerActivity(project.name, username, proj)" class="button small success" ng-show="checkIfRegisteredActivity(proj.name, userInfo.activities) == false">Register</a>
+                            <button href="#" 
+                               ng-click="registerActivity(project.name, username, proj)" 
+                               ng-disabled="checkIfRegistered(project, userInfo.projects) == false"
+                               class="button small success" ng-show="checkIfRegisteredActivity(proj.name, userInfo.activities) == false">Register</button>
                             <h4 class="subheader" ng-show="checkIfRegisteredActivity(proj.name, userInfo.activities) == true">Already Registered</h4>
                         </div>
                     </div>

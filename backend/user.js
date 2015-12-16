@@ -80,6 +80,7 @@ exports.verifyToken = function (req, res) {
                     created: user.created,
                     projects: user.projects,
                     activities: user.activities,
+                    corrections: user.corrections,
                     lang: user.lang
                 });
             });
@@ -629,9 +630,8 @@ exports.registerActivity = function (req, res) {
 exports.completeProject = function (req, res) {
     var name = req.body.name || '';
     var username = req.body.username || '';
-    var grade = req.body.grade || '';
 
-    if (name == '' || username == '' || grade == '')
+    if (name == '' || username == '')
         return res.sendStatus(400);
     db.userModel.findOne({
         username: username
@@ -640,14 +640,34 @@ exports.completeProject = function (req, res) {
             console.log(err);
             return res.sendStatus(401);
         }
-        for (var i = 0; i < user.projects.length; ++i) {
-            if (name === user.projects[i].name) {
-                user.projects[i].status = "finished";
-                user.projects[i].grade = grade;
-                user.save();
-                return res.sendStatus(200);
+        var i = 0;
+        for (; i < user.activities.length; ++i) {
+            if (name === user.activities[i].name) {
+                break ;
             }
         }
+        db.userModel.find({}, function (err, users) {
+            for (var j = 0; j < user.activities[i].neededCorrections; j++) {
+                if (users[j].username != username) {
+                    var random = Math.floor((Math.random() * users.length) + 0);
+                    var corrector = {
+                        name: users[random].username,
+                        completed: false,
+                    };
+                    user.activities[i].correctors.push(corrector);
+                    var correction = {
+                        project: name,
+                        module: user.activities[i].parentModule,
+                        user: username
+                    };
+                    users[random].corrections.push(correction);
+                    users[random].save();
+                }
+            }
+            user.save();
+            return res.sendStatus(200);
+        });
+        
     });
 }
 

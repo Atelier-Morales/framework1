@@ -46,7 +46,13 @@
                                 <p>{{ 'NOGRADE' | translate }}</p>
                                 <p>Deadline : {{ project.deadline | date:'yyyy-MM-dd' }}</p>
 
-                                <button ng-click="setIndex(project.name)" href="#" data-reveal-id="finishProjectModal" class="button success">{{ 'FINISH' | translate }}</button>
+                                <button 
+                                        ng-click="setAsFinished(project.name, userInfo.username)" 
+                                        href="#" 
+                                        class="button success"
+                                        ng-if="project.correctors.length == 0">{{ 'FINISH' | translate }}
+                                </button>
+                                <p ng-if="project.correctors.length > 0">Waiting corrections</p>
                             </div>
                         </div>
                     </div>
@@ -107,7 +113,7 @@
 
                     <h3>Projects to be corrected</h3>
 
-                    <div class="panel callout radius large-12 medium-12 small-12 columns end" ng-repeat="project in userInfo.activities | filter: { status: 'correcting' }">
+                    <div class="panel callout radius large-12 medium-12 small-12 columns end" ng-repeat="project in userInfo.activities | filter: { status: 'ongoing' }" ng-if="project.correctors.length > 0">
                         <div class="callout-card-content">
                             <h3 class="lead">{{ project.name }}</h3>
                             <p ng-repeat="corrector in project.correctors | filter: { completed: false }">you will be corrected by {{ corrector.name }}</p>
@@ -118,10 +124,12 @@
                 <div class="medium-6 large-6 small-12 columns">
 
                     <h3>Projects to correct</h3>
-
-                    <div class="panel callout radius large-12 medium-12 small-12 columns end" ng-repeat="correction in userInfo.corrections | filter: { completed: false }">
+                    
+                    <div class="panel callout radius large-12 medium-12 small-12 columns end" ng-repeat="correction in userInfo.corrections">
+                        
                         <div class="callout-card-content">
-                            <p>you will correct {{ correction.user }} on project {{ correction.project }}</p>
+                            <p>you will correct {{ correction.user }} on project {{ correction.project }} 
+                                 <button ng-click="getBareme(correction)" href="#" data-reveal-id="finishProjectModal" style="float:right" class="button small success">Begin correction</button></p>
                         </div>
                     </div>
                 </div>
@@ -134,38 +142,81 @@
     </div>
 </div>
 
-<div id="finishProjectModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
-    <div class="section-container tabs" data-section="tabs">
+<div id="finishProjectModal" style="width:80%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
+     <div class="section-container tabs" data-section="tabs">
         <section class="active">
             <div class="content" data-section-content>
-                <p>
-                    <div class="row">
-                        <div class="large-12 columns">
-                            <div class="signup-panel">
-                                <form name="gradeForm" novalidate>
-
-                                    <div class="row collapse">
-                                        <p>Please give a grade between 0 and 100 for the project {{ project }}</p>
-                                        <div class="small-10  columns">
-                                            <input type="number" name="grade" ng-model="grade" required>
+                {{ bareme }}
+                <div class="row">
+                    <div class="large-12 columns">
+                        <div class="signup-panel">
+                            <p class="welcome">{{ bareme[0].project_name }}</p>
+                                <div class="row collapse">
+                                    <div class="small-12  columns">
+                                        <h3>Bareme for {{ bareme[0].project_name }}</h3>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <div class="small-12 columns" ng-show="bareme[0].preliminary_show == true">
+                                        <p><strong>Preliminaries</strong>
+                                            <br> Is there a working and functionnal project in the directory that passes all the basic error checks without crashing or stopping unexpectedly?</p>
+                                        <div class="button-groups" data-grouptype="OR">
+                                            <button style="margin-left:0px" 
+                                                    href="#"
+                                                    class="small button success radius"
+                                                    ng-click="setGrade(1, 'preliminary')">OK</button>
+                                            <button style="margin-left:0px" 
+                                                    href="#" 
+                                                    class="small button alert radius"
+                                                    ng-click="setGrade(0, 'preliminary')">KO</button>
                                         </div>
                                     </div>
-
-                                    <span style="color:red" ng-show="grade_is_valid(grade) === false">
-                        Please choose a grade between 0 and 100</span>
-                                    </span>
-                                    <br>
-                                    <br>
-                                    <button ng-disabled="gradeForm.description.$error.required ||
-                                             grade_is_valid(grade) === false" ng-click="setAsFinished(project, userInfo.username, grade)" class="button">
-                                        Confirm</button>
-                                </form>
-                                <span style="color:red" ng-show="regError">
-                        Project creation error!
-                    </span>
-                            </div>
+                                    <div class="small-12 columns" ng-repeat="question in bareme[0].questions">
+                                        <p><strong>{{ $index + 1 }}) {{ question.title }}</strong><br>
+                                            {{ question.body }}
+                                        </p>
+                                        <div ng-switch on="question.notation">
+                                            <div class="button-groups" data-grouptype="OR" ng-switch-when="Red">
+                                                <button style="margin-left:0px" href="#" class="small button success radius">OK</button>
+                                                <button style="margin-left:0px" href="#" class="small button alert radius">KO</button>
+                                            </div>
+                                            <div ng-click="setWidth($index)" ng-switch-when="Blue">
+                                                <div class="progress prog{{$index}}">
+                                                    <span class="meter1 blue display elem{{$index}} " style="width:{{ question.value }}%">
+                                                        <p class="percent">{{ question.value }}%</p>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="small-12 columns" ng-show="bareme[0].bonus == true">
+                                        <p><strong>Bonus</strong>
+                                            <br> Please rate any bonus that you find interesting or relevant to the project.
+                                        </p>
+                                        <div style="width:100%" class="clickable">
+                                            <div style="width:100%" class="progress">
+                                                <span class="meter blue display meter" style="width:{{ newValue }}%">
+                                                    <p class="percent">{{ newValue }}%</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                {{ notation }}
+                                <hr />
+                                <br>
+                                <div style="text-align:center" class="row collapse">
+                                    <button style="margin-left:0px" 
+                                            ng-click="correctProject(bareme, notation)" class="button"
+                                            ng-disabled="verifyNotation() == false">
+                                        Finish</button>
+                                    <span style="color:red" ng-show="correctError">{{ 'PROJECTERROR' | translate }}</span>
+                                </div>
                         </div>
                     </div>
+                </div>
                 </p>
             </div>
         </section>

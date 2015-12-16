@@ -454,6 +454,18 @@
                     console.log('yes');
                     projectService.registerProject(name, username, deadline)
                         .success(function (data) {
+                             
+                            userService.verifyToken($window.sessionStorage.token)
+                            .success(function(data) {
+                                $timeout(function() {
+                                    $rootScope.userInfo = data;                         
+                                });
+                            })
+                            .error(function(status, data) {
+                                console.log(status);
+                                 console.log(data);
+                            });
+                        
                             fetchProjects($scope.username);
                             fetchAllProjects();
                             console.log('Registered to project ' + name);
@@ -474,6 +486,18 @@
                     console.log('yes');
                     projectService.registerActivity(name, username, project)
                         .success(function (data) {
+                        
+                        userService.verifyToken($window.sessionStorage.token)
+                        .success(function(data) {
+                            $timeout(function() {
+                                $rootScope.userInfo = data;                         
+                            });
+                        })
+                        .error(function(status, data) {
+                            console.log(status);
+                             console.log(data);
+                        });
+                        
                         fetchProjects($scope.username);
                         fetchAllProjects();
                         console.log('Registered to project ' + project.name);

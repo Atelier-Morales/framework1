@@ -78,11 +78,10 @@
                     username: username
                 });
             },
-            completeProject: function (name, username, grade) {
+            completeProject: function (name, username) {
                 return $http.post(API_URL + '/user/completeProject', {
                     name: name,
-                    username: username,
-                    grade: grade
+                    username: username
                 });
             },
             sendEmail: function (sender, subject, text) {
