@@ -56,20 +56,20 @@ Barèmes
 Il y a des barèmes avec les caractéristiques décrites dans le sujet:
 
 - association entre un barème et une activité DONE
-- une note est attribuée à la fin du barème en fonction du contenu du barème
+- une note est attribuée à la fin du barème en fonction du contenu du barème DONE
 
 
 # Admin :
 
 Admin
 
-Les 3 entités Modules / Activités / Barèmes sont administrables via une zone admin.
+Les 3 entités Modules / Activités / Barèmes sont administrables via une zone admin. DONE
 
 
 # Notes / Correction :
 
-- Génération de pairs pour les activité de type 'projet' lorsque la date de fin de projet est atteinte [+1pt]
-- Un utilisateur peut noter un projet d'un de ses pairs via un barème [+2pt]
+- Génération de pairs pour les activité de type 'projet' lorsque la date de fin de projet est atteinte [+1pt] DONE
+- Un utilisateur peut noter un projet d'un de ses pairs via un barème [+2pt] DONE
 - À la fin d'un exam on upload un fichier .csv pour attribuer une note pour chaque inscrits. [+2pt]
 
 
@@ -80,6 +80,6 @@ L'autologin est fonctionnel pour les utilisateurs (à éviter pour les comptes a
 
 # E-learning :
 
-- À chaque création de module et de projet, les catégories sont créées dans une zone E-learning [+2pt]
-- On peut ajouter un cours au module, sous la forme de .pdf ou de vidéo [+3pts]
+- À chaque création de module et de projet, les catégories sont créées dans une zone E-learning [+2pt] DONE
+- On peut ajouter un cours au module, sous la forme de .pdf ou de vidéo [+3pts] DONE
 

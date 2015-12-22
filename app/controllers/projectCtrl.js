@@ -9,7 +9,9 @@
         'userAuth',
         'projectModel',
         'angularMoment',
-        'ngFileUpload'
+        'ngFileUpload',
+        'ngSanitize',
+        'MassAutoComplete'
     ]);
 
     projectCtrl.controller('projectCtrl', [
@@ -47,9 +49,9 @@
                 var $div = $(ev.target);
                 var offset = $div.offset();
                 var x = ev.clientX - offset.left;
-                $scope.$apply(function() {
+                $scope.$apply(function () {
                     // every changes goes here
-                    var Value = (x/($('div.large-12').width()*0.66))*100;
+                    var Value = (x / ($('div.large-12').width() * 0.66)) * 100;
                     console.log(Value);
                     if (Value < 10)
                         $scope.newValue = 0;
@@ -65,7 +67,7 @@
                         $scope.newValue = 100;
                 });
 
-                $('.meter').width($scope.newValue+'%');
+                $('.meter').width($scope.newValue + '%');
             });
 
             $scope.openQuestionBox = function (value) {
@@ -74,9 +76,9 @@
 
             $scope.addQuestion = function (title, body, notation) {
                 $scope.questions.push({
-                    title:title,
-                    body:body,
-                    notation:notation,
+                    title: title,
+                    body: body,
+                    notation: notation,
                     value: 0
                 });
             }
@@ -85,7 +87,7 @@
                 var $div = $(event.target);
                 var offset = $div.offset();
                 var x = event.clientX - offset.left;
-                var Value = (x/($('div.large-12').width()*0.66))*100;
+                var Value = (x / ($('div.large-12').width() * 0.66)) * 100;
                 if (Value < 10)
                     Value = 0;
                 else if (Value > 10 && Value < 20)
@@ -100,40 +102,39 @@
                     Value = 100;
                 $scope.questions[index].value = Value;
                 console.log($scope.questions[index].value)
-                $('.elem'+index).width(Value+'%');
-
+                $('.elem' + index).width(Value + '%');
             }
 
             $scope.createBareme = function (module, project_name, questions, preliminary_show, bonus) {
                 projectService.createBareme(module, project_name, questions, preliminary_show, bonus)
-                .success(function(){
-                    console.log("yes");
-                    $('#baremeModal').foundation('reveal', 'close');
-                    $scope.questions = [];
-                    $scope.preview = null;
-                    $scope.newValue = 0;
-                    $scope.displayQuestionBox = false;
-                    fetchAllProjects();
-                })
-                .error(function(status, data) {
-                    console.log(status+' '+data);
-                })
+                    .success(function () {
+                        console.log("yes");
+                        $('#baremeModal').foundation('reveal', 'close');
+                        $scope.questions = [];
+                        $scope.preview = null;
+                        $scope.newValue = 0;
+                        $scope.displayQuestionBox = false;
+                        fetchAllProjects();
+                    })
+                    .error(function (status, data) {
+                        console.log(status + ' ' + data);
+                    });
             }
 
             $scope.updateBareme = function (module, project_name, questions, preliminary_show, bonus) {
                 projectService.updateBareme(module, project_name, questions, preliminary_show, bonus)
-                    .success(function(){
-                    console.log("yes");
-                    $('#baremeModal').foundation('reveal', 'close');
-                    $scope.questions = [];
-                    $scope.preview = null;
-                    $scope.newValue = 0;
-                    $scope.displayQuestionBox = false;
-                    fetchAllProjects();
-                })
-                    .error(function(status, data) {
-                    console.log(status+' '+data);
-                })
+                    .success(function () {
+                        console.log("yes");
+                        $('#baremeModal').foundation('reveal', 'close');
+                        $scope.questions = [];
+                        $scope.preview = null;
+                        $scope.newValue = 0;
+                        $scope.displayQuestionBox = false;
+                        fetchAllProjects();
+                    })
+                    .error(function (status, data) {
+                        console.log(status + ' ' + data);
+                    })
             }
 
             $scope.date.by('days', function (moment) {
@@ -170,6 +171,13 @@
                         return true;
                 }
                 return false;
+            }
+
+            $scope.checkIfElearning = function (project) {
+                if (project.eLearning)
+                    return true;
+                else
+                    return false;
             }
 
             function fetchProjects(username) {
@@ -223,9 +231,9 @@
                 $scope.moduleName = moduleName
             }
 
-            $scope.setPreview = function(name) {
-                $http.get('data/baremes/bareme.json').success(function(data) {
-                    $timeout(function() {
+            $scope.setPreview = function (name) {
+                $http.get('data/baremes/bareme.json').success(function (data) {
+                    $timeout(function () {
                         $scope.newValue = 0;
                         $scope.questions = [];
                         $scope.displayQuestionBox = false;
@@ -237,8 +245,8 @@
                 });
             }
 
-            $scope.setView = function(name) {
-                $http.get(name).success(function(data) {
+            $scope.setView = function (name) {
+                $http.get(name).success(function (data) {
                     $scope.preview = data[0];
                     $scope.questions = $scope.preview.questions;
                     $scope.bonus = $scope.preview.bonus;
@@ -330,41 +338,43 @@
                     });
             }
 
-            $scope.uploadFiles = function(file, errFiles) {
+            $scope.uploadFiles = function (file, errFiles) {
                 $scope.f = file;
                 $scope.errFile = errFiles && errFiles[0];
-//                if (file) {
-//                    file.upload = Upload.upload({
-//                        url: API_URL + '/project/uploadSubject',
-//                        method: 'POST',
-//                        file: file
-//                    });
-//
-//                    file.upload.then(function (response) {
-//                        $timeout(function () {
-//                            file.result = response.data;
-//                        });
-//                    }, function (response) {
-//                        if (response.status > 0)
-//                            $scope.errorMsg = response.status + ': ' + response.data;
-//                    }, function (evt) {
-//                        file.progress = Math.min(100, parseInt(100.0 *
-//                                                               evt.loaded / evt.total));
-//                    });
-//                }
+                //                if (file) {
+                //                    file.upload = Upload.upload({
+                //                        url: API_URL + '/project/uploadSubject',
+                //                        method: 'POST',
+                //                        file: file
+                //                    });
+                //
+                //                    file.upload.then(function (response) {
+                //                        $timeout(function () {
+                //                            file.result = response.data;
+                //                        });
+                //                    }, function (response) {
+                //                        if (response.status > 0)
+                //                            $scope.errorMsg = response.status + ': ' + response.data;
+                //                    }, function (evt) {
+                //                        file.progress = Math.min(100, parseInt(100.0 *
+                //                                                               evt.loaded / evt.total));
+                //                    });
+                //                }
             }
 
-            $scope.createActivity = function createActivity(name, size, groupSize, peerSize, category, automatic, regStart, regClose, start, deadline, description, moduleName, file) {
+            $scope.createActivity = function createActivity(name, size, groupSize, peerSize, category, automatic, regStart, regClose, start, deadline, description, moduleName, file, link) {
                 var date_regStart = regStart.year + "-" + regStart.month + "-" + regStart.day;
                 var date_regClose = regClose.year + "-" + regClose.month + "-" + regClose.day;
                 var date_start = start.year + "-" + start.month + "-" + start.day;
                 var date_deadline = deadline.year + "-" + deadline.month + "-" + deadline.day;
                 if (automatic == undefined)
                     automatic = false;
+                //console.log(link+' ========== link');
                 //console.log(date_regStart+' '+date_regClose+' '+date_start+' '+date_deadline+' '+name+' '+size+' '+groupSize+' '+peerSize+' '+category+' '+automatic+' '+description+' '+moduleName);
-                projectService.createActivity(name, size, groupSize, peerSize, category, automatic, date_regStart, date_regClose, date_start, date_deadline, description, moduleName, file.name)
+                projectService.createActivity(name, size, groupSize, peerSize, category, automatic, date_regStart, date_regClose, date_start, date_deadline, description, moduleName, file.name, link)
                     .success(function (data) {
                         console.log(data);
+                        // console.log(link+' ========== link cense etre passe');
                         forumService.createSubTopic(name, moduleName)
                             .success(function (data) {
                                 console.log("subtopic crée");
@@ -396,15 +406,15 @@
                 if (confirm) {
                     projectService.deleteActivity(name, moduleName)
                         .success(function (data) {
-                        fetchAllProjects();
-                        console.log('Project ' + name + ' deleted');
-                        window.alert('Project ' + name + ' deleted');
-                    })
+                            fetchAllProjects();
+                            console.log('Project ' + name + ' deleted');
+                            window.alert('Project ' + name + ' deleted');
+                        })
                         .error(function (status, data) {
-                        $log.log(status);
-                        $log.log(data);
-                        window.alert('Failed at deleting project ' + name);
-                    });
+                            $log.log(status);
+                            $log.log(data);
+                            window.alert('Failed at deleting project ' + name);
+                        });
                 } else
                     console.log('nope');
             }
@@ -454,18 +464,18 @@
                     console.log('yes');
                     projectService.registerProject(name, username, deadline)
                         .success(function (data) {
-                             
+
                             userService.verifyToken($window.sessionStorage.token)
-                            .success(function(data) {
-                                $timeout(function() {
-                                    $rootScope.userInfo = data;                         
+                                .success(function (data) {
+                                    $timeout(function () {
+                                        $rootScope.userInfo = data;
+                                    });
+                                })
+                                .error(function (status, data) {
+                                    console.log(status);
+                                    console.log(data);
                                 });
-                            })
-                            .error(function(status, data) {
-                                console.log(status);
-                                 console.log(data);
-                            });
-                        
+
                             fetchProjects($scope.username);
                             fetchAllProjects();
                             console.log('Registered to project ' + name);
@@ -486,32 +496,105 @@
                     console.log('yes');
                     projectService.registerActivity(name, username, project)
                         .success(function (data) {
-                        
-                        userService.verifyToken($window.sessionStorage.token)
-                        .success(function(data) {
-                            $timeout(function() {
-                                $rootScope.userInfo = data;                         
-                            });
+
+                            userService.verifyToken($window.sessionStorage.token)
+                                .success(function (data) {
+                                    $timeout(function () {
+                                        $rootScope.userInfo = data;
+                                    });
+                                })
+                                .error(function (status, data) {
+                                    console.log(status);
+                                    console.log(data);
+                                });
+
+                            fetchProjects($scope.username);
+                            fetchAllProjects();
+                            console.log('Registered to project ' + project.name);
+                            window.alert('Registered to project ' + project.name);
                         })
-                        .error(function(status, data) {
-                            console.log(status);
-                             console.log(data);
-                        });
-                        
-                        fetchProjects($scope.username);
-                        fetchAllProjects();
-                        console.log('Registered to project ' + project.name);
-                        window.alert('Registered to project ' + project.name);
-                    })
                         .error(function (status, data) {
-                        $log.log(status);
-                        $log.log(data);
-                        window.alert('Could not register to project ' + name);
-                    });
+                            $log.log(status);
+                            $log.log(data);
+                            window.alert('Could not register to project ' + name);
+                        });
                 } else
                     console.log('nope');
             }
 
+            function suggest_user(term) {
+                var q = term.toLowerCase().trim();
+                var results = [];
+
+                for (var i = 0; i < $scope.allUsers.length && results.length < 10; i++) {
+                    var state = $scope.allUsers[i];
+                    if (state.toLowerCase().indexOf(q) === 0)
+                        results.push({
+                            label: state,
+                            value: state
+                        });
+                }
+                return results;
+            }
+
+            $scope.openTeamModal = function openTeamModal(project, module, username, groupSize) {
+                $scope.teamError = false;
+                $scope.teamProject = project;
+                $scope.teamModule = module;
+                $scope.groupSize = groupSize;
+                $scope.teamUsers = [];
+                $scope.allUsers = [];
+                $scope.dirty = {};
+                $scope.teamUsers.push(username);
+
+                userService.fetchUserInfos()
+                    .success(function (data) {
+                        for (var i = 0; i < data.length; i++)
+                            $scope.allUsers.push(data[i].username);
+
+                    })
+                    .error(function (status, data) {
+                        console.log(status + ' ' + data);
+                    });
+
+                $scope.autocomplete_options = {
+                    suggest: suggest_user
+                };
+
+                $('#teamModal').foundation('reveal', 'open');
+            }
+
+            $scope.addTeamUser = function (name, teamUsers) {
+                if (name == undefined)
+                    return;
+                if (teamUsers.indexOf(name) == -1 && name.length > 0)
+                    teamUsers.push(name);
+            }
+
+            $scope.registerTeam = function (teamProject, teamModule, username, teamUsers) {
+                projectService.registerTeam(teamProject, teamModule, username, teamUsers)
+                    .success(function () {
+                        userService.verifyToken($window.sessionStorage.token)
+                            .success(function (data) {
+                                $timeout(function () {
+                                    $rootScope.userInfo = data;
+                                });
+                            })
+                            .error(function (status, data) {
+                                console.log(status);
+                                console.log(data);
+                            });
+
+                        fetchProjects($scope.username);
+                        fetchAllProjects();
+                        $('#teamModal').foundation('reveal', 'close');
+                    })
+                    .error(function (status, data) {
+                        console.log(status + ' ' + data);
+                        $scope.teamError = true;
+                    })
+            }
         }
+
     ]);
 })();

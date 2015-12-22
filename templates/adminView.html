@@ -21,19 +21,21 @@
                 <br>
                 <h2 style="padding-left:15px;">{{ 'YOURPROJECTS' | translate }}</h2>
                 <br>
-
-
                 <div class="medium-4 large-4 small-12 columns">
 
-                    <h3>{{ 'PROGRESS' | translate }}</h3>
+                    <h3>Current projects</h3>
 
                     <div class="panel callout radius large-12 medium-12 small-12 columns end" ng-repeat="project in userInfo.projects">
                         <div class="callout-card-content">
                             <h3 class="lead">{{ project.name }}</h3>
-                            <p ng-if="project.status === 'ongoing'">{{ 'ONGOING' | translate }}</p>
+                            <p ng-if="checkModule(project.name, userInfo.activities) == true">{{ 'ONGOING' | translate }}</p>
+                            <p ng-if="checkModule(project.name, userInfo.activities) == false">Module finished<br>
+                                Average grade : {{ ::getModuleGrade(project.name, userInfo.activities) | number:0}}% (<span ng-if="::getModuleGrade(project.name, userInfo.activities) < 80">failed</span><span ng-if="::getModuleGrade(project.name, userInfo.activities) > 80">passed</span>)<br>
+                                Credits obtained: <span ng-if="::getModuleGrade(project.name, userInfo.activities) < 80">none</span><span ng-if="::getModuleGrade(project.name, userInfo.activities) > 80">{{ project.credits }}</span>
+                            </p>
                             <p>Deadline : {{ project.deadline | date:'yyyy-MM-dd' }}</p>
                         </div>
-                        <div class="callout-card warning radius" ng-repeat="project in userInfo.activities | filter: { status: 'ongoing' }">
+                        <div class="callout-card warning" ng-repeat="project in userInfo.activities | filter: { status: 'ongoing' } | filter: {parentModule: project.name}">
 
                             <div class="card-label">
                                 <div class="label-text">
@@ -45,7 +47,9 @@
                                 <p ng-if="project.status === 'ongoing'">{{ 'ONGOING' | translate }}</p>
                                 <p>{{ 'NOGRADE' | translate }}</p>
                                 <p>Deadline : {{ project.deadline | date:'yyyy-MM-dd' }}</p>
-
+                                <p>{{ project.groupSize }} users in the team
+                                    <br>
+                                    <span ng-repeat="user in project.users" class="info radius label" style="height:22px !important;margin-left:5px;">{{ user.name }}</span> </p>
                                 <button
                                         ng-click="setAsFinished(project.name, userInfo.username)"
                                         href="#"
@@ -66,7 +70,10 @@
                     <h3>{{ 'SUCCESS' | translate }}</h3>
 
                     <div class="panel callout radius large-12 medium-12 small-12 columns end" ng-repeat="project in userInfo.projects">
-                        <div class="callout-card success radius" ng-repeat="project in userInfo.activities | filter: { status: 'finished' }" ng-if="!isFailed(project.grade)">
+                        <div class="callout-card-content">
+                            <h3 class="lead">{{ project.name }}</h3>
+                        </div>
+                        <div class="callout-card success" ng-repeat="project in userInfo.activities | filter: { status: 'finished'} | filter: {parentModule: project.name}" ng-if="!isFailed(project.grade)">
                             <div class="card-label">
                                 <div class="label-text">
                                     {{ 'DONE' | translate }}
@@ -75,8 +82,14 @@
                             <div class="callout-card-content">
                                 <h3 class="lead">{{ project.name }}</h3>
                                 <p>{{ 'PROJECTDONE' | translate }}</p>
-                                <p>{{ 'GRADE' | translate }} : {{ project.grade }}% (passed)</p>
-                                <p>{{ 'SUBMITTED' | translate }} : 22/05/2014</p>
+                                <p>{{ 'GRADE' | translate }} : {{ project.grade | number:0 }}% (passed)</p>
+                                <p>{{ 'SUBMITTED' | translate }} : {{ project.submitted }}</p>
+                                <p>{{ project.groupSize }} users in the team
+                                    <br>
+                                    <span ng-repeat="user in project.users" class="info radius label" style="height:22px !important;margin-left:5px;">{{ user.name }}</span> </p>
+                                <small ng-repeat="correct in project.correctors | filter: { completed : true }">
+                                    {{ correct.name }} gave you {{ correct.grade | number:0 }}%
+                                    <br></small>
                             </div>
                         </div>
                     </div>
@@ -88,7 +101,10 @@
                     <h3>{{ 'FAILED' | translate }}</h3>
 
                     <div class="panel callout radius large-12 medium-12 small-12 columns end" ng-repeat="project in userInfo.projects">
-                        <div class="callout-card alert radius" ng-repeat="project in userInfo.activities | filter: { status: 'finished' }" ng-if="isFailed(project.grade)">
+                        <div class="callout-card-content">
+                            <h3 class="lead">{{ project.name }}</h3>
+                        </div>
+                        <div class="callout-card alert" ng-repeat="project in userInfo.activities | filter: { status: 'finished' } | filter: {parentModule: project.name}" ng-if="isFailed(project.grade)">
                             <div class="card-label">
                                 <div class="label-text">
                                     {{ 'DONE' | translate }}
@@ -97,8 +113,14 @@
                             <div class="callout-card-content">
                                 <h3 class="lead">{{ project.name }}</h3>
                                 <p>{{ 'PROJECTDONE' | translate }}</p>
-                                <p>{{ 'GRADE' | translate }} : {{ project.grade }} (failed)</p>
-                                <p>{{ 'SUBMITTED' | translate }} : 14/01/2014</p>
+                                <p>{{ 'GRADE' | translate }} : {{ project.grade | number:0 }}% (failed)</p>
+                                <p>{{ 'SUBMITTED' | translate }} : {{ project.submitted }}</p>
+                                <p>{{ project.groupSize }} users in the team
+                                    <br>
+                                    <span ng-repeat="user in project.users" class="info radius label" style="height:22px !important;margin-left:5px;">{{ user.name }}</span> </p>
+                                <small ng-repeat="correct in project.correctors | filter: { completed : true }">
+                                    {{ correct.name }} gave you {{ correct.grade | number:0 }}%
+                                    <br></small>
                             </div>
                         </div>
                     </div>
@@ -225,7 +247,6 @@
                                         Finish</button>
                                     <span style="color:red" ng-show="correctError">{{ 'PROJECTERROR' | translate }}</span>
                                 </div>
-                                {{ grade }}
                         </div>
                     </div>
                 </div>

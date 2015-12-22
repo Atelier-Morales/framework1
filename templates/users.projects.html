@@ -24,6 +24,7 @@
                         <p>Registration opens : {{ proj.registration_start | date:'medium'}} and closes : {{ proj.registration_end | date:'medium'}}</p>
                         <p>Module begins : {{ proj.start | date:'medium'}} and ends : {{ proj.deadline | date:'medium'}}</p>
                         <p>Max students : {{ proj.max_size }} | Credits : {{ proj.credits }}</p>
+                        <p>Team size : {{ proj.group_size }}</p>
                         <p>Description : {{ proj.description }}</p>
                         <p>Subject : <a target="_blank" href="http://localhost:3000/assets/subjects/{{proj.subject}}">{{ proj.subject }}</a></p>
                     </div>
@@ -107,7 +108,7 @@
                                         <p>Registration close date</p>
                                         <div class="large-4 columns">
                                             <label>
-                                                <select ng-model="regClose.year">
+                                                <select ng-disabled="regStart.year == undefined || regStart.month == undefined || regStart.day == undefined" ng-model="regClose.year">
                                                     <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
                                                 </select>
                                             </label>
@@ -115,7 +116,7 @@
 
                                         <div class="large-4 columns">
                                             <label>
-                                                <select ng-model="regClose.month">
+                                                <select ng-disabled="regStart.year == undefined || regStart.month == undefined || regStart.day == undefined" ng-model="regClose.month">
                                                     <option ng-repeat="month in months" value="{{month}}">{{month}}</option>
                                                 </select>
                                             </label>
@@ -123,7 +124,7 @@
 
                                         <div class="large-4 columns">
                                             <label>
-                                                <select ng-model="regClose.day">
+                                                <select ng-disabled="regStart.year == undefined || regStart.month == undefined || regStart.day == undefined" ng-model="regClose.day">
                                                     <option ng-repeat="day in days" value="{{day}}">{{day}}</option>
                                                 </select>
                                             </label>
@@ -134,7 +135,7 @@
                                         <p>Module start date</p>
                                         <div class="large-4 columns">
                                             <label>
-                                                <select ng-model="start.year">
+                                                <select ng-disabled="regClose.year == undefined || regClose.month == undefined || regClose.day == undefined" ng-model="start.year">
                                                     <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
                                                 </select>
                                             </label>
@@ -142,7 +143,7 @@
 
                                         <div class="large-4 columns">
                                             <label>
-                                                <select ng-model="start.month">
+                                                <select ng-disabled="regClose.year == undefined || regClose.month == undefined || regClose.day == undefined" ng-model="start.month">
                                                     <option ng-repeat="month in months" value="{{month}}">{{month}}</option>
                                                 </select>
                                             </label>
@@ -150,7 +151,7 @@
 
                                         <div class="large-4 columns">
                                             <label>
-                                                <select ng-model="start.day">
+                                                <select ng-disabled="regClose.year == undefined || regClose.month == undefined || regClose.day == undefined" ng-model="start.day">
                                                     <option ng-repeat="day in days" value="{{day}}">{{day}}</option>
                                                 </select>
                                             </label>
@@ -161,7 +162,7 @@
                                         <p>{{ 'DEADLINE' | translate }}</p>
                                         <div class="large-4 columns">
                                             <label>
-                                                <select ng-model="deadline.year">
+                                                <select ng-disabled="start.year == undefined || start.month == undefined || start.day == undefined" ng-model="deadline.year">
                                                     <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
                                                 </select>
                                             </label>
@@ -169,7 +170,7 @@
 
                                         <div class="large-4 columns">
                                             <label>
-                                                <select ng-model="deadline.month">
+                                                <select ng-disabled="start.year == undefined || start.month == undefined || start.day == undefined" ng-model="deadline.month">
                                                     <option ng-repeat="month in months" value="{{month}}">{{month}}</option>
                                                 </select>
                                             </label>
@@ -177,7 +178,7 @@
 
                                         <div class="large-4 columns">
                                             <label>
-                                                <select ng-model="deadline.day">
+                                                <select ng-disabled="start.year == undefined || start.month == undefined || start.day == undefined" ng-model="deadline.day">
                                                     <option ng-repeat="day in days" value="{{day}}">{{day}}</option>
                                                 </select>
                                             </label>
@@ -264,11 +265,10 @@
                                             </select>
                                         </div>
                                     </div>
-
                                     <div class="row collapse">
                                         <div class="large-10 columns">
                                             <p style="vertical-align: -webkit-baseline-middle;">Automatic groups?
-                                                <input style="vertical-align: -webkit-baseline-middle;" ng-disabled="size < 2 || activityForm.size.$error.required" name="automatic" ng-model="automatic" uid="checkbox1" type="checkbox" required>
+                                                <input style="vertical-align: -webkit-baseline-middle;" ng-disabled="groupSize < 2 || groupSize == undefined" name="automatic" ng-model="automatic" uid="checkbox1" type="checkbox" required>
                                             </p>
 
                                         </div>
@@ -280,6 +280,13 @@
                                             Select File</button>
                                         <p>{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}</p>
                                         {{errorMsg}}
+                                    </div>
+
+                                    <div class="row collapse">
+                                        <p>Insert Link E-Learning</p>
+                                        <div class="small-10  columns">
+                                            <input type="text" name="eLearning" ng-model="eLearning">
+                                        </div>
                                     </div>
 
                                     <div class="row">
@@ -404,7 +411,7 @@
                                                  size <= 0 ||
                                                  f == undefined ||
                                                  date_is_invalid(regStart, regClose, start, deadline) === false ||
-                                                 deadline.day == undefined || deadline.year == undefined || deadline.month == undefined" ng-click="createActivity(name, size, groupSize, peerSize, category, automatic, regStart, regClose, start, deadline, description, moduleName, f)" class="button">
+                                                 deadline.day == undefined || deadline.year == undefined || deadline.month == undefined" ng-click="createActivity(name, size, groupSize, peerSize, category, automatic, regStart, regClose, start, deadline, description, moduleName, f, eLearning)" class="button">
                                         {{ 'CREATE' | translate }}</button>
                                 </form>
                                 <span style="color:red" ng-show="regError">

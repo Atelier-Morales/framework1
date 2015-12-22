@@ -9,7 +9,7 @@ exports.fetchUsersLdap = function (req, res) {
         url: 'ldaps://ldap.42.fr:636'
     });
 
-    client.bind(dn, 'Elvedado87?', function (err) {
+    client.bind(dn, 'INSERTPASSHERE', function (err) {
         if (err) {
             console.log("failed connection to LDAP");
             return res.send(401);

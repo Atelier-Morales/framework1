@@ -92,6 +92,22 @@ var User = new Schema({
             neededCorrections: {
                 type: Number
             },
+            groupSize: {
+                type: Number,
+                required: true,
+                default: 1
+            },
+            submitted: {
+                type: String
+            },
+            users: [
+                {
+                    name: {
+                        type: String,
+                         required: true
+                    }
+                }
+            ],
             correctors: [
                 {
                     name: {
@@ -177,7 +193,7 @@ var Projects = new Schema({
         required: true,
         unique: true
     },
-    credits : {
+    credits: {
         type: Number,
         required: true,
         unique: true
@@ -231,6 +247,9 @@ var Projects = new Schema({
             bareme: {
                 type: String,
                 default: ""
+            },
+            eLearning: {
+                type: String
             }
         }
     ]

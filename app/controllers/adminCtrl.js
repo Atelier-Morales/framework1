@@ -97,17 +97,17 @@
 
             $scope.correctProject = function (username, correctee, project, notation) {
                 $scope.grade = 0;
-                var totalGrade = (notation.length - 2) * 100;
+                var totalGrade = notation.length <= 2 ? 100 : (notation.length - 2) * 100;
                 for (var i = 0; i < notation.length; i++) {
                     console.log(notation[i].question);
                     if (notation[i].question == "preliminary" && notation[i].grade == 0)
                         break ;
+                    else if (notation[i].question == "preliminary" && notation[i].grade == 100 && notation.length <= 2)
+                        $scope.grade = totalGrade;
                     else if (notation[i].question != "preliminary" && notation[i].question != "bonus")
                         $scope.grade += notation[i].grade;
-                    else if (notation[i].question == "bonus") {
-                        console.log(notation[i].grade / 100);
+                    else if (notation[i].question == "bonus")
                         $scope.grade += ((10 * notation[i].grade / 100) / 100) * totalGrade;
-                    }
                 }
                 $scope.grade = ($scope.grade * 100) / totalGrade;
                 userService.correctProject(username, correctee, project, $scope.grade)
@@ -136,6 +136,35 @@
                 if (grade > 50)
                     return false;
                 return true;
+            }
+
+            $scope.checkModule = function(project, activity) {
+                var check = true;
+                for (var i = 0; i < activity.length; i++) {
+                    if (activity[i].parentModule == project && activity[i].status == "ongoing")
+                        check = false;
+                }
+                if (check) {
+                    return false;
+                }
+                return true;
+            }
+
+            $scope.getModuleGrade = function(project, activity) {
+                var grade = 0;
+                var count = 0;
+
+                for (var i = 0; i < activity.length; i++) {
+                    if (activity[i].parentModule == project) {
+                        count++;
+                        grade += activity[i].grade;
+                    }
+                }
+                if (count == 0)
+                    return 0;
+                var totalGrade = grade / count;
+                console.log(totalGrade);
+                return totalGrade;
             }
 
             function isNumeric(num) {

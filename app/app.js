@@ -3,7 +3,7 @@
         API_URL = "https://localhost:8002";
     else
         API_URL = "http://localhost:8001";
-    
+
     var app = angular.module('homepage', [
         'adminCtrl',
         'projectCtrl',
@@ -19,9 +19,9 @@
         'ngCookies',
         'pascalprecht.translate'
     ]);
-    
+
     app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider) {
-        
+
         $translateProvider
         .translations('en', {
             HOME: 'Home',
@@ -195,17 +195,17 @@
             SUBMITISSUE: 'Soumettez votre problème',
             REOPEN: 'réouvrir',
             TOREPLY: 'pour répondre',
-            AVAILABLEPROJECTS: 'Projets disponibles' 
+            AVAILABLEPROJECTS: 'Projets disponibles'
         });
         $translateProvider.preferredLanguage('en');
-        
+
         $urlRouterProvider.otherwise('/home');
         $urlRouterProvider.when("/forum", "/forum/list");
         $urlRouterProvider.when("/users", "/users/administration");
         $urlRouterProvider.when("/users/tickets", "/users/tickets/all");
         $urlRouterProvider.when("/tickets", "/tickets/all");
         $urlRouterProvider.when("/profiles", "/profiles/all");
-        
+
         $stateProvider
         .state('home',{
             url: '/home',
@@ -384,10 +384,22 @@
             templateUrl: '/templates/profiles.user.html',
             controller: 'ProfilesCtrl'
         })
-        
+        .state('elearning', {
+            url: '/elearning',
+            views: {
+                'menu': {
+                    templateUrl: '/templates/menuLogged.html',
+                    controller: 'AdminUserCtrl'
+                },
+                'content': {
+                    templateUrl: '/templates/elearnings.html',
+                    controller: 'projectCtrl'
+                }
+            }
+        })
         $locationProvider.html5Mode(true);
     });
-    
+
     app.run(function($rootScope, $state, $window, $cookies, $timeout, authService, userService, $translate) {
         var logAs = $cookies.get('logAs');
         if (logAs === true)
@@ -407,7 +419,7 @@
                     userService.verifyToken(token)
                     .success(function(data) {
                         $timeout(function() {
-                            $rootScope.userInfo = data;                         
+                            $rootScope.userInfo = data;
                         });
                         console.log('1: User already logged in. Redirecting...');
                         $window.sessionStorage.token = token;
@@ -427,6 +439,7 @@
                  toState.name.indexOf('forbidden') > -1 ||
                  toState.name.indexOf('forum') > -1 ||
                  toState.name.indexOf('tickets') > -1 ||
+                 toState.name.indexOf('elearning') > -1 ||
                  toState.name.indexOf('projects') > -1)
                  && !$window.sessionStorage.token) {
                 // If logged out and transitioning to a logged in page:
@@ -447,7 +460,7 @@
                                 .error(function(status,data){ console.log(status+' '+data)});
                         });
                         console.log('2: User already logged in...');
-                        
+
                         $window.sessionStorage.token = token;
                     })
                     .error(function(status, data) {
@@ -456,7 +469,7 @@
                         e.preventDefault();
                         $state.go('home');
                     });
-                } 
+                }
             }
             if (toState.name.indexOf('home') > -1 && $window.sessionStorage.token) {
                 // If logged in and transitioning to a logged out page:
@@ -483,6 +496,7 @@
                  (toState.name.indexOf('forbidden') > -1 && $window.sessionStorage.token) ||
                  (toState.name.indexOf('forum') > -1     && $window.sessionStorage.token) ||
                  (toState.name.indexOf('tickets') > -1   && $window.sessionStorage.token) ||
+                 (toState.name.indexOf('elearning') > -1   && $window.sessionStorage.token) ||
                  (toState.name.indexOf('projects') > -1  && $window.sessionStorage.token)) {
                     // If logged in and no user info:
                     userService.verifyToken($window.sessionStorage.token)
@@ -497,7 +511,7 @@
                                 .error(function(status,data){ console.log(status+' '+data)});
                         });
                         authService.isLogged = true;
-                        
+
                         //console.log('4: User already logged in...');
                     })
                     .error(function(status, data) {
@@ -507,7 +521,7 @@
                         $state.go('home');
                     });
             }
-            
+
             if (toState.name.indexOf('users') > -1) {
                 if ($rootScope.userInfo === undefined) {
                     userService.verifyToken(token)
@@ -527,7 +541,7 @@
                             e.preventDefault();
                             $state.go('forbidden');
                         }
-                        
+
                     })
                     .error(function(status, data) {
                         console.log(status);

@@ -46,13 +46,12 @@
                                 <p>Registration opens : {{ proj.registration_start | date:'medium'}} and closes : {{ proj.registration_end | date:'medium'}}</p>
                                 <p>Module begins : {{ proj.start | date:'medium'}} and ends : {{ proj.deadline | date:'medium'}}</p>
                                 <p>Max students : {{ proj.max_size }} | Credits : {{ proj.credits }}</p>
+                                <p>Team size : {{ proj.group_size }}</p>
                                 <p>Description : {{ proj.description }}</p>
                                 <p>Subject : <a target="_blank" href="http://localhost:3000/assets/subjects/{{proj.subject}}">{{ proj.subject }}</a></p>
                             </div>
-                            <button href="#" 
-                               ng-click="registerActivity(project.name, username, proj)" 
-                               ng-disabled="checkIfRegistered(project, userInfo.projects) == false"
-                               class="button small success" ng-show="checkIfRegisteredActivity(proj.name, userInfo.activities) == false">Register</button>
+                            <button href="#" ng-if="proj.group_size > 1 && proj.automatic_group == false" ng-click="openTeamModal(proj, project.name, userInfo.username, proj.group_size)" ng-disabled="checkIfRegistered(project, userInfo.projects) == false || proj.bareme.length == 0" class="button small success" ng-show="checkIfRegisteredActivity(proj.name, userInfo.activities) == false">Register</button>
+                            <button href="#" ng-if="proj.group_size == 1 || (proj.group_size > 1 && proj.automatic_group == true)" ng-click="registerActivity(project.name, username, proj)" ng-disabled="checkIfRegistered(project, userInfo.projects) == false || proj.bareme.length == 0" class="button small success" ng-show="checkIfRegisteredActivity(proj.name, userInfo.activities) == false">Register</button>
                             <h4 class="subheader" ng-show="checkIfRegisteredActivity(proj.name, userInfo.activities) == true">Already Registered</h4>
                         </div>
                     </div>
@@ -64,6 +63,57 @@
         <a class="exit-off-canvas"></a>
 
     </div>
+</div>
+
+<div id="teamModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">
+    <div class="section-container tabs" data-section="tabs">
+        <section class="active">
+            <div class="content" data-section-content>
+                <p>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <div class="signup-panel">
+                                <p class="welcome">Create Team for {{ teamProject.name }}</p>
+                                <form name="teamForm" novalidate>
+                                    <div class="row collapse">
+                                        <p>Current users ({{ teamUsers.length }}/{{ groupSize }})
+                                            <br>
+                                            <span ng-repeat="user in teamUsers" class="info radius label" style="height:22px !important;margin-left:5px;">{{ user }}</span> </p>
+                                        <br>
+                                        <div class="small-10 columns" mass-autocomplete>
+                                            <input type="text" name="name" ng-model="dirty.value"
+                                                       mass-autocomplete-item="autocomplete_options">
+                                            <div class="ac-container" ng-show="show_autocomplete && results.length" style="position:absolute;">
+                                                <ul class="ac-menu" style="width:400px !important">
+                                                    <li ng-repeat="result in results"
+                                                        ng-if="$index > 0"
+                                                        class="ac-menu-item"
+                                                        style="width:400px !important"
+                                                        ng-class="$index == selected_index ? 'ac-state-focus' : ''">
+                                                        <a href style="width:400px !important" ng-click="apply_selection($index, $event)" ng-bind-html=result.label> </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <button class="small" ng-click="addTeamUser(dirty.value, teamUsers)" ng-disabled="teamUsers.length == groupSize">Add user</button>
+                                    </div>
+                                    <br>
+                                    <div class="row collapse" style="text-align:center">
+                                        <button ng-disabled="teamUsers.length != groupSize" ng-click="registerTeam(teamProject, teamModule, teamUsers[0], teamUsers)" style="margin:0px" class="button">
+                                            Create team</button>
+                                    </div>
+                                </form>
+                                <span style="color:red" ng-show="teamError">
+                            Project registration error!
+                        </span>
+                            </div>
+                        </div>
+                    </div>
+                </p>
+            </div>
+        </section>
+    </div>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
 
 <div id="projectModal" style="width:30%" class="reveal-modal" data-reveal aria-labelledby="sign up" aria-hidden="true" role="dialog">

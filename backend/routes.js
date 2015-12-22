@@ -28,6 +28,7 @@ routes.forum = require('./forum');
 routes.tickets = require('./tickets');
 routes.mailer = require('./mailer');
 routes.ldap = require('./ldap');
+//routes.elearning = require('./elearning');
 
 app.all('*', function(req, res, next) {
     if (req.protocol === "https")
@@ -63,6 +64,8 @@ app.post('/user/register', routes.users.register);
 app.post('/user/registerProject', routes.users.registerProject);
 
 app.post('/user/registerActivity', routes.users.registerActivity);
+
+app.post('/user/registerTeam', routes.users.registerTeam);
 
 app.post('/user/completeProject', routes.users.completeProject);
 
@@ -153,5 +156,9 @@ app.get('/ticket/tickets', routes.tickets.fetchTickets);
 //email
 
 app.post('/emailSend', routes.mailer.sendEmail);
+
+//e-learning
+
+app.post('/elearning', routes.projects.fetchProjects);
 
 console.log('Intranet API is starting on port 8001');

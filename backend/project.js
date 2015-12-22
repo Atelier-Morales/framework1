@@ -91,32 +91,82 @@ exports.deleteProject = function (req, res) {
             console.log(err);
             return res.sendStatus(401);
         }
-        db.forumModel.find({}, function (err, category) {
-            var i = 0;
-            for (; i < category[0].categories.length; ++i) {
-                if (category[0].categories[i].name === req.body.name)
-                    break;
-            }
-            category[0].categories.splice(i, 1);
-            var k = 0;
-            for (; k < category[0].threads.length; ++k) {
-                if (category[0].threads[k].category[0].name === req.body.name)
-                    break;
-            }
-            category[0].threads.splice(k, 1);
-            category[0].save(function (err) {
-                if (err) {
+        console.log(doc.activities);
+        var i = 0;
+        for (; i < doc.activities.length; i++) {
+            fs.unlink("/nfs/zfs-student-3/users/fmorales/Documents/rendu/bgw/assets/subjects/" + doc.activities[i].subject, function (err) {
+                if (err)
                     console.log(err);
-                    return res.sendStatus(500);
+                console.log("subject deleted");
+            });
+            fs.unlink("/nfs/zfs-student-3/users/fmorales/Documents/rendu/bgw/" + doc.activities[i].bareme, function (err) {
+                if (err)
+                    console.log(err);
+                else
+                    console.log("bareme deleted");
+            });
+        }
+        doc.save(function (err) {
+            console.log("lol1");
+            if (err) {
+                console.error(err);
+                return res.sendStatus(500);
+            }
+            console.log('project removed');
+            db.userModel.find({}, function (err, users) {
+                console.log("lol2");
+                if (err) {
+                    console.error(err);
+                    res.sendStatus(501);
                 }
-                db.forumModel.find({}, function (err, forum) {
-                    if (err) {
-                        console.log(err);
-                        return res.sendStatus(500);
+                for (var i = 0; i < users.length; i++) {
+
+                    for (var l = 0; l < users[i].projects.length; l++) {
+                        if (users[i].projects[l].name == req.body.name)
+                            users[i].projects.splice(l, 1);
                     }
-                    console.log(req.body.name + " deleted");
-                    console.log(doc + " deleted from db");
-                    return res.sendStatus(200);
+                    for (var j = 0; j < users[i].activities.length; j++) {
+                        if (users[i].activities[j].parentModule == req.body.name)
+                            users[i].activities.splice(j, 1);
+                    }
+                    for (var k = 0; k < users[i].corrections.length; k++) {
+                        if (users[i].corrections[k].module == req.body.name)
+                            users[i].corrections.splice(k, 1);
+                    }
+                    users[i].save(function (err) {
+                        if (err) {
+                            console.log(err);
+                            return res.sendstatus(502);
+                        }
+                    });
+                }
+                db.forumModel.find({}, function (err, category) {
+                    var i = 0;
+                    for (; i < category[0].categories.length; ++i) {
+                        if (category[0].categories[i].name === req.body.name)
+                            break;
+                    }
+                    category[0].categories.splice(i, 1);
+                    var k = 0;
+                    for (; k < category[0].threads.length; ++k) {
+                        if (category[0].threads[k].category[0].name === req.body.name)
+                            break;
+                    }
+                    category[0].threads.splice(k, 1);
+                    category[0].save(function (err) {
+                        if (err) {
+                            console.log(err);
+                            return res.sendStatus(500);
+                        }
+                        db.forumModel.find({}, function (err, forum) {
+                            if (err) {
+                                console.log(err);
+                                return res.sendStatus(500);
+                            }
+                            console.log(req.body.name + " deleted");
+                            return res.sendStatus(200);
+                        });
+                    });
                 });
             });
         });
@@ -139,7 +189,7 @@ exports.deleteActivity = function (req, res) {
         fs.unlink("/nfs/zfs-student-3/users/fmorales/Documents/rendu/bgw/assets/subjects/" + doc.activities[i].subject, function (err) {
             console.log("subject deleted")
         });
-        fs.unlink("/nfs/zfs-student-3/users/fmorales/Documents/rendu/bgw/"+doc.activities[i].bareme, function (err) {
+        fs.unlink("/nfs/zfs-student-3/users/fmorales/Documents/rendu/bgw/" + doc.activities[i].bareme, function (err) {
             if (err)
                 console.log(err);
             else
@@ -172,14 +222,37 @@ exports.deleteActivity = function (req, res) {
                 }
                 console.log(subcategoria + " deleted");
             });
+        });
+
+        db.userModel.find({}, function (err, users) {
+            if (err) {
+                console.error(err);
+                res.sendStatus(501);
+            }
+            for (var i = 0; i < users.length; i++) {
+                for (var j = 0; j < users[i].activities.length; j++) {
+                    if (users[i].activities[j].name == req.body.name)
+                        users[i].activities.splice(j, 1);
+                }
+                for (var k = 0; k < users[i].corrections.length; k++) {
+                    if (users[i].corrections[k].project == req.body.name)
+                        users[i].corrections.splice(k, 1);
+                }
+                users[i].save(function (err) {
+                    if (err) {
+                        console.log(err);
+                        return res.sendstatus(502);
+                    }
+                });
+            }
             doc.save(function (err) {
                 if (err) {
                     console.error(err);
                     return res.sendStatus(500);
                 }
                 console.log('project removed');
-                return res.sendStatus(200);
             });
+            return res.sendStatus(200);
         });
     });
 }
@@ -208,13 +281,13 @@ exports.updateProject = function (req, res) {
 }
 
 exports.createActivity = function (req, res) {
-
     var file = req.body.subject;
     var moduleName = req.body.moduleName;
-
     db.projectModel.findOne({
         name: moduleName
     }, function (err, result) {
+        if (err)
+            console.log(err);
         var project = {
             name: req.body.name,
             start: req.body.start,
@@ -228,7 +301,8 @@ exports.createActivity = function (req, res) {
             nb_peers: req.body.nb_peers,
             automatic_group: req.body.automatic_group,
             activity_type: req.body.activity_type,
-            bareme: ""
+            bareme: "",
+            eLearning: req.body.eLearning
         }
         result.activities.push(project);
         result.save(function (err) {
@@ -276,14 +350,16 @@ exports.createBareme = function (req, res) {
         preliminary_show: preliminary_show
     });
     var configJSON = JSON.stringify(config);
-    fs.writeFileSync('../data/baremes/'+project_name+'.json', configJSON);
-    db.projectModel.findOne({ name: module }, function(err, result) {
+    fs.writeFileSync('../data/baremes/' + project_name + '.json', configJSON);
+    db.projectModel.findOne({
+        name: module
+    }, function (err, result) {
         var i = 0;
         for (; i < result.activities.length; i++) {
             if (result.activities[i].name == project_name)
-                break ;
+                break;
         }
-        result.activities[i].bareme = 'data/baremes/'+project_name+'.json';
+        result.activities[i].bareme = 'data/baremes/' + project_name + '.json';
         result.save(function (err) {
             if (err) {
                 console.log(err);
@@ -302,7 +378,7 @@ exports.updateBareme = function (req, res) {
     var bonus = req.body.bonus;
     var preliminary_show = req.body.preliminary_show;
 
-    var configFile = fs.readFileSync('../data/baremes/'+project_name+'.json');
+    var configFile = fs.readFileSync('../data/baremes/' + project_name + '.json');
     var config = JSON.parse(configFile);
     config = [];
     var configJSON = JSON.stringify(config);
@@ -315,6 +391,6 @@ exports.updateBareme = function (req, res) {
         preliminary_show: preliminary_show
     });
     var configJSON = JSON.stringify(config);
-    fs.writeFileSync('../data/baremes/'+project_name+'.json', configJSON);
+    fs.writeFileSync('../data/baremes/' + project_name + '.json', configJSON);
     return res.sendStatus(200);
 }

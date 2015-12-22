@@ -1,0 +1,52 @@
+<link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
+
+<div class="off-canvas-wrap move-right" style="overflow: visible;" data-offcanvas>
+    <div class="inner-wrap">
+
+        <sidebar-admin ng-if="userInfo.is_admin"></sidebar-admin>
+        <sidebar-user ng-if="!userInfo.is_admin"></sidebar-user>
+
+
+         <div class="row">
+        <div class="large-12 columns">
+          <div class="panel">
+            <h1>E-Learning {{ setUsername(userInfo.username) }}{{ fetchUserTickets(userInfo.username) }}</h1>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+            <div class="callout-card radius primary medium-12 medium-pull-12 columns back-card">
+                <br>
+                <h2 style="padding-left:15px;">Available modules</h2>
+                <!--          <button ng-if="userInfo.is_admin" href="#" data-reveal-id="projectModal">{{ 'CREATEPROJECT' | translate }}</button>-->
+                <br>
+
+                <div class="large-12 medium-12 small-12 columns">
+                    <div class="panel callout large-12 medium-12 small-12 columns end" ng-repeat="project in allProjects" ng-show="checkIfRegistered(project, userInfo.projects) == true">
+                        <div class="callout-card-content">
+                            <h3 class="lead">{{ project.name }}</h3>
+                        </div>
+                        <!--
+                <button ng-if="userInfo.is_admin" ng-click="setIndex($index)" href="#" data-reveal-id="updateProjectModal">Update</button>
+                <a ng-if="userInfo.is_admin" ng-click="deleteProject(project.name)" class="button alert">Remove</a>
+-->
+                        <br>
+                        <div ng-disabled="project.registered == false" class="callout-card large-4 medium-4 small-4 columns end" ng-repeat="proj in project.activities" ng-show="checkIfRegisteredActivity(proj.name, userInfo.activities) == true">
+                            <div class="callout-card-content">
+                                <h3 class="lead">{{ proj.name }}</h3>
+                                <p ng-show="checkIfElearning(proj) == true">Video E-learning : <a target="_blank" href="{{proj.eLearning}}">lien1</a></p>
+                                <p ng-show="checkIfElearning(proj) == false">Video E-learning : <a target="_blank" href="http://lmgtfy.com/?q={{proj.name}}">lmgtfy</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- close the off-canvas menu -->
+    <a class="exit-off-canvas"></a>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).foundation();
+</script>

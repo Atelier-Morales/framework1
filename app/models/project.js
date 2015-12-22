@@ -23,7 +23,7 @@
                     description: description
                 });
             },
-            createActivity: function(name, size, groupSize, peerSize, category, automatic, date_regStart, date_regClose, date_start, date_deadline, description, moduleName, file) {
+            createActivity: function(name, size, groupSize, peerSize, category, automatic, date_regStart, date_regClose, date_start, date_deadline, description, moduleName, file, link) {
                 return $http.post(API_URL + '/project/createActivity', {
                     name: name,
                     start: date_start,
@@ -37,7 +37,8 @@
                     nb_peers: peerSize,
                     automatic_group: automatic,
                     activity_type: category,
-                    moduleName: moduleName
+                    moduleName: moduleName,
+                    eLearning: link
                 });
             },
             fetchProjects: function(username) {
@@ -69,6 +70,14 @@
                     username: username,
                     project: project
                 });
+            },
+            registerTeam: function(teamProject, teamModule, username, teamUsers) {
+                return $http.post(API_URL + '/user/registerTeam', {
+                    project: teamProject,
+                    module: teamModule,
+                    username: username,
+                    users: teamUsers
+                })
             },
             updateProject: function(name, oldname, deadline, description) {
                 return $http.post(API_URL + '/project/updateProject', {
